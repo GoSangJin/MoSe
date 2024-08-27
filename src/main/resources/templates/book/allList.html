@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Services - Active Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Active
+  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container">
+        <h1>Services</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a th:href="@{/}">메인</a></li>
+            <li class="current">상품</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Services 2 Section -->
+    <section id="services-2" class="services-2 section">
+
+      <div class="container">
+        <!-- 검색 -->
+        <form th:action="@{/book/list}" method="get">
+          <div class="row mb-5">
+            <div class="col-md-2">
+              <!--사용한 검색구분과 검색어를 출력-->
+              <select id="searchType" class="form-select" name="searchType">
+                <!--검색구분이 없으면 선택한다.-->
+                <option value="" th:selected="${searchType==null}" >없음</option> <!--검색을 안하는 경우-->
+                <!--서비스에 if(searchType.equals("t"))하고 일치하게 -->
+                <option value="t" th:selected="${searchType=='t'}">제목</option> <!--검색구분-->
+                <option value="a" th:selected="${searchType=='a'}">저자</option>
+                <option value="ta" th:selected="${searchType=='ta'}">제목+저자</option>
+              </select>
+            </div>
+            <div class="col-md-8"><!--검색어-->
+              <input type="text" id="search" name="search" th:value="${search}" class="form-control" placeholder="검색어를 입력하세요">
+            </div>
+            <div class="col-md-2">
+              <input type="submit" class="btn btn-primary w-100" value="검색">
+            </div>
+          </div>
+        </form>
+
+        <!-- Title and Register Button -->
+        <div class="row mb-3">
+          <div class="col-md-10">
+            <h2>도서 목록</h2>
+          </div>
+          <div class="col-md-2" sec:authorize="hasAnyRole('admin', 'master')">
+            <a href="/book/register" class="btn btn-success w-100">등록</a>
+          </div>
+        </div>
+
+        <!-- 도서리스트 -->
+        <div class="row" id="bookList">
+          <!-- Example of a book card -->
+          <!-- This section will be dynamically filled with book data -->
+          <div class="col-md-3" th:each="data:${list}">
+            <a th:href="@{/book/view(id=${data.id})}">
+              <div class="card mb-3" style="width: 18rem;">
+
+                <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data.bookimg}|"
+                     class="card-img-top"
+                     alt="상품 이미지"
+                     th:if="${data.bookimg != null}" />
+                <img th:src="@{/assets/img/no_image.jpg}"
+                     class="card-img-top"
+                     alt="상품 이미지"
+                     th:if="${data.bookimg == null}" />
+                <div class="card-body">
+                  <h5 class="card-title" th:text="${data.title}">Book Title</h5>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 페이지처리 -->
+        <nav>
+          <ul class="pagination">
+            <li th:each="i : ${#numbers.sequence(startPage, endPage)}" class="page-item" th:classappend="${currentPage == i} ? 'active'">
+              <!--페이지번호만 이동할 때-->
+              <!--검색어가 추가되면 검색구분, 검색어 변수값도 함께 전달-->
+              <!-- (변수=값, 변수=값, 변수=값)==>?변수=값&변수=값&변수=값
+              getAllBooks(@PageableDefault(page=1) Pageable pageable,
+                              @RequestParam(value="searchType", defaultValue="") String searchType,
+                              @RequestParam(value="search", defaultValue="") String search,-->
+              <!--form에 input의 name은 $를 이용해서 지정-->
+              <a class="page-link" th:href="@{/book/list(page=${i}, searchType=${searchType}, search=${search})}" th:text="${i}">1</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </section><!-- /Services 2 Section -->
+
+
+
+  </main>
+</div>
+
+</body>
+
+</html>
