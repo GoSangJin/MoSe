@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Index - MOSE(모든세대).com</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: eNno
+  * Template URL: https://bootstrapmade.com/enno-free-simple-bootstrap-template/
+  * Updated: Aug 07 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="index-page">
+
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Hero Section 메인글 -->
+
+    <section id="hero" class="hero section">
+      <div class="container">
+        <div class="row gy-6">
+          <div class="col-lg-3 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="fade-up">
+            <div style="letter-spacing: 2px; text-align: center;">
+              <h1>모든 세대와 함께 하는 꿈 프로젝트</h1>
+              <h4 style="color: green;">Dreams come true</h4>
+              <div class="d-flex justify-content-center">
+                <a href="#about" class="btn-get-started" style="margin-top: 5px;">시작하기</a>
+                <a href="https://www.youtube.com/watch?v=7q9J9G97sW8" class="glightbox btn-watch-video d-flex align-items-center" style="margin-left: 15px;">
+                  <i class="bi bi-play-circle" style="margin-right: 8px;"></i><span>영상보기</span></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="100">
+            <img src="/assets/img/hero-img_1.png" class="img-fluid animated" alt="">
+          </div>
+        </div>
+      </div>
+    </section> <!-- /Hero Section 메인글 -->
+
+    <!-- 사업목적 Section -->
+    <section id="businesspur" class="businesspur section">
+
+      <!-- 사업목적 Section Title -->
+      <section id="business" class="business section">
+        <div class="container section-title" data-aos="fade-up">
+          <span>사업목적<br></span>
+          <h2>사업목적</h2>
+          <p class="font-monospace">각 병충해에 관한 주민들의 깊은 시름과 해결방안을 위해 조금이나마 도움을 드리고자 합니다.</p>
+        </div> <!-- 사업목적 Section Title -->
+
+        <div class="container">
+          <div class="row gy-4">
+            <div class="col-lg-6 position-relative align-self-start" data-aos="fade-up" data-aos-delay="100">
+              <img src="/assets/img/about.png" class="img-fluid business-img" alt="">
+            </div>
+            <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="200">
+              <h4>병충해로 인해 농촌 주민들의 깊은 시름과 고민 해결방안을 위해 저희 모세(모든세대)가 노력합니다.</h4>
+              <ul style="list-style-type: none; padding-left: 0;">
+                <li><i class="bi bi-check-circle" style="color: #28a745;"></i> <span>농촌이해, 체험활동</span></li>
+                <li><i class="bi bi-check-circle" style="color: #28a745;"></i> <span>농촌일자리 체험(단기근로)</span></li>
+                <li><i class="bi bi-check-circle" style="color: #28a745;"></i> <span>지역탐색/마을 문화,관광 탐방 프로그램</span></li>
+                <li><i class="bi bi-check-circle" style="color: #28a745;"></i> <span>재능나눔(PC등전산교육, 전자기기 수리정비등 자원봉사)</span></li>
+              </ul>
+
+              <div class="image group display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <div class="image-group img style=width: 32%; height: auto; border-radius: 8px; margin-bottom: 20px;">
+                  <img src="/assets/img/experience.png" alt="">
+                  <img src="/assets/img/people.png" alt="">
+                  <img src="/assets/img/success.png" class="img-fluid" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section><!-- /사업목적 Section Title -->
+
+    </section><!-- /사업목적 Section -->
+
+    <!-- 농촌지원사이트연계 Section -->
+    <section id="portfolio" class="portfolio section">
+
+      <!-- 농촌지원 Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span>농촌 도움 지원</span>
+        <h2>농촌 도움 지원</h2>
+        <p>각 지역별 정부지원 및 도움을 받으실 수 있어요!!</p>
+      </div><!-- 농촌지원 Section Title -->
+
+      <div class="container">
+        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+
+          <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+            <li data-filter="*" class="filter-active">농촌진흥청</li>
+            <li data-filter=".filter-app">농사로</li>
+            <li data-filter=".filter-product">국립원예특작과학원</li>
+            <li data-filter=".filter-branding">그린대로</li>
+            <li data-filter=".filter-books">치유농업ON</li>
+          </ul><!-- End Portfolio Filters -->
+
+          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <img src="/assets/img/portfolio/app-1.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>농촌진흥청</h4>
+                <p>과학기술의 융합/혁신/협업으로 활기찬 농업/농촌</p>
+                <a href="/assets/img/portfolio/app-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="https://www.rda.go.kr/"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+              <img src="/assets/img/portfolio/product-1.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>농사로(농촌인적자원개발센터)</h4>
+                <p>농업·농촌의 미래를 선도하는 교육 품질 최고 전문교육기관</p>
+                <a href="/assets/img/portfolio/product-1.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="https://www.nongsaro.go.kr/"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+              <img src="/assets/img/portfolio/branding-1.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>국립원예특작과학원</h4>
+                <p>원예특작산업의 지속적 발전과 원예특용작물 기술 개발 및 지원</p>
+                <a href="/assets/img/portfolio/branding-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="https://www.nihhs.go.kr"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
+              <img src="/assets/img/portfolio/books-1.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>그린대로</h4>
+                <p>내게 맞는 귀농귀촌 정보를 쉽게 찾아보세요!</p>
+                <a href="/assets/img/portfolio/books-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="https://www.greendaero.go.kr/"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <img src="/assets/img/portfolio/app-2.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>치유농업ON(도원·특광역기술센터)</h4>
+                <p>지역 치유농장주 품질인증 교육 및 기술/연계 지원서비스</p>
+                <a href="/assets/img/portfolio/app-2.jpg" title="App 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="https://www.agrohealing.go.kr/"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+              <img src="/assets/img/portfolio/product-2.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>국가농작물병해충관리시스템</h4>
+                <p>신속한 조기경보와 대응으로 농작물 피해를 줄입니다.</p>
+                <a href="/assets/img/portfolio/product-2.jpg" title="Product 2" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="https://ncpms.rda.go.kr/"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+              <img src="/assets/img/portfolio/branding-2.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>한국농어민신문</h4>
+                <p>한국농어민들을 위한 각종 정보 뉴스</p>
+                <a href="/assets/img/portfolio/branding-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="https://www.agrinet.co.kr/"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
+              <img src="/assets/img/portfolio/books-2.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>한국농촌경제연구원</h4>
+                <p>Lorem ipsum, dolor sit amet consectetur</p>
+                <a href="/assets/img/portfolio/books-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="/templates/portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <img src="/assets/img/portfolio/app-3.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>식품안전나라</h4>
+                <p>각종 식품에 관해 안전,위해,예방,건강,영양등 알림/교육서비스</p>
+                <a href="/assets/img/portfolio/app-3.jpg" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="https://www.foodsafetykorea.go.kr/"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+              <img src="/assets/img/portfolio/product-3.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>식약의약품안전처</h4>
+                <p>과학을 기반으로 식품·의약품 안전관리를 책임지는 전문 기관</p>
+                <a href="/assets/img/portfolio/product-3.jpg" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="https://www.mfds.go.kr/"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+              <img src="/assets/img/portfolio/branding-3.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>농어촌 알리미</h4>
+                <p>농어촌 알리미 서비스</p>
+                <a href="/assets/img/portfolio/branding-3.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="https://www.alimi.or.kr/"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
+              <img src="/assets/img/portfolio/books-3.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>Books 3</h4>
+                <p>Lorem ipsum, dolor sit amet consectetur</p>
+                <a href="/assets/img/portfolio/books-3.jpg" title="Branding 3" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="/templates/portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+          </div><!-- End Portfolio Container -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /농촌지원사이트연계 Section -->
+
+    <!-- 팀원들소개 Section -->
+    <section id="testimonials" class="testimonials section light-background">
+
+      <!--  팀원들소개 Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span>Teams</span>
+        <h2>Teams</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="swiper init-swiper" data-speed="600" data-delay="5000" data-breakpoints="{ &quot;320&quot;: { &quot;slidesPerView&quot;: 1, &quot;spaceBetween&quot;: 40 }, &quot;1200&quot;: { &quot;slidesPerView&quot;: 3, &quot;spaceBetween&quot;: 40 } }">
+          <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              },
+              "breakpoints": {
+                "320": {
+                  "slidesPerView": 1,
+                  "spaceBetween": 40
+                },
+                "1200": {
+                  "slidesPerView": 3,
+                  "spaceBetween": 20
+                }
+              }
+            }
+          </script>
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+            <p>
+              <i class=" bi bi-quote quote-icon-left"></i>
+                <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
+                <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+                <img src="/assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                <h3>Saul Goodman</h3>
+                <h4>Ceo &amp; Founder</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+                <img src="/assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                <h3>Sara Wilsson</h3>
+                <h4>Designer</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+                <img src="/assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                <h3>Jena Karlis</h3>
+                <h4>Store Owner</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+                <img src="/assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                <h3>Matt Brandon</h3>
+                <h4>Freelancer</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+                <img src="/assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                <h3>John Larson</h3>
+                <h4>Entrepreneur</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+
+    </section><!-- /팀원들소개 Section -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span>Section Title</span>
+        <h2>Contact</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-5">
+
+            <div class="info-wrap">
+              <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+                <i class="bi bi-geo-alt flex-shrink-0"></i>
+                <div>
+                  <h3>주소</h3>
+                  <p>경기도 부천시 부천로29번길 7, 12층(심곡동)</p>
+                </div>
+              </div><!-- End Info Item -->
+
+              <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+                <i class="bi bi-telephone flex-shrink-0"></i>
+                <div>
+                  <h3>대표전화번호</h3>
+                  <p>1688-5004</p>
+                </div>
+              </div><!-- End Info Item -->
+
+              <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+                <i class="bi bi-envelope flex-shrink-0"></i>
+                <div>
+                  <h3>Email</h3>
+                  <p>bcwoori@naver.com</p>
+                </div>
+              </div><!-- End Info Item -->
+
+              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" frameborder="0" style="border:0; width: 100%; height: 270px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+              <div class="row gy-4">
+
+                <div class="col-md-6">
+                  <label for="name-field" class="pb-2">이름</label>
+                  <input type="text" name="name" id="name-field" class="form-control" required="">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="email-field" class="pb-2">이메일</label>
+                  <input type="email" class="form-control" name="email" id="email-field" required="">
+                </div>
+
+                <div class="col-md-12">
+                  <label for="subject-field" class="pb-2">제목</label>
+                  <input type="text" class="form-control" name="subject" id="subject-field" required="">
+                </div>
+
+                <div class="col-md-12">
+                  <label for="message-field" class="pb-2">메세지</label>
+                  <textarea class="form-control" name="message" rows="10" id="message-field" required=""></textarea>
+                </div>
+
+                <div class="col-md-12 text-center">
+                  <div class="loading">로딩중.....</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">메세지를 성공적으로 전송완료하였습니다!!</div>
+
+                  <button type="submit">메세지 보내기</button>
+                </div>
+
+              </div>
+            </form>
+          </div><!-- End Contact Form -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Contact Section -->
+
+  </main>
+</div>
+
+
+
+</body>
+
+</html>
