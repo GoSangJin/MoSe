@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>회원 정보 목록</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&family=Lato:wght@100;300;400;700&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        .custom-select {
+            width: 150px; /* 드롭다운 너비 조정 */
+        }
+        .search-input {
+            width: 200px; /* 검색어 입력 필드 너비 조정 */
+        }
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* 요소 간의 간격 조정 */
+        }
+        .search-form .form-group {
+            display: flex;
+            align-items: center;
+            margin: 0; /* 폼 그룹 간의 기본 여백 제거 */
+        }
+        .search-form label {
+            margin-right: 10px; /* 라벨과 입력 필드 간의 간격 조정 */
+        }
+        .search-form .btn {
+            margin-left: 10px; /* 버튼과 필드 간의 간격 조정 */
+        }
+    </style>
+</head>
+
+<body class="user-info-page">
+
+<div layout:fragment="content">
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title light-background">
+            <div class="container">
+                <h1>회원 정보</h1>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a th:href="@{/}">메인</a></li>
+                        <li class="current">회원 정보</li>
+                    </ol>
+                </nav>
+            </div>
+        </div><!-- End Page Title -->
+
+        <!-- User Info Section -->
+        <section id="user-info" class="user-info section">
+            <div class="container">
+                <div class="row justify-content-center" data-aos="fade-up">
+                    <div class="col-md-12 col-lg-12">
+
+                        <!-- Search Form -->
+                        <form action="#" th:action="@{/admin/user_info}" method="get" class="mb-4 search-form">
+                            <div class="form-group mb-0">
+                                <label for="searchType">검색 유형 :</label>
+                                <select id="searchType" name="searchType" class="form-control custom-select">
+                                    <option value="name" th:selected="${searchType == 'name'}">이름</option>
+                                    <option value="birth" th:selected="${searchType == 'birth'}">생년월일</option>
+                                    <option value="address" th:selected="${searchType == 'address'}">주소</option>
+                                    <option value="all" th:selected="${searchType == 'all'}">전체</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label for="searchKeyword">검색어 :</label>
+                                <input type="text" id="searchKeyword" name="searchKeyword" class="form-control search-input" th:value="${searchKeyword}" placeholder="검색어 입력"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary">검색</button>
+                        </form>
+
+                        <!-- User Table -->
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>아이디</th>
+                                <th>이메일</th>
+                                <th>생년월일</th>
+                                <th>이름</th>
+                                <th>우편번호</th>
+                                <th>주소</th>
+                                <th>상세주소</th>
+                                <th>참고주소</th>
+                                <th>권한</th>
+                            </tr>
+                            </thead>
+                            <tbody th:each="user : ${userDTOS.content}">
+                            <tr>
+                                <td th:text="${user.id}"></td>
+                                <td th:text="${user.username}"></td>
+                                <td th:text="${user.email}"></td>
+                                <td th:text="${user.birth}"></td>
+                                <td th:text="${user.name}"></td>
+                                <td th:text="${user.postcode}"></td>
+                                <td th:text="${user.address}"></td>
+                                <td th:text="${user.detailAddress}"></td>
+                                <td th:text="${user.extraAddress}"></td>
+                                <td th:text="${user.roleType}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Pagination -->
+                        <nav>
+                            <ul class="pagination pagination-sm">
+                                <li class="page-item" th:unless="${pageInfo.currentPage == 1}">
+                                    <a class="page-link" th:href="@{/admin/user_info(searchType=${searchType}, searchKeyword=${searchKeyword}, page=${pageInfo.prevPage - 1})}">이전</a>
+                                </li>
+                                <li class="page-item" th:each="i : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}"
+                                    th:classappend="${pageInfo.currentPage == i} ? 'active':''">
+                                    <a class="page-link" th:href="@{/admin/user_info(searchType=${searchType}, searchKeyword=${searchKeyword}, page=${i - 1})}" th:text="${i}"></a>
+                                </li>
+                                <li class="page-item" th:unless="${pageInfo.currentPage >= pageInfo.endPage}">
+                                    <a class="page-link" th:href="@{/admin/user_info(searchType=${searchType}, searchKeyword=${searchKeyword}, page=${pageInfo.nextPage - 1})}">다음</a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                    </div>
+                </div>
+            </div>
+        </section><!-- /User Info Section -->
+
+    </main>
+</div>
+</body>
+
+</html>

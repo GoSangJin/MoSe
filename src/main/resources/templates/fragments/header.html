@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="header">
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+            <a th:href="@{/}" class="logo d-flex align-items-center me-auto">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <!-- <img src="/assets/img/logo.png" alt=""> -->
+                <img src="/assets/img/mose_logo.png"/>
+            </a>
+            <!--각 메뉴항목별 권한부여-->
+            <!--isAnonymous(모두사용), isAuhenticated(로그인상태)-->
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <!--메뉴노출 결정, 접근권한-->
+                    <li><a th:href="@{/admin/user_info}">관리/운영자</a></li>
+                    <li><a th:href="@{/product/list}">행사/이벤트</a></li>
+                    <li><a th:href="@{/book/list}">홍보/지원</a></li>
+                    <li><a th:href="@{/plantation/list}">재배정보</a></li>
+                    <li><a th:href="@{/diagnose/list}">병해진단</a></li>
+                    <li><a th:href="@{/board/list}">게시판</a></li>
+                    <li><a href="team.html">Q&A</a></li>
+                    <li class="dropdown"><a href="#">
+                        <span sec:authorize="isAuthenticated()">
+                            <span th:text="${#authentication != null ? #authentication.name : 'Guest'}"></span>님
+                            </span>
+                        <span sec:authorize="isAnonymous()">방문객</span><!--로그인이 안된 상태이면-->
+                        <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            <li sec:authorize="isAnonymous()"><a th:href="@{/login}">로그인</a></li>
+                            <li sec:authorize="isAnonymous()"><a th:href="@{/user/register}">회원가입</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/user/update}">회원수정</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">로그아웃</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            <a th:href="${#authentication.isAuthenticated() ? '/user/mypage' : '/user/login'}" class="btn-getstarted">
+                마이페이지
+            </a>
+
+        </div>
+    </header>
+</div>
+</body>
+</html>
+<!--세부적으로 분리된 HTML(타이틀, 메뉴, 저작권)=공통적으로 이용하는 부분-->
