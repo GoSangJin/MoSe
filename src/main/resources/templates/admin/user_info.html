@@ -156,14 +156,18 @@
                                 <td th:text="${user.detailAddress}"></td>
                                 <td th:text="${user.extraAddress}"></td>
                                 <td>
-                                    <form th:action="@{/admin/user_info/update_role}" method="post" class="form-inline">
-                                        <input type="hidden" name="userId" th:value="${user.id}">
-                                        <select name="roleType" class="form-control custom-select" required>
-                                            <option value="USER" th:selected="${user.roleType == 'USER'}">일반</option>
-                                            <option value="ADMIN" th:selected="${user.roleType == 'ADMIN'}">운영자</option>
-                                        </select>
-                                        <button type="submit" class="btn btn-primary btn-sm">변경</button>
-                                    </form>
+                                    <div class="d-flex align-items-center">
+                                        <span th:text="${user.roleType == 'user' ? '일반' : '운영자'}" class="me-2"></span>
+                                        <form th:action="@{/admin/user_info/update_role}" method="post" class="d-flex align-items-center">
+                                            <input type="hidden" name="userId" th:value="${user.id}">
+                                            <select name="roleType" class="form-control custom-select" required>
+                                                <option value="" selected>권한변경</option> <!-- 기본 값으로 '권한변경' 설정 -->
+                                                <option value="user">일반</option>
+                                                <option value="admin">운영자</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary btn-sm ms-2">변경</button>
+                                        </form>
+                                    </div>
                                 </td>
                                 <td>
                                     <form th:action="@{/admin/user_info/delete}" method="post">
