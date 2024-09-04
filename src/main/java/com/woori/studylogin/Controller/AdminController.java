@@ -1,10 +1,12 @@
 package com.woori.studylogin.Controller;
 
+import com.woori.studylogin.Constant.RoleType;
 import com.woori.studylogin.Service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
@@ -32,5 +34,17 @@ public class AdminController {
         model.addAttribute("searchAddress", result.get("searchAddress"));
 
         return "admin/user_info";
+    }
+
+    @PostMapping("/admin/user_info/update_role")
+    public String updateRole(@RequestParam Integer userId, @RequestParam RoleType roleType) {
+        adminService.updateUserRole(userId, roleType);
+        return "redirect:/admin/user_info";
+    }
+
+    @PostMapping("/admin/user_info/delete")
+    public String deleteUser(@RequestParam("userId") Integer userId) {
+        adminService.deleteUser(userId);
+        return "redirect:/admin/user_info";
     }
 }

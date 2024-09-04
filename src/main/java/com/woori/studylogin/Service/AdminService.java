@@ -1,5 +1,6 @@
 package com.woori.studylogin.Service;
 
+import com.woori.studylogin.Constant.RoleType;
 import com.woori.studylogin.Entity.UserEntity;
 import com.woori.studylogin.Repository.UserRepository;
 import com.woori.studylogin.Util.PaginationUtil;
@@ -32,5 +33,16 @@ public class AdminService {
                 "searchBirth", searchBirth,
                 "searchAddress", searchAddress
         );
+    }
+
+    public void updateUserRole(Integer userId, RoleType roleType) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setRoleType(roleType); // 사용자 역할 업데이트
+        userRepository.save(user);
+    }
+
+    public void deleteUser(Integer userId) {
+        userRepository.deleteById(userId);
     }
 }
