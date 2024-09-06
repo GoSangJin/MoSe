@@ -27,7 +27,8 @@ public class CommentEntity extends BaseEntity {
     @Column(name="nickName",length=20)
     private String nickName;
 
-    @ManyToOne
-    @JoinColumn(name="boardid")
-    private BoardEntity boardEntity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private BoardEntity board;
+
 }

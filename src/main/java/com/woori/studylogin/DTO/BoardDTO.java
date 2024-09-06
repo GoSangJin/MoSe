@@ -21,6 +21,7 @@ public class BoardDTO {
     private Integer likeCount; //추천
     private LocalDateTime modDate;
     private CategoryType category;
+    private Integer commentCount;
     private String boardImg;
     private LocalDateTime regDate;
 }

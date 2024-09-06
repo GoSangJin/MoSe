@@ -30,6 +30,40 @@
 
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all rows
+      const rows = Array.from(document.querySelectorAll('tbody tr'));
+
+      // Separate notice posts from others
+      const noticeRows = rows.filter(row => row.querySelector('th.text').innerText.trim() === '공지사항');
+      const otherRows = rows.filter(row => row.querySelector('th.text').innerText.trim() !== '공지사항');
+
+      // Sort other rows by regDate in descending order
+      otherRows.sort((a, b) => {
+        const dateA = new Date(a.querySelector('th.text:nth-of-type(4)').innerText.trim());
+        const dateB = new Date(b.querySelector('th.text:nth-of-type(4)').innerText.trim());
+        return dateB - dateA; // Descending
+      });
+
+      // Append notice rows first, then other rows
+      const tbody = document.querySelector('tbody');
+      noticeRows.forEach(row => tbody.appendChild(row));
+      otherRows.forEach(row => tbody.appendChild(row));
+    });
+  </script>
+  <style>
+    th[data-category="공지사항"] {
+      color: red;
+    }
+    p[data-category="공지사항"] {
+      color: red;
+    }
+    span[data-category="공지사항"] {
+      color: red;
+    }
+  </style>
 </head>
 
 <body class="services-page">
@@ -44,7 +78,12 @@
         <nav class="breadcrumbs">
           <ol>
             <li><a th:href="@{/}">메인</a></li>
-            <li class="current">게시판</li>
+            <li><a th:href="@{/board/list}">게시판</a></li>
+            <span th:if="${category == '공지사항'}"><li> &nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;공지사항</li></span>
+            <span th:if="${category == '자유게시판'}"><li> &nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;자유게시판</li></span>
+            <span th:if="${category == '정보게시판'}"><li> &nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;정보게시판</li></span>
+            <span th:if="${category == '질문게시판'}"><li> &nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;질문게시판</li></span>
+            <span th:if="${category == '건의게시판'}"><li> &nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;건의게시판</li></span>
           </ol>
         </nav>
       </div>
@@ -52,35 +91,17 @@
 
     <!-- Services 2 Section -->
     <section id="services-2" class="services-2 section">
-
       <div class="container">
         <div class="row justify-content-center" data-aos="fade-up">
           <div class="col-md-8 col-lg-8">
-            <!--            <form action="#" th:action="@{/board/list}" method="get">-->
-            <!--            <label for="searchType"></label>-->
-            <!--            <select id="searchType" name="searchType">-->
-            <!--                <option value="title" th:selected="${searchType == 'title'}">제목</option>-->
-            <!--                <option value="content" th:selected="${searchType == 'content'}">내용</option>-->
-            <!--                <option value="titleContent" th:selected="${searchType == 'titleContent'}">제목 + 내용</option>-->
-            <!--            </select>-->
-
-            <!--            <label for="searchKeyword">검색어:</label>-->
-            <!--            <input type="text" id="searchKeyword" name="searchKeyword" th:value="${searchKeyword}"/>-->
-
-            <!--            <label for="category">카테고리:</label>-->
-            <!--            <select id="category" name="category">-->
-            <!--                <option value="" th:selected="${category == ''}">전체</option>-->
-            <!--                <option value="자유게시판" th:selected="${category == '자유게시판'}">자유게시판</option>-->
-            <!--                <option value="정보게시판" th:selected="${category == '정보게시판'}">정보게시판</option>-->
-            <!--                <option value="질문게시판" th:selected="${category == '질문게시판'}">질문게시판</option>-->
-            <!--                <option value="건의게시판" th:selected="${category == '건의게시판'}">건의게시판</option>-->
-            <!--            </select>-->
-
-            <!--            <button type="submit">검색</button>-->
-            <!--        </form>-->
-
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h1 class="text-center w-80">전체게시판</h1>
+              <h1 class="text-center w-80">
+                <span th:if="${category == ''}">전체게시판</span>
+                <span th:if="${category == '자유게시판'}">자유게시판</span>
+                <span th:if="${category == '정보게시판'}">정보게시판</span>
+                <span th:if="${category == '질문게시판'}">질문게시판</span>
+                <span th:if="${category == '건의게시판'}">건의게시판</span>
+              </h1>
               <a sec:authorize="isAuthenticated()" class="btn btn-primary btn-sm" th:href="@{/board/new}">게시글등록</a>
             </div>
             <div class="mb-3">
@@ -101,16 +122,52 @@
                 <th>조회수</th>
               </tr>
               </thead>
-              <tbody th:each="board : ${boardDTOS.content}" >
+              <tbody th:each=" notice : ${noticeBoards}">
               <tr>
-                <th class="text" th:text="${board.category}"></th>
-                <th class="text" th:text="${board.author}"></th>
+                <th class="text" th:text="${notice.category}"
+                    th:attr="data-category=${notice.category}"></th>
+                <th>
+                  <a th:href="@{/user/info(username=${notice.author})}">
+                    <p class="text" th:text="${notice.author}"
+                       th:attr="data-category=${notice.category}"></p>
+                  </a>
+                </th>
                 <th class="text">
-                  <a th:href="@{/board/view(id=${board.id})}">
-                      <span th:if="${board.boardImg != null and board.boardImg.length() > 0}">
+                  <a th:href="@{/board/view(id=${notice.id})}">
+                      <span th:if="${notice.boardImg != null and notice.boardImg.length() > 0}">
                         <i class="bi bi-file-image"></i>
                       </span>
-                    <span th:text="${board.title}"></span>
+                    <span th:text="${notice.title}"
+                          th:attr="data-category=${notice.category}"></span>
+                    <span th:text="'[' + ${notice.commentCount} + ']'"
+                          th:attr="data-category=${notice.category}">[]</span>
+                  </a>
+                </th>
+                <th class="text" th:text="${#temporals.format(notice.regDate,'MM-dd')}"></th>
+                <th class="text" th:text="${notice.likeCount}"></th>
+                <th class="text" th:text="${notice.viewCount}"></th>
+              </tr>
+              </tbody>
+
+              <tbody th:each="board : ${boardDTOS.content}">
+              <tr>
+                <th class="text" th:text="${board.category}"
+                    th:attr="data-category=${board.category}"></th>
+                <th>
+                  <a th:href="@{/user/info(username=${board.author})}">
+                    <p class="text" th:text="${board.author}"
+                       th:attr="data-category=${board.category}"></p>
+                  </a>
+                </th>
+                <th class="text">
+                  <a th:href="@{/board/view(id=${board.id})}">
+                    <span th:if="${board.boardImg != null and board.boardImg.length() > 0}">
+                      <i class="bi bi-file-image"></i>
+                    </span>
+                    <span th:text="${board.title}"
+                          th:attr="data-category=${board.category}"></span>
+                    <span th:text="'[' + ${board.commentCount} + ']'"
+                          th:attr="data-category=${board.category}">[]</span>
                   </a>
                 </th>
                 <th class="text" th:text="${#temporals.format(board.regDate,'MM-dd')}"></th>
@@ -119,18 +176,7 @@
               </tr>
               </tbody>
             </table>
-            <form action="#" th:action="@{/board/list}" method="get">
-              <label for="searchType"></label>
-              <select id="searchType" name="searchType">
-                <option value="title" th:selected="${searchType == 'title'}">제목</option>
-                <option value="content" th:selected="${searchType == 'content'}">내용</option>
-                <option value="titleContent" th:selected="${searchType == 'titleContent'}">제목 + 내용</option>
-              </select>
-
-              <label for="searchKeyword">검색어:</label>
-              <input type="text" id="searchKeyword" name="searchKeyword" th:value="${searchKeyword}"/>
-
-              <label for="category">카테고리:</label>
+            <form action="#" th:action="@{/board/list}" method="get" class="justify-content-center">
               <select id="category" name="category">
                 <option value="" th:selected="${category == ''}">전체</option>
                 <option value="자유게시판" th:selected="${category == '자유게시판'}">자유게시판</option>
@@ -138,11 +184,21 @@
                 <option value="질문게시판" th:selected="${category == '질문게시판'}">질문게시판</option>
                 <option value="건의게시판" th:selected="${category == '건의게시판'}">건의게시판</option>
               </select>
+              <label for="searchType"></label>
+              <select id="searchType" name="searchType">
+                <option value="title" th:selected="${searchType == 'title'}">제목</option>
+                <option value="content" th:selected="${searchType == 'content'}">내용</option>
+                <option value="titleContent" th:selected="${searchType == 'titleContent'}">제목 + 내용</option>
+              </select>
 
-              <button type="submit">검색</button>
+              <label for="searchKeyword"></label>
+              <input type="text" id="searchKeyword" name="searchKeyword" th:value="${searchKeyword}"/>
+
+              <label for="category"></label>
+              <button type="submit" class="btn btn-primary">검색</button>
             </form>
             <nav>
-              <ul class="pagination pagination-sm">
+              <ul class="pagination pagination-sm justify-content-center mt-5">
                 <li class="page-item" th:unless="${pageInfo.currentPage == 1}">
                   <a class="page-link" th:href="@{/board/list(searchType=${searchType}, searchKeyword=${searchKeyword}, page=${pageInfo.prevPage - 1}, category=${category})}">이전</a>
                 </li>
@@ -158,6 +214,7 @@
           </div>
         </div>
       </div>
+
     </section><!-- /Services 2 Section -->
 
   </main>

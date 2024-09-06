@@ -24,18 +24,32 @@ public class CommentService {
         Optional<BoardEntity> data = boardRepository.findById(no);
         BoardEntity boardEntity = data.orElseThrow();
         CommentEntity commentEntity = modelMapper.map(commentDTO, CommentEntity.class);
-        commentEntity.setBoardEntity(boardEntity);
+        commentEntity.setBoard(boardEntity);
         commentRepository.save(commentEntity);
+
+        boardEntity.setCommentCount(boardEntity.getCommentCount() + 1);
+        boardRepository.save(boardEntity);
     }
 
     public void remove(Integer id) {
-        commentRepository.deleteById(id);
+        Optional<CommentEntity> commentEntityOpt = commentRepository.findById(id);
+        if (commentEntityOpt.isPresent()) {
+            CommentEntity commentEntity = commentEntityOpt.get();
+            BoardEntity boardEntity = commentEntity.getBoard();
+
+            commentRepository.deleteById(id);
+
+            // 댓글 수 업데이트
+            boardEntity.setCommentCount(boardEntity.getCommentCount() - 1);
+            boardRepository.save(boardEntity);
+        }
     }
 
     public CommentDTO read(Integer id) {
         Optional<CommentEntity> commentEntity = commentRepository.findById(id);
         CommentDTO commentDTO = modelMapper.map(commentEntity, CommentDTO.class);
         return commentDTO;
+
     }
 
     public List<CommentDTO> list(Integer boardId) {
@@ -45,4 +59,5 @@ public class CommentService {
         ));
         return commentDTOS;
     }
+
 }

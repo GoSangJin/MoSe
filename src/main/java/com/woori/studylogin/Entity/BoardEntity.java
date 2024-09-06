@@ -4,6 +4,8 @@ import com.woori.studylogin.Constant.CategoryType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -38,5 +40,12 @@ public class BoardEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private CategoryType category;
+    @Column(name="commentCount")
+    private Integer commentCount = 0;
 
+    @OneToMany(mappedBy = "board",cascade = CascadeType.ALL)
+    private List<CommentEntity> comments;
+
+    @OneToMany(mappedBy = "board",cascade = CascadeType.ALL)
+    private List<LikeEntity> likes;
 }

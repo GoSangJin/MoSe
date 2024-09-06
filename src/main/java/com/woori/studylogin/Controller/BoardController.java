@@ -1,9 +1,9 @@
 package com.woori.studylogin.Controller;
 
 
-import com.woori.studylogin.Constant.RoleType;
 import com.woori.studylogin.DTO.BoardDTO;
 import com.woori.studylogin.DTO.CommentDTO;
+import com.woori.studylogin.DTO.UserDTO;
 import com.woori.studylogin.Service.BoardService;
 import com.woori.studylogin.Service.CommentService;
 import com.woori.studylogin.Service.UserService;
@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,10 +45,11 @@ public class BoardController {
     @Value("${imgUploadLocation}")
     public String folder; //버킷에 이용할 폴더명
 
-
+    private final UserService userService;
     private final CommentService commentService;
     private final BoardService boardService;
-    private final UserService userService;
+
+
     //삽입(Get, Post)
     @GetMapping("/board/new")
     public String showCreateForm(Model model) {
@@ -63,6 +65,7 @@ public class BoardController {
     //BoardDTO-입력폼 받은값, HTTPSession-섹션정보, RedirectAttributes-다른맵핑에 값전달
     public String createBoard(@ModelAttribute BoardDTO boardDTO, MultipartFile file , HttpSession session,
                               RedirectAttributes redirectAttributes)throws IOException {
+
         //사용자 아이디를 읽어서
         //
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -83,16 +86,18 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         boolean isAdminOrMaster = authentication.getAuthorities().stream().anyMatch(auth ->
-                auth.getAuthority().equals(RoleType.admin.name()) ||
-                        auth.getAuthority().equals(RoleType.master.name()));
+                auth.getAuthority().equals("ROLE_admin") ||
+                        auth.getAuthority().equals("ROLE_master"));
 
 
         BoardDTO boardDTO = boardService.findById(id,"U");
+        UserDTO userDTO = userService.detail(username);
 
         if (!username.equals(boardDTO.getAuthor()) && !isAdminOrMaster) {
             redirectAttributes.addFlashAttribute("error", "권한이 없습니다.");
             return "redirect:/board/list";
         }
+        model.addAttribute("userDTO", userDTO);
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
@@ -102,23 +107,33 @@ public class BoardController {
 
     // 게시글 수정 처리
     @PostMapping("/board/edit")
-    public String updateBoard(@ModelAttribute BoardDTO boardDTO,MultipartFile file, HttpSession session,
+    public String updateBoard(@ModelAttribute BoardDTO boardDTO,
+                              @RequestParam(value = "file", required = false) MultipartFile file,
+                              HttpSession session,
                               RedirectAttributes redirectAttributes) throws IOException {
         //사용자 아이디를 읽어서
         //
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         boolean isAdminOrMaster = authentication.getAuthorities().stream().anyMatch(auth ->
-                auth.getAuthority().equals(RoleType.admin.name()) ||
-                        auth.getAuthority().equals(RoleType.master.name()));
+                auth.getAuthority().equals("ROLE_admin") ||
+                        auth.getAuthority().equals("ROLE_master"));
         // 작성자 본인이거나 관리자만 수정 가능
         if (!username.equals(boardDTO.getAuthor()) && !isAdminOrMaster) {
             redirectAttributes.addFlashAttribute("error", "권한이 없습니다.");
             return "redirect:/board/list";
         }
 
+
         boardDTO.setAuthor(username); // 아이디를 작성자에 저장해서 서비스로 전달
-        boardService.update(boardDTO, file);
+
+        // 파일이 null이 아니고 비어있지 않은 경우에만 파일 처리
+        if (file != null && !file.isEmpty()) {
+            boardService.update(boardDTO, file);
+        } else {
+            boardService.update(boardDTO, null); // 파일이 없을 경우 파일 파라미터를 null로 전달
+        }
+
 
         redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 수정되었습니다.");
         return "redirect:/board/list";
@@ -130,8 +145,9 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         boolean isAdminOrMaster = authentication.getAuthorities().stream().anyMatch(auth ->
-                auth.getAuthority().equals(RoleType.admin.name()) ||
-                        auth.getAuthority().equals(RoleType.master.name()));
+                auth.getAuthority().equals("ROLE_admin") ||
+                        auth.getAuthority().equals("ROLE_master"));
+
 
         BoardDTO boardDTO = boardService.findById(id, "U");
         if (!username.equals(boardDTO.getAuthor()) && !isAdminOrMaster) {
@@ -149,19 +165,32 @@ public class BoardController {
     @GetMapping("/board/view")
     public String getBoardById(@RequestParam Integer id, Model model, HttpSession session) {
         BoardDTO boardDTO = boardService.findById(id,"R");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        boolean isAdminOrMaster = authentication.getAuthorities().stream().anyMatch(auth ->
+                auth.getAuthority().equals("ROLE_admin") ||
+                        auth.getAuthority().equals("ROLE_master"));
+
+        UserDTO userDTO = userService.detail(username);
+
         List<CommentDTO> commentDTOS = commentService.list(id);
+        model.addAttribute("userDTO", userDTO);
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("list", commentDTOS);
+        model.addAttribute("username",username);
+        System.out.println("UserDTO RoleType: " + userDTO.getRoleType()); // RoleType 값 확인
+
         // 사용자가 이미 추천했는지 여부를 세션에 저장
+
         Boolean hasLiked = (Boolean) session.getAttribute("hasLiked_" + id);
         model.addAttribute("hasLiked", hasLiked != null && hasLiked);
 
         return "board/view";
     }
-    //전체조회(Get)
+    //전체조회(Get)x
     // 게시글 전체 조회 (페이지 처리)
 //    @GetMapping("/board/list")
 //    public String getAllBoards(@PageableDefault(page=1) Pageable pageable,
@@ -182,6 +211,13 @@ public class BoardController {
                        @PageableDefault(page = 0) Pageable pageable, Model model) {
         log.info("검색구분과 검색어를 받아서 자료를 찾아 전달");
         log.info("페이지 번호를 받아서 전달");
+
+        int currentPage = pageable.getPageNumber();
+        List<BoardDTO> noticeBoards = currentPage == 0 ? boardService.getNoticeBoards("공지사항") : new ArrayList<>();
+
+        if (currentPage == 0) {
+            model.addAttribute("noticeBoards", noticeBoards);
+        }
 
         Page<BoardDTO> boardDTOS = boardService.list(searchType, searchKeyword, category, pageable);
         model.addAttribute("boardDTOS", boardDTOS);
@@ -206,9 +242,11 @@ public class BoardController {
         try {
             if (boardService.hasLiked(id, username)) {
                 boardService.decreaseLikeCount(id, username);
+                session.setAttribute("hasLiked_" + id, false);
                 redirectAttributes.addFlashAttribute("message", "추천이 취소되었습니다.");
             } else {
                 boardService.increaseLikeCount(id, username);
+                session.setAttribute("hasLiked_" + id, true);
                 redirectAttributes.addFlashAttribute("message", "추천이 반영되었습니다.");
             }
         } catch (IllegalStateException e) {
