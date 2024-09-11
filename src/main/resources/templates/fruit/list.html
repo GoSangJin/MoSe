@@ -80,7 +80,7 @@
               <h2>작물 목록</h2>
             </div>
             <div class="col-md-2" sec:authorize="hasAnyRole('admin', 'master')">
-              <a th:href="@{/fruit/create}" class="btn btn-success w-100">등록</a>
+              <a th:href="@{/fruit/create}" class="btn rounded-pill" style="background-color: #006400; color: white;">등록하기</a>
             </div>
           </div>
 
@@ -104,9 +104,9 @@
                       <div class="card-body">
                           <h5 class="card-title" th:text="${fruit.fruitName}">Name</h5>
                         <span sec:authorize="hasAnyRole('admin', 'master')">
-                          <a th:href="@{/disease/create(fruitId=${fruit.id})}" class="btn btn-primary">등록</a>
-                          <a th:href="@{/fruit/update(fruitId=${fruit.id})}" class="btn btn-secondary">수정</a>
-                          <a th:href="@{/fruit/delete(fruitId=${fruit.id})}" class="btn btn-danger"
+                          <a th:href="@{/disease/create(fruitId=${fruit.id})}" class="btn btn-outline-info rounded-pill mb-2">등록</a>
+                          <a th:href="@{/fruit/update(fruitId=${fruit.id})}" class="btn btn-outline-success rounded-pill mb-2">수정</a>
+                          <a th:href="@{/fruit/delete(fruitId=${fruit.id})}" class="btn btn-outline-danger rounded-pill mb-2"
                           th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
                         </span>
 
