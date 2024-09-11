@@ -27,10 +27,6 @@ public class DateTimeUtil {
             return days + "일 전";
         }
 
-        long months = ChronoUnit.MONTHS.between(dateTime, now);
-        if (months < 12) {
-            return months + "개월 전";
-        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
         return dateTime.format(formatter);
     }
