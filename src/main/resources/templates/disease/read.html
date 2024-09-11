@@ -36,9 +36,17 @@
     .thumbnail-img {
       cursor: pointer;
       transition: transform 0.3s ease;
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
     }
     .thumbnail-img:hover {
       transform: scale(1.05);
+    }
+    #mainImage {
+      width: 400px;
+      height: 400px;
+      object-fit: cover; /* 이미지가 컨테이너에 맞게 조절됨 */
     }
   </style>
 </head>
@@ -66,13 +74,14 @@
 
       <div class="container">
         <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-1"></div>
           <div class="col-md-4">
             <!-- 대표 이미지 -->
             <img id="mainImage"
                  th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${diseaseDTO.diseaseImg[0]}|"
                  alt="Disease Image"
                  class="img-fluid img-hover-zoom"
-                 style="width: 100%; height: auto;"
+
                  th:if="${diseaseDTO.diseaseImg != null and #lists.size(diseaseDTO.diseaseImg) > 0}" />
 
             <!-- 서브 이미지들 -->
@@ -82,8 +91,6 @@
                 <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${img}|"
                      alt="Sub Image"
                      class="img-fluid thumbnail-img"
-                     style="width: 100%; height: auto;"
-                     th:if="${iterStat.index > 0}"
                      onclick="changeMainImage(this.src)" />
               </div>
               <script>
@@ -96,20 +103,21 @@
               </script>
             </div>
           </div>
-          <div class="col-md-8">
-            <h2 th:text="${diseaseDTO.diseaseName}"></h2>
+          <div class="col-md-6">
+            <h2 th:text="${diseaseDTO.diseaseName}" style="font-size: 3rem; font-weight: bold;"></h2>
             <hr>
             <p><strong>병명 :</strong> <span th:text="${diseaseDTO.diseaseName}"></span></p>
             <p><strong>설명 :</strong> <span th:text="${diseaseDTO.description}"></span></p>
             <p><strong>원인 :</strong> <span th:text="${diseaseDTO.cause}"></span></p>
             <p><strong>예방법 :</strong> <span th:text="${diseaseDTO.prevention}"></span></p>
             <span sec:authorize="hasAnyRole('admin', 'master')">
-              <a th:href="@{/disease/update(id=${diseaseDTO.id})}" class="btn btn-primary">수정</a>
-              <a th:href="@{/disease/delete(id=${diseaseDTO.id})}" class="btn btn-danger"
-                th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+              <a th:href="@{/disease/update(id=${diseaseDTO.id})}" class="btn btn-outline-info rounded-pill mb-2">수정하기</a>
+              <a th:href="@{/disease/delete(id=${diseaseDTO.id})}" class="btn btn-outline-danger rounded-pill mb-2"
+                th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제하기</a>
             </span>
-            <a th:href="@{/fruit}" class="btn btn-secondary">목록</a>
+            <a th:href="@{/fruit}" class="btn btn-outline-success rounded-pill mb-2">목록보기</a>
           </div>
+          <div class="col-1"></div>
         </div>
       </div>
     </section><!-- /Services 2 Section -->
