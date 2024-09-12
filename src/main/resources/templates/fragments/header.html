@@ -22,7 +22,7 @@
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <!--메뉴노출 결정, 접근권한-->
-                    <li><a th:href="@{/admin/user_info}">관리/운영자</a></li>
+                    <li><a sec:authorize="hasAnyRole('admin','master')" th:href="@{/admin/user_info}">관리/운영자</a></li>
                     <li class="dropdown">
                         <a href="#">
                             <span>체험/행사</span>

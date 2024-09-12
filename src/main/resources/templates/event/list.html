@@ -91,7 +91,8 @@
         <!-- 상단 버튼 영역 -->
         <div class="mb-3 text-end" style="padding-left: 15px;"
              sec:authorize="hasAnyRole('admin','master')">
-          <a th:href="@{/event/create}" class="btn rounded-pill" style="background-color: #006400; color: white;">
+          <a th:href="@{/event/create}" class="btn rounded-pill" sec:authorize="hasAnyRole('admin','master')"
+             style="background-color: #006400; color: white;">
             <strong>등록하기</strong>
           </a>
         </div>
@@ -124,8 +125,8 @@
                     <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 1rem;">
                       <span th:text="${event.description}" style="color: #888;">행사 설명</span>
                     </p>
-                    <a th:href="@{/event/update}" class="btn btn-outline-info rounded-pill mb-3">수정하기</a>
-                    <a th:href="@{/event/delete}" class="btn btn-outline-danger rounded-pill mb-3">삭제하기</a>
+                    <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/update(id=${event.id})}" class="btn btn-outline-info rounded-pill mb-3">수정하기</a>
+                    <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/delete(id=${event.id})}" class="btn btn-outline-danger rounded-pill mb-3">삭제하기</a>
                   </div>
                   <!-- /마을 내용 - 카드 바디 -->
                 </div>
