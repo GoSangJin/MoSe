@@ -223,7 +223,7 @@
           </div>
 
         <!-- 댓글 목록 -->
-        <div th:each="comment : ${list}">
+        <div th:each="comment : ${commentDTOS}">
           <div class="comment">
             <div class="comment-header">
             <a th:href="@{/user/info(username=${comment.nickName})}" th:text="${comment.nickName}"></a>
@@ -238,8 +238,6 @@
           </div>
             <p th:text="${comment.body}">댓글 내용</p>
             <div class="comment-actions">
-
-
             </div>
           </div>
         </div>

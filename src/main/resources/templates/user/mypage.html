@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>마이 페이지</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <meta charset="utf-8">
+      <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      <title>Services - Active Bootstrap Template</title>
+      <meta content="" name="description">
+      <meta content="" name="keywords">
+
+      <!-- Favicons -->
+      <link href="/assets/img/favicon.png" rel="icon">
+      <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+      <!-- Fonts -->
+      <link href="https://fonts.googleapis.com" rel="preconnect">
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+      <!-- Vendor CSS Files -->
+      <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+      <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+      <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+      <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+      <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+      <!-- Main CSS File -->
+      <link href="/assets/css/main.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="page-title light-background">
+            <div class="container">
+                <h1>마이페이지</h1>
+                <nav class="breadcrumbs">
+                  <ol>
+                    <li><a th:href="@{/}">메인</a></li>
+                    <li><a th:href="@{/user/mypage}">마이페이지</a></li>
+                  </ol>
+                </nav>
+            </div>
+            </div>
+    <div class="container mt-4">
+        <div class="row">
+
+            <!-- 사용자 정보 섹션 -->
+            <div class="col-1"></div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h2>사용자 정보</h2>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>아이디:</strong> <span th:text="${userDTO.username}"></span></p>
+                        <p><strong>이메일:</strong> <span th:text="${userDTO.email}"></span></p>
+                        <p><strong>이름:</strong> <span th:text="${userDTO.name}"></span></p>
+                        <p><strong>주소:</strong> <span th:text="${userDTO.address}"></span>, <span th:text="${userDTO.detailAddress}"></span></p>
+                        <!-- 필요에 따라 추가 필드 추가 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 사용자 게시글 섹션 -->
+            <div class="col-md-7">
+                <div class="card">
+        <div class="card-header text-center">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="post-tab" data-bs-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">게시글</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="comment-tab" data-bs-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="false">댓글</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <!-- 게시글 탭 -->
+                <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="post-tab">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%">카테고리</th>
+                                <th style="width: 60%">제목</th>
+                                <th style="width: 20%">등록일</th>
+
+                            </tr>
+                        </thead>
+                        <tbody th:each="board : ${boardDTOS.content}">
+                            <tr>
+                                <td th:text="${board.category}"></td>
+                                <td>
+                                    <a th:href="@{/board/view(id=${board.id})}">
+                                        <p th:text="${board.title}"></p>
+                                    </a>
+                                </td>
+                                <td th:text="${#temporals.format(board.regDate, 'MM-dd')}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- Pagination for posts -->
+                    <nav>
+                        <ul class="pagination justify-content-center" th:if="${boardDTOS.totalPages > 0}">
+                            <li class="page-item" th:if="${boardDTOS.hasPrevious()}">
+                                <a class="page-link" th:href="@{/user/mypage(page=${boardDTOS.number - 1}, size=${boardDTOS.size})}">이전</a>
+                            </li>
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, boardDTOS.totalPages - 1)}"
+                                th:classappend="${boardDTOS.number == i} ? 'active' : ''">
+                                <a class="page-link" th:href="@{/user/mypage(page=${i}, size=${boardDTOS.size})}" th:text="${i + 1}"></a>
+                            </li>
+                            <li class="page-item" th:if="${boardDTOS.hasNext()}">
+                                <a class="page-link" th:href="@{/user/mypage(page=${boardDTOS.number + 1}, size=${boardDTOS.size})}">다음</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- 댓글 탭 -->
+                <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comment-tab">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%">게시글 제목</th>
+                                <th style="width: 60%">댓글 내용</th>
+                                <th style="width: 20%">등록일</th>
+                            </tr>
+                        </thead>
+                        <tbody th:each="comment : ${commentsPage}">
+                            <tr>
+                                <td th:text="${comment.boardTitle}"></td>
+                                <td>
+                                    <a th:href="@{/board/view(id=${comment.getBoardId()})}">
+                                        <p th:text="${comment.body}"></p>
+                                    </a>
+                                </td>
+
+                                <td th:text="${#temporals.format(comment.modDate, 'MM-dd')}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <nav>
+                        <ul class="pagination justify-content-center" th:if="${commentsPage.totalPages > 0}">
+                            <li class="page-item" th:if="${commentsPage.hasPrevious()}">
+                                <a class="page-link" th:href="@{/user/mypage(page=${commentsPage.number - 1}, size=${commentsPage.size})}">이전</a>
+                            </li>
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, commentsPage.totalPages - 1)}"
+                                th:classappend="${commentsPage.number == i} ? 'active' : ''">
+                                <a class="page-link" th:href="@{/user/mypage(page=${i}, size=${commentsPage.size})}" th:text="${i + 1}"></a>
+                            </li>
+                            <li class="page-item" th:if="${boardDTOS.hasNext()}">
+                                <a class="page-link" th:href="@{/user/mypage(page=${commentsPage.number + 1}, size=${commentsPage.size})}">다음</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-1"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
