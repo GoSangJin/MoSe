@@ -107,11 +107,11 @@
                   <!-- 이미지 섹션 -->
                   <div class="img" style="background-color: white; margin-bottom: -10px;">
                     <a th:href="${event.eventUrl}" class="glightbox d-flex align-items-center" >
-
-                      <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${event.eventImg}|"
-                           class="card-img-top"
-                           alt="이미지"
-                           style="height: 200px; object-fit: cover;">
+                      <img id="eventImg" th:attr="data-url=${event.eventUrl}" class="card-img-top"
+                   alt="이미지" style="height: 200px; object-fit: cover;">
+<!--                           class="card-img-top"-->
+<!--                           alt="이미지"-->
+<!--                           style="height: 200px; object-fit: cover;">-->
                     </a>
                   </div>
 
@@ -123,6 +123,7 @@
 
                     <!-- 행사 설명 -->
                     <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 1rem;">
+                      <p>출처 : <span th:text="${event.eventUrl}"></span></p>
                       <span th:text="${event.description}" style="color: #888;">행사 설명</span>
                     </p>
                     <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/update(id=${event.id})}" class="btn btn-outline-info rounded-pill mb-3">수정하기</a>

@@ -141,6 +141,24 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                     }
                   }
                 </script>
+    <!--유튜브 썸네일-->
+    <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("#eventImg").forEach(function(img) {
+      const url = img.getAttribute("data-url");
+      const videoId = getYouTubeVideoId(url);
+      if (videoId) {
+        img.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      }
+    });
+
+    function getYouTubeVideoId(url) {
+      const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=|.+\/|.*[?&]v=)([^"&?\/\s]{11})|(?:https?:\/\/)?(?:www\.)?youtu\.be\/([^"&?\/\s]{11})/;
+      const match = url.match(regex);
+      return match ? (match[1] || match[2]) : null;
+    }
+  });
+</script>
 </th:block>
 </body>
 <!--레이아웃은 각작업별로 분리된 html을 배치할 위치를 지정-->
