@@ -41,10 +41,6 @@ public class SecurityConfig{
             auth.requestMatchers("/fruit/create","/fruit/delete","/fruit/update").hasAnyRole("admin", "master");
             auth.requestMatchers("/disease/create","/disease/delete","/disease/update").hasAnyRole("admin", "master");
 
-
-            auth.requestMatchers("/company/new", "/company/edit").hasRole("master");
-            auth.requestMatchers("/company/view").hasAnyRole("admin", "master");
-            auth.requestMatchers("/company/register", "/company/edit", "/company/remove").hasAnyRole("admin", "master");
             auth.anyRequest().permitAll();//지정되지 않는 맵핑은 모두 허용
         });
         //permitAll(모두), anonymouse(로그인안된상태), anthenticated(로그인상태), hasRole(1개의 대상), hasAnyRole(여러대상)
