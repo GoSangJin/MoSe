@@ -124,8 +124,7 @@
                     <!-- 행사 설명 -->
                     <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 1rem;">
                       <p>출처 : <span th:text="${event.eventUrl}"></span></p>
-                      <span th:text="${event.description}" style="color: #888;">행사 설명</span>
-                    </p>
+                      <span th:text="${event.description}" style="color: #888;">행사 설명</span>                  
                     <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/update(id=${event.id})}" class="btn btn-outline-info rounded-pill mb-3">수정하기</a>
                     <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/delete(id=${event.id})}" class="btn btn-outline-danger rounded-pill mb-3">삭제하기</a>
                   </div>
