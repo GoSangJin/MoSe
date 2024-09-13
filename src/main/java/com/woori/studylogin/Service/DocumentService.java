@@ -35,20 +35,25 @@ public class DocumentService {
     }
 
     // 공문 목록 조회
-    public Page<DocumentDTO> getDocuments(int page, int size) {
+    public Page<DocumentDTO> getDocuments(int page, int size, String title) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<DocumentEntity> documentEntities = documentRepository.findAll(pageable);
+        Page<DocumentEntity> documentEntities;
+        if (title != null && !title.isEmpty()) {
+            documentEntities = documentRepository.findByTitleContainingIgnoreCase(title, pageable);
+        } else {
+            documentEntities = documentRepository.findAll(pageable);
+        }
 
         return documentEntities.map(entity -> {
             String downloadUrl = documentUpload.generatePublicUrl(entity.getFilePath());
             return new DocumentDTO(
                     entity.getId(),
                     entity.getTitle(),
-                    entity.getContent(), // content 필드 추가
+                    entity.getContent(),
                     entity.getFileName(),
                     entity.getFilePath(),
                     entity.getUploadDate(),
-                    downloadUrl // 추가된 필드
+                    downloadUrl
             );
         });
     }

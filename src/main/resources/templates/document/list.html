@@ -40,7 +40,14 @@
             <h1 class="text-center mb-4">공문 목록</h1>
 
             <div class="mb-3 d-flex justify-content-end">
-                <a class="btn btn-primary" th:href="@{/document/insert}">새 공문 올리기</a>
+                <!-- 권한에 따라 버튼 표시 -->
+                <a class="btn btn-primary me-2" th:if="${#authorization.expression('hasAnyRole(''admin'', ''master'')')}" th:href="@{/document/insert}" style="padding: 0.5rem 1rem; font-size: 0.875rem;">새 공문 올리기</a>
+
+                <!-- 검색 폼 추가 -->
+                <form class="d-flex" th:action="@{/document/list}" method="get">
+                    <input class="form-control me-2" type="search" name="title" placeholder="제목으로 검색" aria-label="Search" style="height: 2.5rem; font-size: 0.875rem;">
+                    <button class="btn btn-outline-success" type="submit" style="padding: 0.5rem 1.5rem; font-size: 0.875rem; white-space: nowrap;">검색</button>
+                </form>
             </div>
 
             <table class="table table-striped">

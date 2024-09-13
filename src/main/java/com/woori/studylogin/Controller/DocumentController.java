@@ -22,8 +22,8 @@ public class DocumentController {
 
     // 공문 목록 페이지
     @GetMapping("/document/list")
-    public String listDocuments(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
-        Page<DocumentDTO> documentPage = documentService.getDocuments(page, size);
+    public String listDocuments(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(required = false) String title, Model model) {
+        Page<DocumentDTO> documentPage = documentService.getDocuments(page, size, title);
         model.addAttribute("documents", documentPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", documentPage.getTotalPages());

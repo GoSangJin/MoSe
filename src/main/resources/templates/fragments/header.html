@@ -22,7 +22,10 @@
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <!--메뉴노출 결정, 접근권한-->
-                    <li><a th:href="@{/admin/user_info}">관리/운영자</a></li>
+                    <li sec:authorize="hasAnyRole('ROLE_admin', 'ROLE_master')">
+                        <a th:href="@{/admin/user_info}">관리/운영자</a>
+                    </li>
+                    <li><a th:href="@{/guide/main}">가이드</a></li>
                     <li class="dropdown">
                         <a href="#">
                             <span>체험/행사</span>
@@ -40,12 +43,20 @@
                             <i class="bi bi-chevron-down toggle-dropdown"></i>
                         </a>
                         <ul>
-                            <li><a th:href="@{/guide}">가이드</a></li>
                             <li><a th:href="@{/plantation/list}">재배정보</a></li>
                             <li><a th:href="@{/document/list}">공문정보</a></li>
                         </ul>
                     </li>
-                    <li><a th:href="@{/diagnose/list}">병해진단</a></li>
+                    <li class="dropdown">
+                        <a href="#">
+                            <span>병해정보</span>
+                            <i class="bi bi-chevron-down toggle-dropdown"></i>
+                        </a>
+                        <ul>
+                            <li><a th:href="@{/diagnose/list}">병해진단</a></li>
+                            <li><a th:href="@{/diagnose/list}">병해도감</a></li>
+                        </ul>
+                    </li>
                     <li><a th:href="@{/board/list}">게시판</a></li>
                     <li><a th:href="@{/qna/list}">Q&A</a></li>
                     <li class="dropdown"><a href="#">

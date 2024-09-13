@@ -1,5 +1,6 @@
 package com.woori.studylogin.Service;
 
+import com.woori.studylogin.Constant.RoleType;
 import com.woori.studylogin.DTO.UserDTO;
 import com.woori.studylogin.Entity.UserEntity;
 import com.woori.studylogin.Repository.UserRepository;
@@ -45,12 +46,16 @@ public class UserService implements UserDetailsService {
     //회원등록(기존 사용자아이디가 존재하면 안된다.)
     public void register(UserDTO userDTO) {
         Optional<UserEntity> read = userRepository.findByUsername(userDTO.getUsername());
-        if(read.isPresent()) {
+        if (read.isPresent()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
 
         UserEntity userEntity = modelMapper.map(userDTO, UserEntity.class);
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
+        // 권한을 자동으로 ROLE_USER로 설정
+        userEntity.setRoleType(RoleType.user); // RoleType은 Enum으로 정의되었을 경우
+
         userRepository.save(userEntity);
     }
     //회원수정(수정할 사용자아이디가 존재해야 한다.)
@@ -87,4 +92,3 @@ public class UserService implements UserDetailsService {
         return modelMapper.map(userEntity, UserDTO.class);
     }
 }
-//SecurityConfig에 login, logout, csrf 설정

@@ -36,21 +36,14 @@
     <div class="container">
       <h1 class="text-center mb-4">공문 상세</h1>
       <div>
-        <h2 th:text="${document.title}">문서 제목</h2>
-
-        <!-- 문서 내용 추가 -->
-        <p>내용:</p>
-        <p th:text="${document.content}">문서 내용이 여기에 표시됩니다.</p>
-
-        <!-- 파일명 클릭 시 다운로드 기능 추가 -->
-        <p>
-          파일 이름:
+        <h2 th:text="${document.title}" class="mb-2">문서 제목</h2>
+        <p>작성 일 : <span th:text="${#temporals.format(document.uploadDate, 'yyyy-MM-dd')}"></span></p>
+        <p class="mb-4">
+          첨부 파일 :
           <a th:href="${document.downloadUrl}" th:text="${document.fileName}" download></a>
         </p>
-
-        <p>업로드 날짜: <span th:text="${#temporals.format(document.uploadDate, 'yyyy-MM-dd')}"></span></p>
-
-        <!-- 수정 및 삭제 버튼 추가 -->
+        <p>내용:</p>
+        <p th:text="${document.content}">문서 내용이 여기에 표시됩니다.</p>
         <div class="mt-4">
           <a class="btn btn-warning btn-sm" th:href="@{/document/update/{id}(id=${document.id})}">수정</a>
           <form th:action="@{/document/delete/{id}(id=${document.id})}" th:method="delete" style="display:inline;">
@@ -61,6 +54,7 @@
     </div>
   </main>
 </div>
+
 
 </body>
 </html>

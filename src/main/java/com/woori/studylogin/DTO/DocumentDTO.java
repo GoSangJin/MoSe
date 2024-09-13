@@ -1,7 +1,14 @@
 package com.woori.studylogin.DTO;
 
+import lombok.*;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
+@Builder
 public class DocumentDTO {
     private Integer id;
     private String title;
@@ -11,15 +18,6 @@ public class DocumentDTO {
     private LocalDateTime uploadDate;
     private String downloadUrl; // 추가된 필드
 
-    // 기존 생성자
-    public DocumentDTO(Integer id, String title,String content ,String fileName, String filePath, LocalDateTime uploadDate) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.fileName = fileName;
-        this.filePath = filePath;
-        this.uploadDate = uploadDate;
-    }
 
     // 추가된 생성자
     public DocumentDTO(Integer id, String title,String content ,String fileName, String filePath, LocalDateTime uploadDate, String downloadUrl) {
