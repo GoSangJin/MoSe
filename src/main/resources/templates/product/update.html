@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Services - Active Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+
+
+  <!-- =======================================================
+  * Template Name: Active
+  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" style="background-color: darkgreen;">
+      <div class="container text-center">
+        <h1 style="color: white;">살아보기</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;">청장년 귀농귀촌 희망자가 농촌지역 실제 이주 전에 희망지역에서 미리 살아볼 수 있는 기회를 제공하는 사업입니다.</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- 체험정보 등록하기 -->
+    <section id="services-2" class="services-2 section">
+      <div class="container mb-3 mt-5">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-6 col-lg-4">
+            <!-- 상단 제목 -->
+            <h2>체험정보 수정하기</h2>
+            <form th:action="@{/product/new}" th:object="${productDTO}" method="post" enctype="multipart/form-data">
+              <input type="hidden" name="id" th:field="*{id}">
+              <div class="form-group mb-2">
+                <label for="local_name">지역 이름</label>
+                <input type="text" id="local_name" name="local_name" class="form-control" th:value="${productDTO.local_name}" required>
+              </div>
+
+              <!--우편번호찾기-->
+              <div class="form-group mb-1">
+                <div class="row">
+                  <div class="col">
+                    <input type="text" id="postcode" name="postcode" class="form-control" th:field="*{postcode}" required>
+                  </div>
+                  <div class="col">
+                    <input type="button" class="form-control" onclick="execDaumPostcode()" value="우편번호 찾기">
+                  </div>
+                </div>
+              </div>
+              <!--주소입력-->
+              <div class="form-group mb-1">
+                <input type="text" id="address" name="address" class="form-control" th:field="*{address}" required>
+              </div>
+              <!--상세주소입력-->
+              <div class="form-group mb-2">
+                <div class="row">
+                  <div class="col">
+                    <input type="text" id="detailAddress" name="detailAddress" class="form-control" th:field="*{detailAddress}" required>
+                  </div>
+                  <div class="col">
+                    <input type="text" id="extraAddress" name="extraAddress" class="form-control" th:field="*{extraAddress}">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="title">마을 이름</label>
+                <input type="text" id="title" name="title" class="form-control" th:value="${productDTO.title}" required>
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="moveInDate">입주 가능일</label>
+                <input type="date" id="moveInDate" name="moveInDate" class="form-control" th:value="${productDTO.moveInDate}">
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="applicationStartDate">신청 기간 시작일</label>
+                <input type="date" id="applicationStartDate" name="applicationStartDate" class="form-control" th:value="${productDTO.applicationStartDate}">
+              </div>
+              <div class="form-group mb-3">
+                <label for="applicationEndDate">신청 기간 종료일</label>
+                <input type="date" id="applicationEndDate" name="applicationEndDate" class="form-control" th:value="${productDTO.applicationEndDate}">
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="recruitmentCnt">모집 인원</label>
+                <input type="number" id="recruitmentCnt" name="recruitmentCnt" class="form-control" th:value="${productDTO.recruitmentCnt}" min="0">
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="image_url">상품 이미지 URL</label>
+                <input type="file" id="image_url" name="file" class="form-control" required>
+
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="status">상태</label>
+                <select id="status" name="status" class="form-control" th:field="*{status}" style="color: orange;">
+                  <option th:value="'OPEN'" th:text="'모집중'"></option>
+                  <option th:value="'CLOSED'" th:text="'모집완료'"></option>
+                </select>
+              </div>
+
+              <!-- 마을 정보 -->
+              <div class="form-group mb-3">
+                <h4>마을 정보</h4>
+                <div class="form-group mb-3">
+                  <label for="residents">마을 주민수</label>
+                  <input type="number" id="residents" name="residents" class="form-control" th:value="${productDTO.residents}" min="0">
+                </div>
+                <div class="form-group mb-3">
+                  <label for="representative">마을 대표자</label>
+                  <input type="text" id="representative" name="representative" class="form-control" th:value="${productDTO.representative}">
+                </div>
+                <div class="form-group mb-3">
+                  <label for="manager">마을 운영자</label>
+                  <input type="text" id="manager" name="manager" class="form-control" th:value="${productDTO.manager}">
+                </div>
+                <div class="form-group mb-3">
+                  <label for="supportCenter">시군지원센터</label>
+                  <input type="text" id="supportCenter" name="supportCenter" class="form-control" th:value="${productDTO.supportCenter}">
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-outline-success rounded-pill mb-3">수정하기</button>
+              <a th:href="@{/product/list}" class="btn btn-outline-danger rounded-pill mb-3">취소</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section><!-- /체험정보 등록하기 -->
+  </main>
+  <!-- Bootstrap JS and dependencies -->
+</div>
+
+</body>
+
+</html>

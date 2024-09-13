@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>신고하기</title>
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-4">
+    <h2>게시글 신고</h2>
+
+    <!-- 성공 메시지 모달 -->
+    <div id="successModal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"></h5>
+          </div>
+          <div class="modal-body">
+            <p>신고가 성공적으로 접수되었습니다.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="window.close()">확인</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 신고 폼 -->
+    <form id="reportForm" th:action="@{/report}" method="post" onsubmit="return handleSubmit(event)">
+      <input type="hidden" name="boardId" th:value="${boardId}">
+      <input type="hidden" name="username" th:value="${#authentication.name}">
+      <input type="hidden" name="title" th:value="${title}">
+      <div class="mb-3">
+        <label for="description" class="form-label">신고사유</label>
+        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">신고하기</button>
+    </form>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function handleSubmit(event) {
+      event.preventDefault();  // 폼 제출 방지
+
+      var confirmed = confirm("이 게시글을 신고하시겠습니까?");
+
+      // 사용자가 확인을 누르면 폼을 제출하고 성공 메시지 표시
+      if (confirmed) {
+        var form = event.target;
+        // 폼을 제출
+        fetch(form.action, {
+          method: form.method,
+          body: new FormData(form),
+        }).then(response => {
+          if (response.ok) {
+            // 성공 메시지 표시
+            $('#successModal').modal('show');
+          } else {
+            alert('신고 접수에 실패했습니다.');
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>

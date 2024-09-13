@@ -216,15 +216,6 @@
                             placeholder="댓글을 입력하세요" required oninput="checkLength(this)"
                             style="padding: 25px 70px 25px 10px; resize: none; overflow: hidden"
                             rows="1" oninvalid="this.setCustomValidity('댓글을 입력해주세요.')"></textarea>
-                <script>
-                  function checkLength(textarea) {
-                    const maxLength = 100;
-                    if (textarea.value.length > maxLength) {
-                      textarea.value = textarea.value.substring(0, maxLength);
-                      alert('댓글은 최대 ' + maxLength + '자까지 입력할 수 있습니다.');
-                    }
-                  }
-                </script>
                   <button type="submit" class="btn btn-primary position-absolute"
                           style="bottom: 10px; right: 10px; height: auto; margin-bottom: 8px">등록</button>
               </div>
