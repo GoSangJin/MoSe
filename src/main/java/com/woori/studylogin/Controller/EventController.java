@@ -2,6 +2,7 @@ package com.woori.studylogin.Controller;
 
 import com.woori.studylogin.DTO.EventDTO;
 import com.woori.studylogin.Service.EventService;
+import com.woori.studylogin.Util.FileUpload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -19,13 +20,14 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class EventController {
+    private final FileUpload fileUpload;
     @Value("kosangjin")
     public String bucket; //버킷명
     @Value("ap-northeast-2")
     public String region; //저장지역
     @Value("${imgUploadLocation}")
     public String folder; //버킷에 이용할 폴더명
-
+    private String imgUploadLocation;
     private final EventService eventService;
 
     //삽입
@@ -41,6 +43,15 @@ public class EventController {
     @PostMapping("/event/create")
     public String createProc(@ModelAttribute EventDTO eventDTO, Model model,
                              MultipartFile file) throws IOException {
+        // URL과 이미지 URL을 동일하게 설정
+    String eventUrl = eventDTO.getEventUrl(); // eventUrl에서 URL 값을 가져옴
+    eventDTO.setEventImg(eventUrl); // 이미지 URL을 URL 값으로 설정
+    // 파일이 업로드된 경우
+    if (!file.isEmpty()) {
+        String oriFileName = file.getOriginalFilename();
+        String newFileName = fileUpload.upload(file, imgUploadLocation);
+        eventDTO.setEventImg(newFileName);
+    }
         eventService.create(eventDTO, file);
         return "redirect:/event";
     }
@@ -48,6 +59,7 @@ public class EventController {
     //수정
     @GetMapping("/event/update")
     public String update(@RequestParam Integer id, Model model) {
+
         EventDTO eventDTO = eventService.read(id);
 
         model.addAttribute("eventDTO", eventDTO);

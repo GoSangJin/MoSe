@@ -84,10 +84,9 @@
                 <input type="url" id="eventUrl" name="eventUrl" class="form-control" th:value="${eventUrl}" required>
               </div>
               <div class="form-group mb-3">
-                <label for="eventImg">썸네일</label>
-                <input type="file" id="eventImg" name="file" class="form-control" required>
+                <label for="eventImg"></label>
+                <input type="file" id="eventImg" name="file" class="form-control" style="display: none;">
               </div>
-
               <button type="submit" class="btn btn-outline-success rounded-pill mb-3">등록하기</button>
               <a th:href="@{/event}" class="btn btn-outline-danger rounded-pill mb-3">취소</a>
             </form>
