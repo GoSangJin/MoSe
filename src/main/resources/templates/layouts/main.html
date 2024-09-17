@@ -169,6 +169,29 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 </script>
+    <!--보드 이미지 수정-->
+    <script>
+  function previewImage(input) {
+    var file = input.files[0];
+    var imageContainer = document.getElementById('imageContainer');
+    var currentImage = document.getElementById('currentImage');
+
+    if (file) {
+      // Hide current image if file is selected
+      imageContainer.style.display = 'block';
+
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        // Update image src to the new file
+        currentImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // If no file selected, hide image container
+      imageContainer.style.display = 'none';
+    }
+  }
+</script>
 
     
 <!--보드 이미지 수정-->
@@ -194,6 +217,24 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
 </script>
+
+
+<script>
+    function setReportId(reportId){
+        document.getElementById('reportId').value = reportId;
+    }
+    function openModal(reportId) {
+
+        document.getElementById('reportId').value = reportId;
+        document.getElementById('suspensionModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('suspensionModal').style.display = 'none';
+    }
+</script>
+
+
 </th:block>
 </body>
 <!--레이아웃은 각작업별로 분리된 html을 배치할 위치를 지정-->

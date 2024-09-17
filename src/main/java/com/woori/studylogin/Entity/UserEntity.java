@@ -4,6 +4,8 @@ import com.woori.studylogin.Constant.RoleType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,4 +29,7 @@ public class UserEntity extends BaseEntity {
     private String extraAddress; //참고주소
     @Enumerated(EnumType.STRING) //열거형 적용을 문자형으로 
     private RoleType roleType;
+
+    private boolean isSuspended;
+    private LocalDate suspensionEndDate;
 }

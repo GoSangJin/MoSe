@@ -216,4 +216,5 @@ public class BoardService {
         Page<BoardEntity> boardEntities = boardRepository.findByAuthor(pageable, username);
         return boardEntities.map(entity -> modelMapper.map(entity, BoardDTO.class));
     }
+
 }
