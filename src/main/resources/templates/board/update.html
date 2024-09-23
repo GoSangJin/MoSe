@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Services - Active Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Active
+  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  <style>
+    .custom-select-wrapper {
+      position: relative;
+    }
+
+    .custom-select-wrapper .form-control {
+      border: none;
+      background-color: transparent;
+      padding-right: 2.5rem; /* 공간을 추가하여 아이콘이 겹치지 않도록 */
+    }
+
+    .custom-select-wrapper .form-control::after {
+      content: "\f0d7"; /* 아래 방향 아이콘 */
+      font-family: "Bootstrap Icons";
+      font-size: 1.2rem;
+      position: absolute;
+      top: 50%;
+      right: 0.5rem;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .card-body {
+      border: none;
+    }
+  </style>
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">게시판 정보</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;">귀농귀촌에 관한 정보나 건의사항이나 질문이 있으시면 언제든지 문의해주세요.</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Services 2 Section -->
+    <section id="services-2" class="services-2 section">
+
+      <div class="container">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-8 col-lg-6">
+            <h1 class="mb-3">게시글 수정</h1>
+            <form th:action="@{/board/edit}" th:object="${boardDTO}" method="post" enctype="multipart/form-data">
+              <input type="hidden" name="id" th:field="*{id}">
+              <!-- 첫 번째 카드 바디 (카테고리 및 제목 입력) -->
+              <div class="card mb-4">
+                <div class="card-body p-4">
+                  <!-- 공지사항 셀렉트 및 제목 입력 -->
+                  <div class="mb-3 custom-select-wrapper" style="margin-left: 20px; margin-right: 20px;">
+                    <!-- 카테고리 라벨을 제거 -->
+                    <div class="custom-select-container" style="position: relative; margin-top: 10px;">
+                      <select id="category" name="category" class="form-control custom-select" th:field="${boardDTO.category}" style="appearance: none;">
+                        <!-- 맨 위에 항상 표시되는 옵션 -->
+                        <option value="" selected>카테고리를 선택하세요</option>
+                        <span sec:authorize="hasAnyRole('ROLE_admin','ROLE_master')">
+                        <option value="공지사항">공지사항</option>
+                        </span>
+                        <option value="자유게시판">자유게시판</option>
+                        <option value="정보게시판">정보게시판</option>
+                        <option value="질문게시판">질문게시판</option>
+                        <option value="건의게시판">건의게시판</option>
+                      </select>
+                      <!-- 오른쪽 끝에 아래 화살표 아이콘 추가 -->
+                      <i class="bi bi-chevron-down" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); pointer-events: none;"></i>
+                    </div>
+                    <!-- 구분선 좌우 여백을 0으로 설정 -->
+                    <hr class="my-1" style="margin-left: 0; margin-right: 0;">
+                  </div>
+
+                  <!-- 제목 입력 -->
+                  <div class="mb-3" style="margin-left: 20px; margin-right: 20px;">
+                    <!-- 제목 라벨을 제거 -->
+                    <input type="text" class="form-control" id="title" name="title" th:value="${boardDTO.title}" required
+                           style="background-color: #f0f0f0; border: none; margin-top : 20px; margin-bottom : 5px;;" placeholder="제목을 입력하세요">
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- 두 번째 카드 바디 (내용 및 이미지 업로드) -->
+              <div class="card mb-4">
+                <div class="card-body p-4">
+                  <!-- 내용 입력 -->
+                  <div class="mb-3" style="margin-left: 20px; margin-right: 20px;">
+                    <!-- 내용 라벨을 제거하고 textarea에 플레이스홀더 추가, 보더 없애기 -->
+                    <textarea class="form-control" id="content" name="content" rows="10" required th:text="${boardDTO.content}"
+                              placeholder="내용을 입력하세요" style="border: none; resize: none; height: 150px;"></textarea>
+                  </div>
+
+                  <!-- 이미지가 있을 때만 표시 -->
+                  <div id="imageContainer" th:if="${boardDTO.boardImg != null}" style="margin-top: 20px; margin-left: 20px; margin-right: 20px;">
+                    <img id="currentImage" th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${boardDTO.boardImg}|"
+                         style="max-width: calc(100%); height: auto; border-radius: 2px;">
+                  </div>
+
+                  <!-- 이미지 업로드 -->
+                  <div class="mb-4" style="margin-top: 30px; margin-left: 20px; margin-right: 20px;">
+                    <!-- 파일 선택 입력 -->
+                    <div class="mb-3">
+                      <label for="boardImg" class="form-label"></label>
+                      <input class="form-control" type="file" id="boardImg" name="file" onchange="previewImage(this)">
+                    </div>
+                  </div><!--/이미지업로드-->
+
+                </div>
+              </div>
+
+              <!-- 버튼 -->
+              <div class="mt-2">
+                <button type="submit" class="btn btn-outline-info rounded-pill">저장</button>
+                <a th:href="@{/board/list}" class="btn btn-outline-secondary rounded-pill">취소</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section><!-- /Services 2 Section -->
+  </main>
+</div>
+
+</body>
+</html>
