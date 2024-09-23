@@ -1,5 +1,6 @@
 package com.woori.studylogin.DTO;
 
+import com.woori.studylogin.Constant.RegionType;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ public class EventDTO {
     private String description;
     private String eventImg;
     private String eventUrl;
+    private RegionType regionType;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 }

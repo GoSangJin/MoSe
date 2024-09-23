@@ -89,14 +89,24 @@
         <h3 style="padding-left: 15px;">행사정보</h3>
 
         <!-- 상단 버튼 영역 -->
-        <div class="mb-3 text-end" style="padding-left: 15px;"
-             sec:authorize="hasAnyRole('admin','master')">
-          <a th:href="@{/event/create}" class="btn rounded-pill" sec:authorize="hasAnyRole('admin','master')"
-             style="background-color: #006400; color: white;">
-            <strong>등록하기</strong>
-          </a>
-        </div>
+          <div class="mb-3 d-flex align-items-center" style="padding-left: 15px;">
+              <a th:href="@{/event/create}" class="btn rounded-pill" sec:authorize="hasAnyRole('admin','master')"
+                 style="background-color: #006400; color: white; margin-right: 15px;">
+                  <strong>등록하기</strong>
+              </a>
 
+              <!-- 지역 드롭다운 -->
+              <form action="#" method="get" class="ms-2">
+    <select name="regionType" class="form-select" onchange="this.form.submit()">
+        <option value="all" th:selected="${selectedRegion == null}">모든 지역</option>
+        <option th:each="region : ${regionTypes}"
+                th:value="${region}"
+                th:text="${region}"
+                th:selected="${selectedRegion != null && selectedRegion.equalsIgnoreCase(region)}"></option>
+    </select>
+</form>
+
+          </div>
         <!-- 행사정보 카드 목록 -->
         <div class="container" data-aos="fade-up">
           <div class="row">
@@ -125,6 +135,7 @@
                     <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 1rem;">
                       <p>출처 : <span th:text="${event.eventUrl}"></span></p>
                       <span th:text="${event.description}" style="color: #888;">행사 설명</span>
+                        <p>지역: <span th:text="${event.regionType}">지역 정보</span></p>
                     <div>
                       <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/update(id=${event.id})}" class="btn btn-outline-info rounded-pill mb-3">수정하기</a>
                       <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/delete(id=${event.id})}" class="btn btn-outline-danger rounded-pill mb-3">삭제하기</a>

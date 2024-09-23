@@ -255,7 +255,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     </script>
-
+    <!--신고처리-->
     <script>
         function setReportId(reportId){
             document.getElementById('reportId').value = reportId;
@@ -270,7 +270,23 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('suspensionModal').style.display = 'none';
         }
     </script>
-
+    <!--지역검색-->
+    <script>
+    $(document).ready(function() {
+        $('.form-select').change(function() {
+            var selectedRegion = $(this).val();
+            $.ajax({
+                url: '/event',
+                type: 'GET',
+                data: { regionType: selectedRegion },
+                success: function(response) {
+                    // 받아온 HTML을 적절한 요소에 삽입
+                    $('#eventContainer').html(response);
+                }
+            });
+        });
+    });
+</script>
 </th:block>
 </body>
 <!--레이아웃은 각작업별로 분리된 html을 배치할 위치를 지정-->

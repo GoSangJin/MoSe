@@ -1,5 +1,6 @@
 package com.woori.studylogin.Controller;
 
+import com.woori.studylogin.Constant.RegionType;
 import com.woori.studylogin.DTO.EventDTO;
 import com.woori.studylogin.Service.EventService;
 import com.woori.studylogin.Util.FileUpload;
@@ -101,17 +102,25 @@ public class EventController {
     //목록
     // 전체조회(Get)
     @GetMapping("/event")
-    public String getAllEvents(@PageableDefault(page = 1) Pageable pageable,
+public String getAllEvents(@PageableDefault(page = 1) Pageable pageable,
+                           @RequestParam(required = false) String regionType,
                            @RequestParam(value = "searchType", defaultValue = "") String searchType,
-                           @RequestParam(value = "search", defaultValue = "") String search, Model model) {
+                           @RequestParam(value = "search", defaultValue = "") String search,
+                           Model model) {
 
-    Page<EventDTO> eventPage = eventService.list(searchType, search, pageable);
-    List<EventDTO> eventDTOList = eventPage.getContent(); // 페이지에서 리스트만 추출
+    model.addAttribute("regionTypes", RegionType.values()); // 지역 타입 리스트 추가
+    // regionType이 "all"인 경우 모든 이벤트를 가져옵니다.
+    if (regionType == null || "all".equals(regionType)) {
+        regionType = null; // 모든 이벤트를 가져오도록 null로 설정
+    }
+    Page<EventDTO> eventPage = eventService.list(searchType, search, regionType, pageable);
+    List<EventDTO> eventDTOList = eventPage.getContent();
     model.addAttribute("eventDTOList", eventDTOList);
+    model.addAttribute("selectedRegion", regionType);
     model.addAttribute("bucket", bucket);
     model.addAttribute("region", region);
     model.addAttribute("folder", folder);
-
+    System.out.println("Selected region: " + regionType);
     Map<String, Integer> pageInfo = PaginationUtil.Pagination(eventPage);
     model.addAllAttributes(pageInfo);
 

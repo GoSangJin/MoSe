@@ -1,6 +1,7 @@
 package com.woori.studylogin.Service;
 
 
+import com.woori.studylogin.Constant.RegionType;
 import com.woori.studylogin.DTO.EventDTO;
 import com.woori.studylogin.Entity.EventEntity;
 import com.woori.studylogin.Repository.EventRepository;
@@ -86,18 +87,28 @@ public class EventService {
     }
 
     // 리스트
-    public Page<EventDTO> list(String searchType, String search, Pageable page) {
-        int current = page.getPageNumber() - 1;
-        int size = 12;
-        Pageable pageable = PageRequest.of(current, size, Sort.by(Sort.Direction.DESC, "id"));
+    public Page<EventDTO> list(String searchType, String search, String regionType, Pageable page) {
+    int current = page.getPageNumber() - 1;
+    int size = 12;
+    Pageable pageable = PageRequest.of(current, size, Sort.by(Sort.Direction.DESC, "id"));
 
-        Page<EventEntity> eventEntities;
-        if (searchType.equals("name")) {
-            eventEntities = eventRepository.findByEventNameContaining(search, pageable);
-        } else {
-            eventEntities = eventRepository.findAll(pageable);
-        }
+    Page<EventEntity> eventEntities;
 
-        return eventEntities.map(data -> modelMapper.map(data, EventDTO.class));
+    // 지역 타입에 따른 검색 처리
+    if (regionType != null && !regionType.isEmpty()) {
+        RegionType region = RegionType.valueOf(regionType);
+        eventEntities = eventRepository.findByRegionType(region, pageable);
+    } else if (searchType.equals("eventName") && search != null && !search.isEmpty()) {
+        eventEntities = eventRepository.findByEventNameContaining(search, pageable);
+    } else {
+        eventEntities = eventRepository.findAll(pageable);
     }
+
+    return eventEntities.map(data -> modelMapper.map(data, EventDTO.class));
+}
+    public Page<EventDTO> findByRegionType(RegionType regionType, Pageable pageable) {
+    Page<EventEntity> eventEntities = eventRepository.findByRegionType(regionType, pageable);
+    return eventEntities.map(data -> modelMapper.map(data, EventDTO.class));
+}
+
 }

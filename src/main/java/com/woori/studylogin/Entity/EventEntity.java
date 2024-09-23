@@ -1,5 +1,6 @@
 package com.woori.studylogin.Entity;
 
+import com.woori.studylogin.Constant.RegionType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,4 +21,7 @@ public class EventEntity {
     private String description;
     private String eventImg;
     private String eventUrl;
+    @Enumerated(EnumType.STRING) // 열거형을 문자형으로 저장
+    @Column(nullable = false) // 필수
+    private RegionType regionType;
 }
