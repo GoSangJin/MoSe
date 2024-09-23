@@ -247,6 +247,77 @@ xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout">
         }
     </script>
 
+    <!--지역검색-->
+    <script>
+        $(document).ready(function() {
+            $('.form-select').change(function() {
+                var selectedRegion = $(this).val();
+                $.ajax({
+                    url: '/event',
+                    type: 'GET',
+                    data: { regionType: selectedRegion },
+                    success: function(response) {
+                        // 받아온 HTML을 적절한 요소에 삽입
+                        $('#eventContainer').html(response);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- 마이페이지용 스크립트 -->
+    <script>
+        // 페이지 로드 시 저장된 탭 상태 불러오기
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const activeTabId = localStorage.getItem('activeTab');
+            if (activeTabId) {
+                const activeTab = document.getElementById(activeTabId);
+                if (activeTab) {
+                    setActiveTab(activeTab);
+                }
+            } else {
+                // 기본 탭이 없으면 첫 번째 탭 활성화
+                const firstTab = document.querySelector('.nav-link');
+                if (firstTab) {
+                    setActiveTab(firstTab);
+                }
+            }
+        });
+
+        // 탭을 클릭할 때 상태를 저장하고 스타일 변경
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', function () {
+                // 모든 탭 스타일을 비활성화 상태로 변경
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.style.color = 'gray';
+                    link.style.fontWeight = 'lighter';
+                    link.style.borderBottom = '2px solid transparent';
+                });
+
+                // 클릭한 탭 스타일 변경
+                this.style.color = 'black';
+                this.style.fontWeight = 'bold';
+                this.style.borderBottom = '2px solid #014421'; // 진한 녹색
+
+                // 탭 ID를 로컬 스토리지에 저장
+                localStorage.setItem('activeTab', this.getAttribute('id'));
+            });
+        });
+
+        function setActiveTab(tab) {
+            tab.click();
+        }
+        /* 마이페이지 글자넘침-반응형*/
+        document.querySelectorAll('.comment-body').forEach(el => {
+            // 텍스트가 특정 길이를 초과할 경우 data-long-text 속성을 추가
+            if (el.innerText.length >20) { // 예시로 50글자로 설정
+                el.setAttribute('data-long-text', true);
+            }
+        });
+    </script>
+
+
+
 </th:block>
 </body>
 <!--레이아웃은 각작업별로 분리된 html을 배치할 위치를 지정-->
