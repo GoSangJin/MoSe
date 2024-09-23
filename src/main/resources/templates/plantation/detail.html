@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Plantation View - Active Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Active
+  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  <style>
+    .detail-info ul {
+      list-style-type: none; /* 점 표시 없애기 */
+      padding-left: 0;
+    }
+    .detail-info li {
+      text-align: left; /* 기본 정렬 유지 */
+    }
+    .detail-info strong {
+      display: block; /* 제목을 블록으로 만들어 줄 바꿈을 적용 */
+      text-align: left; /* 제목 왼쪽 정렬 */
+      font-size: 1.25rem; /* 글씨 크기 키우기 */
+      margin-bottom: 8px; /* 위아래 여백 조정 */
+    }
+    .detail-info span {
+      display: block; /* 내용을 블록으로 만들어 줄 바꿈을 적용 */
+      border: 1px solid #ddd; /* 선 색상 및 두께 */
+      padding: 8px; /* 안쪽 여백 */
+      border-radius: 4px; /* 모서리 둥글게 */
+      background-color: #fff; /* 배경색 */
+      margin-bottom: 10px; /* 아래 여백 */
+    }
+    .image-info-container {
+      display: flex;
+      align-items: flex-start; /* 이미지와 내용이 위쪽에 맞추어 정렬됨 */
+      gap: 20px; /* 이미지와 내용 사이의 간격 */
+    }
+    .image-info-container img {
+      max-width: 300px; /* 이미지 최대 너비 */
+      height: auto; /* 이미지 비율 유지 */
+      object-fit: contain; /* 이미지 잘림 방지 */
+    }
+    .fruit-vegetable-info {
+      flex: 1; /* 내용이 가능한 공간을 차지하도록 설정 */
+    }
+  </style>
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">살아보기</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;">청장년 귀농귀촌 희망자가 농촌지역 실제 이주 전에 희망지역에서 미리 살아볼 수 있는 기회를 제공하는 사업입니다.</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- village-Details Section -->
+    <section id="village-details" class="village-details section">
+      <div class="container">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-10">
+            <!-- 상단 제목 -->
+            <h2 style="margin-bottom: 20px;">과일/채소정보 상세보기</h2>
+
+            <div class="row g-4">
+              <!-- 오른쪽 상세 정보 -->
+              <div class="col-md-12">
+                <div class="live-txt">
+                  <!-- 지역 이름과 마을 이름 -->
+                  <h4 class="ctpv_nm_and_sgg_nm" th:text="${plantationDTO.title}"
+                      style="color: #008000; line-height: 1.0; font-size: 1.0rem; font-weight: bold;">과일/채소 이름</h4>
+                  <div class="tit-select">
+                    <h3 class="vlg_nm" th:text="${plantationDTO.status}" style="font-size: 1.5rem; font-weight: bold;">과일/채소 분류</h3>
+                  </div>
+
+                  <!-- 이미지와 내용 -->
+                  <div class="image-info-container mb-3">
+                    <!-- 이미지 -->
+                    <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${plantationDTO.thumbnail_img}|"
+                         class="img-fluid"
+                         alt="과일/채소 이미지" />
+
+                    <!-- 내용 -->
+                    <ul class="fruit-vegetable-info" style="line-height: 1.8;">
+                      <li>
+                        <strong>효능 : </strong><span th:text="${plantationDTO.efficacy}">효능</span>
+                      </li>
+                      <li>
+                        <strong>수확시기 : </strong><span th:text="${plantationDTO.harvest}">수확시기</span>
+                      </li>
+                      <li>
+                        <strong>적응지역 : </strong><span th:text="${plantationDTO.region}">적응지역</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- 세부 정보 -->
+                  <div class="detail-info" style="line-height: 1.8; background-color: #f5f5f5; padding: 16px; border-radius: 20px;">
+                    <ul>
+                      <li style="margin-bottom: 20px;">
+                        <strong>재배방법</strong>
+                        <span th:text="${plantationDTO.cultivation}">재배 방법</span>
+                      </li>
+                      <li style="margin-bottom: 20px;">
+                        <strong>특징</strong>
+                        <span th:text="${plantationDTO.characteristics}">특징</span>
+                      </li>
+                      <li>
+                        <strong>유의사항</strong>
+                        <span th:text="${plantationDTO.precautions}">유의 사항</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- 버튼들 -->
+                <div class="mt-4">
+                  <!-- 수정하기 버튼 (권한에 따라 표시) -->
+                  <a th:href="@{/plantation/update(id=${plantationDTO.id})}" class="btn btn-outline-info rounded-pill mb-4"
+                     sec:authorize="hasAnyRole('admin', 'master')">수정하기</a>
+                  <!-- 삭제하기 버튼 -->
+                  <a th:href="@{/plantation/delete(id=${plantationDTO.id})}" class="btn btn-outline-danger rounded-pill mb-4"
+                     sec:authorize="hasAnyRole('admin', 'master')" th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제하기</a>
+                  <!-- 목록 보기 버튼 -->
+                  <a th:href="@{/plantation/list}" class="btn btn-outline-success rounded-pill mb-4">목록보기</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /village-Details Section -->
+
+  </main>
+</div>
+
+</body>
+
+</html>
