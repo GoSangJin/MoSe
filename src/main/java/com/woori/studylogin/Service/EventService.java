@@ -9,12 +9,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 @Transactional
@@ -84,8 +86,18 @@ public class EventService {
     }
 
     // 리스트
-    public List<EventDTO> list() {
-        List<EventEntity> eventEntities = eventRepository.findAll();
-        return Arrays.asList(modelMapper.map(eventEntities, EventDTO[].class));
+    public Page<EventDTO> list(String searchType, String search, Pageable page) {
+        int current = page.getPageNumber() - 1;
+        int size = 12;
+        Pageable pageable = PageRequest.of(current, size, Sort.by(Sort.Direction.DESC, "id"));
+
+        Page<EventEntity> eventEntities;
+        if (searchType.equals("name")) {
+            eventEntities = eventRepository.findByEventNameContaining(search, pageable);
+        } else {
+            eventEntities = eventRepository.findAll(pageable);
+        }
+
+        return eventEntities.map(data -> modelMapper.map(data, EventDTO.class));
     }
 }

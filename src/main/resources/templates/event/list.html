@@ -126,20 +126,27 @@
                       <p>출처 : <span th:text="${event.eventUrl}"></span></p>
                       <span th:text="${event.description}" style="color: #888;">행사 설명</span>
                     <div>
-                    <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/update(id=${event.id})}" class="btn btn-outline-info rounded-pill mb-3">수정하기</a>
-                    <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/delete(id=${event.id})}" class="btn btn-outline-danger rounded-pill mb-3">삭제하기</a>
+                      <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/update(id=${event.id})}" class="btn btn-outline-info rounded-pill mb-3">수정하기</a>
+                      <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/delete(id=${event.id})}" class="btn btn-outline-danger rounded-pill mb-3">삭제하기</a>
                     </div>
                   </div>
                   <!-- /마을 내용 - 카드 바디 -->
                 </div>
               </div>
             </div><!-- /Card End -->
+            <!-- Pagination -->
+          <nav>
+            <ul class="pagination">
+              <li th:each="i : ${#numbers.sequence(startPage, endPage)}" class="page-item" th:classappend="${currentPage == i} ? 'active'">
+                <a class="page-link" th:href="@{/event(page=${i}, searchType=${searchType}, search=${search})}" th:text="${i}">1</a>
+              </li>
+            </ul>
+          </nav>
           </div>
         </div>
+
       </div>
     </section>
-    <!-- /행사정보 title -->
-
   </main>
 </div>
 <!-- JavaScript and other resources -->

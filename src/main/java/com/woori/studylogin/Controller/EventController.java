@@ -3,8 +3,12 @@ package com.woori.studylogin.Controller;
 import com.woori.studylogin.DTO.EventDTO;
 import com.woori.studylogin.Service.EventService;
 import com.woori.studylogin.Util.FileUpload;
+import com.woori.studylogin.Util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /* Event // event >> Ctrl + R 로 변수명 변경 */
 @Controller
@@ -94,15 +99,26 @@ public class EventController {
     }
 
     //목록
+    // 전체조회(Get)
     @GetMapping("/event")
-    public String list(Model model) {
-        List<EventDTO> eventDTOList = eventService.list();
-        model.addAttribute("eventDTOList", eventDTOList);
-        model.addAttribute("bucket", bucket);
-        model.addAttribute("region", region);
-        model.addAttribute("folder", folder);
+    public String getAllEvents(@PageableDefault(page = 1) Pageable pageable,
+                           @RequestParam(value = "searchType", defaultValue = "") String searchType,
+                           @RequestParam(value = "search", defaultValue = "") String search, Model model) {
 
-        return "event/list";
-    }
+    Page<EventDTO> eventPage = eventService.list(searchType, search, pageable);
+    List<EventDTO> eventDTOList = eventPage.getContent(); // 페이지에서 리스트만 추출
+    model.addAttribute("eventDTOList", eventDTOList);
+    model.addAttribute("bucket", bucket);
+    model.addAttribute("region", region);
+    model.addAttribute("folder", folder);
+
+    Map<String, Integer> pageInfo = PaginationUtil.Pagination(eventPage);
+    model.addAllAttributes(pageInfo);
+
+    model.addAttribute("searchType", searchType);
+    model.addAttribute("search", search);
+
+    return "event/list";
+}
 
 }

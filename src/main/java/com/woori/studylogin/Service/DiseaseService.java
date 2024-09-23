@@ -103,7 +103,7 @@ public class DiseaseService {
 
     public Page<DiseaseDTO> list(String searchType, String search, Pageable page) {
         int current = page.getPageNumber() - 1;
-        int size = 20;
+        int size = 12;
         Pageable pageable = PageRequest.of(current, size, Sort.by(Sort.Direction.DESC, "id"));
 
         Page<DiseaseEntity> diseaseEntities;
