@@ -147,11 +147,19 @@
             </div><!-- /Card End -->
             <!-- Pagination -->
           <nav>
-            <ul class="pagination">
+            <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/event(page=1, searchType=${searchType}, search=${search})}"><<</a>
+                </li>
               <li th:each="i : ${#numbers.sequence(startPage, endPage)}" class="page-item" th:classappend="${currentPage == i} ? 'active'">
                 <a class="page-link" th:href="@{/event(page=${i}, searchType=${searchType}, search=${search})}" th:text="${i}">1</a>
               </li>
+                <li class="page-item" th:classappend="${currentPage == lastPage} ? 'disabled'">
+                    <a class="page-link" th:href="@{/event(page=${lastPage}, searchType=${searchType}, search=${search})}">>></a>
+                </li>
             </ul>
+          </nav>
           </nav>
           </div>
         </div>
