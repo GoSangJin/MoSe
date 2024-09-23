@@ -21,7 +21,7 @@
             <p>신고가 성공적으로 접수되었습니다.</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="window.close()">확인</button>
+            <button type="button" class="btn btn-primary rounded-pill" data-dismiss="modal" onclick="window.close()">확인</button>
           </div>
         </div>
       </div>
@@ -32,12 +32,18 @@
       <input type="hidden" name="boardId" th:value="${boardId}">
       <input type="hidden" name="username" th:value="${#authentication.name}">
       <input type="hidden" name="title" th:value="${title}">
+
       <div class="mb-3">
         <label for="description" class="form-label">신고사유</label>
         <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
       </div>
-      <button type="submit" class="btn btn-primary">신고하기</button>
+
+      <!-- 버튼을 오른쪽으로 이동시키는 부분 -->
+      <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary rounded-pill">신고하기</button>
+      </div>
     </form>
+
   </div>
 
   <!-- Scripts -->

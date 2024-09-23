@@ -130,7 +130,7 @@
           <nav>
             <ul class="pagination">
               <li th:each="i : ${#numbers.sequence(startPage, endPage)}" class="page-item" th:classappend="${currentPage == i} ? 'active'">
-                <a class="page-link" th:href="@{/fruit/list(page=${i}, searchType=${searchType}, search=${search})}" th:text="${i}">1</a>
+                <a class="page-link" th:href="@{/fruit(page=${i}, searchType=${searchType}, search=${search})}" th:text="${i}">1</a>
               </li>
             </ul>
           </nav>

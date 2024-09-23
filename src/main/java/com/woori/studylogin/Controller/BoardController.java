@@ -4,6 +4,8 @@ package com.woori.studylogin.Controller;
 import com.woori.studylogin.DTO.BoardDTO;
 import com.woori.studylogin.DTO.CommentDTO;
 import com.woori.studylogin.DTO.UserDTO;
+import com.woori.studylogin.Entity.UserEntity;
+import com.woori.studylogin.Repository.UserRepository;
 import com.woori.studylogin.Service.BoardService;
 import com.woori.studylogin.Service.CommentService;
 import com.woori.studylogin.Service.UserService;
@@ -39,6 +41,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BoardController {
 
+    private final UserRepository userRepository;
     @Value("${cloud.aws.s3.bucket}")
     public String bucket; //버킷명
     @Value("${cloud.aws.region.static}")
@@ -65,12 +68,26 @@ public class BoardController {
     //BoardDTO-입력폼 받은값, HTTPSession-섹션정보, RedirectAttributes-다른맵핑에 값전달
     public String createBoard(@ModelAttribute BoardDTO boardDTO, MultipartFile file , HttpSession session,
                               RedirectAttributes redirectAttributes)throws IOException {
-
         //사용자 아이디를 읽어서
         //
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //
         String username = (String)session.getAttribute("username");
+        
+        // 신고 추가된 구문
+        UserEntity user = userRepository.findByUsername(username)
+                                        .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // 사용자 정지 상태 확인
+        if (user.isSuspended()) {
+        String remainingPeriod = userService.getRemainingSuspensionPeriod(user);
+        String errorMessage = "작성이 제한된 계정입니다.<br>" +
+                " 자세한 사항은 관리자에게 문의하십시오.<br>"  +
+                remainingPeriod;
+        redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+        return "redirect:/board/error";
+        }
+        //여기까지 신고추가 
+        
         boardDTO.setAuthor(username); //아이디를 작성자에 저장해서 서비스로 전달
         boardService.save(boardDTO,file);
 
@@ -263,6 +280,11 @@ public class BoardController {
 
         return "redirect:/board/view?id=" + id;
     }
+    // 에러페이지 통합
+    @GetMapping("board/error")
+    public String showErrorPage(Model model) {
+    return "/board/error"; // 'error.html'을 반환하여 에러 페이지를 표시합니다.
+}
 }
 // 게시글등록/수정/삭제-로그인시에만 노출
 //
