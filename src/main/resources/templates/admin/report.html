@@ -139,9 +139,10 @@
                                     <th th:text="${report.reporterUsername}">신고자</th>
                                     <!-- 처리 버튼 -->
                                     <th>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#suspensionModal"
-                                                th:onclick="'setReportId(' + ${report.id} + ')'">신고 처리</button>
+                                        <button type="button" class="btn btn-primary"
+                                                th:onclick="'openModal(' + ${report.id} + ')'">신고 처리</button>
                                     </th>
+
                                 </tr>
                                 </tbody>
                             </table>
