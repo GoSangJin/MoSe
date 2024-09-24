@@ -35,7 +35,8 @@ public class SecurityConfig{
             //상품 등록/수정/삭제는 운영자와 관리자만 접근이 가능하게
             auth.requestMatchers("/product/new", "/product/edit", "/product/delete").hasAnyRole("admin", "master");
 
-
+            auth.requestMatchers("/document/insert","/document/update/","/plantation/delete").hasAnyRole("admin", "master");
+            auth.requestMatchers("/plantation/insert","/plantation/update/").hasAnyRole("admin", "master");
             auth.requestMatchers("/event/delete","/event/create","/event/update").hasAnyRole("admin", "master");
             auth.requestMatchers("/admin/**").hasAnyRole("admin","master");
             auth.requestMatchers("/fruit/create","/fruit/delete","/fruit/update").hasAnyRole("admin", "master");
