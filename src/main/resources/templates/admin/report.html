@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>회원 정보 목록</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&family=Lato:wght@100;300;400;700&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <style>
+        /* 글자 크기 조정 */
+        .text {
+            font-size: 1rem; /* 기본 글자 크기 조정 */
+        }
+
+        .post-title, .post-content, .post-descriptio, .post-reporterUsername {
+            font-size: 1rem; /* 화면이 커졌을 때 큰 글자 크기 설정 (신고자 글씨처럼) */
+        }
+
+        /* 텍스트 넘침 처리 */
+        .table td, .table th {
+            white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+            overflow: hidden;    /* 넘치는 텍스트 숨기기 */
+            text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+        }
+
+        /* 버튼 크기 조정 */
+        .btn {
+            font-size: 0.8rem; /* 기본 버튼 글자 크기 조정 */
+            padding: 0.375rem 0.75rem; /* 기본 패딩 조정 */
+        }
+
+        /* 작은 화면에서 버튼과 테이블 텍스트 크기 줄이기 */
+        @media (max-width: 768px) {
+            .text, .table th {
+                font-size: 0.7rem; /* 작은 화면에서 텍스트 크기 줄이기 */
+            }
+
+            .table td {
+                font-size: 0.9rem; /* 작은 화면에서 테이블 셀 글자 크기 줄이기 */
+            }
+
+            .btn {
+                font-size: 0.7rem; /* 작은 화면에서 버튼 글자 크기 줄이기 */
+                padding: 0.25rem 0.5rem; /* 작은 화면에서 패딩 줄이기 */
+            }
+
+            .post-title, .post-content, .post-description {
+                font-size: 0.7rem; /* 작은 화면에서 게시글 제목, 내용, 설명 글자 크기 줄이기 */
+            }
+
+            /* 검색 폼 레이아웃 */
+            .search-form {
+                flex-direction: column; /* 요소를 수직으로 쌓이게 변경 */
+                gap: 10px; /* 요소 간의 간격 조정 */
+            }
+
+            /* 버튼과 입력 필드의 정렬 조정 */
+            .search-form .form-group {
+                width: 100%; /* 폼 그룹을 100% 너비로 설정 */
+                justify-content: space-between; /* 공간 분배 */
+            }
+
+        }
+    </style>
+
+
+
+
+
+</head>
+
+<body class="report-page">
+
+<div layout:fragment="content">
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title" style="background-color: #003300;">
+            <div class="container text-center">
+                <h1 style="color: white;">신고글 관리페이지</h1>
+                <nav class="breadcrumbs">
+                    <div>
+                        <span style="color: white;">회원관리에 관한 페이지(회원정보, 회원검색 및 권한변경)</span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- 신고글 목록 User Info Section -->
+        <section id="report" class="report section">
+            <div class="container">
+                <div class="row justify-content-center" data-aos="fade-up">
+                    <div class="col-md-12 col-lg-12">
+                        <!--상단 유형분류 버튼 메뉴들-->
+                        <div class="mb-5">
+                            <div class="d-flex flex-wrap align-items-center link-container">
+                                <span class="fs-5 fw-bold me-1">ㆍ</span>
+                                <a class="text-decoration-none fw-bold me-2" th:classappend="${category == ''} ? 'text-darkgreen' : 'text-secondary'"
+                                   th:href="@{/admin/user_info}">회원 정보</a>
+                                <span class="fs-5 fw-bold me-1">ㆍ</span>
+                                <a class="text-decoration-none fw-bold me-2" th:classappend="${category == '정보게시판'} ? 'text-darkgreen' : 'text-secondary'"
+                                   th:href="@{/admin/report}">신고글</a>
+                            </div>
+                        </div>
+
+
+                        <!--테이블헤드/바디-->
+                        <table class="table table-hover text-center">
+                            <thead class="table-light">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">게시글 제목</th>
+                                <th scope="col">설명</th>
+                                <th scope="col">피신고자</th>
+                                <th scope="col">신고자</th>
+                                <th scope="col">처리</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="report : ${reports}">
+                                <td class="align-middle" th:text="${report.id}">ID</td>
+                                <td class="align-middle">
+                                    <a th:href="@{/board/view(id=${report.boardId})}">
+                                        <span class="text" th:text="${report.boardTitle}"></span>
+                                    </a>
+                                </td>
+                                <td class="align-middle">
+                                    <a th:href="@{/admin/report_content(id=${report.id})}">
+                                        <span class="text" th:text="${report.description}"></span>
+                                    </a>
+                                </td>
+                                <th class="align-middle" th:text="${report.boardAuthor}">피신고자</th>
+                                <td class="align-middle" th:text="${report.reporterUsername}">신고자</td>
+                                <td class="align-middle">
+                                    <!-- 처리 버튼 -->
+                                    <button type="button" class="btn btn-outline-danger rounded-pill"
+                                            th:onclick="'openModal(' + ${report.id} + ')'">신고 처리</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 신고처리 Modal -->
+        <div id="suspensionModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">신고 처리</h5>
+                        <!-- 오른쪽 끝으로 이동하고 배경색을 없앤 닫기 버튼 -->
+                        <button type="button" class="close" onclick="closeModal()" style="border: none; padding: 0; font-size: 20px; position: absolute; right: 15px; top: 15px; cursor: pointer;">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/admin/handleReport}" method="post">
+                            <input type="hidden" id="reportId" name="reportId">
+                            <div class="form-group">
+                                <label for="suspensionType">처분 유형:</label>
+                                <select id="suspensionType" name="suspensionType" class="form-control">
+                                    <option value="3일">3일</option>
+                                    <option value="7일">7일</option>
+                                    <option value="한달">한 달</option>
+                                    <option value="영구정지">영구 정지</option>
+                                </select>
+                            </div>
+                            <!-- 셀렉트 옵션과 처리 버튼 간의 간격 넓힘 -->
+                            <div class="form-group mt-4 text-right">
+                                <!-- 작아진 처리 버튼 -->
+                                <button type="submit" class="btn btn-danger" style="border-radius: 0; border: 1px solid #ccc; padding: 5px 15px; font-size: 0.8rem;">처리</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </main>
+
+</div>
+</body>
+
+</html>

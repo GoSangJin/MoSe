@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>회원 정보 목록</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&family=Lato:wght@100;300;400;700&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        /* 기본 레이아웃 스타일 (화면이 넓을 때) */
+        .form-group {
+            margin-right: 0; /* 버튼 간의 간격 조정 */
+            margin-bottom: 0.5rem; /* 버튼 간의 하단 간격 조정 */
+        }
+
+        /* 폼을 중앙에 배치 */
+        form {
+            display: flex;
+            flex-wrap: wrap; /* 줄 바꿈을 허용 */
+            justify-content: center; /* 가로 방향 중앙 정렬 */
+            align-items: center; /* 세로 방향 중앙 정렬 */
+            gap: 0.5rem; /* 요소 간의 간격 조정 */
+        }
+
+        .form-select, .form-control, .btn {
+            font-size: 0.75rem; /* 폰트 크기 조정 (작게) */
+        }
+
+        .form-select {
+            width: 120px; /* 선택 박스의 기본 너비를 줄입니다 */
+        }
+
+        .form-control {
+            width: 260px; /* 검색어 입력 박스의 기본 너비를 줄입니다 */
+        }
+
+        .btn {
+            height: 2rem; /* 버튼의 기본 높이를 줄입니다 */
+            margin: 0 0.25rem; /* 버튼 간의 좌우 간격 조정 */
+        }
+
+        /* 반응형 레이아웃 (화면이 줄어들 때) */
+        @media (max-width: 768px) {
+            .form-group {
+                flex: 1 1 100%; /* 화면이 줄어들면 각 요소가 전체 너비를 사용하도록 조정 */
+                margin-bottom: 0.1rem; /* 요소 간 간격 조정 */
+                margin-right: 0; /* 오른쪽 간격 제거 */
+            }
+
+            .form-select, .form-control, .btn {
+                font-size: 0.8rem; /* 폰트 크기 조정 */
+                height: 2.25rem; /* 높이 조정 */
+            }
+
+            .form-select {
+                width: 100%; /* 화면이 줄어들면 전체 너비 사용 */
+            }
+
+            .form-control {
+                width: 100%; /* 화면이 줄어들면 전체 너비 사용 */
+            }
+
+            .btn {
+                width: 100%; /* 버튼이 전체 너비를 사용하도록 조정 */
+            }
+        }
+
+        /* 검색 입력 필드 너비 조정 */
+        .search-input {
+            width: 200px; /* 검색어 입력 필드 너비 조정 */
+        }
+
+        /* 검색 폼 레이아웃 */
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* 요소 간의 간격 조정 */
+        }
+
+        /* 폼 그룹 레이아웃 */
+        .search-form .form-group {
+            display: flex;
+            align-items: center;
+            margin: 0; /* 폼 그룹 간의 기본 여백 제거 */
+        }
+
+        /* 검색 버튼 */
+        .search-form .btn {
+            margin-left: 10px; /* 버튼과 필드 간의 간격 조정 */
+        }
+
+        /* 사용자 정보 수정 폼 레이아웃 */
+        .user-info .form-inline {
+            display: flex;
+            align-items: center; /* 수직 정렬 */
+            gap: 10px; /* 요소 간의 간격 조정 */
+        }
+
+        .user-info .form-inline select {
+            margin-right: 10px; /* 드롭다운과 버튼 간의 간격 조정 */
+            width: 100px; /* 드롭다운 너비 조정 */
+        }
+
+        .user-info .form-inline .btn {
+            padding: 0.2rem 0.5rem; /* 버튼 패딩 조정 */
+            font-size: 0.8rem; /* 버튼 폰트 크기 조정 */
+        }
+
+        /* 테이블 반응형 처리 */
+        @media (max-width: 768px) {
+            .table-responsive {
+                overflow-x: auto; /* 작은 화면에서 테이블 가로 스크롤 가능 */
+            }
+            table {
+                min-width: 700px; /* 테이블 너비가 좁아지지 않도록 최소 너비 설정 */
+            }
+        }
+
+        /* 페이지 네비게이션 스타일 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* 페이지 링크 스타일 */
+        .page-item .page-link {
+            border-radius: 50%;
+            margin: 0 0.15rem;
+            width: 1.4rem; /* 버튼 크기 더 줄임 */
+            height: 1.4rem; /* 버튼 크기 더 줄임 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.5rem; /* 폰트 크기 더 줄임 */
+        }
+
+        /* 활성화된 페이지 링크 */
+        .page-item.active .page-link {
+            background-color: #014421; /* 진한 녹색 배경 */
+            color: #fff; /* 흰색 텍스트 */
+            border-color: #014421; /* 진한 녹색 테두리 */
+        }
+
+        /* 페이지 링크 호버 스타일 */
+        .page-item .page-link:hover {
+            background-color: #f0f0f0; /* 마우스 오버시 연한 회색 배경 */
+            color: #000;
+        }
+
+        /* 비활성화된 페이지 링크 */
+        .page-item.disabled .page-link {
+            color: #d0d0d0;
+            pointer-events: none;
+            background-color: #fff;
+        }
+
+        /* 아이콘 크기 조정 */
+        .page-link .bi {
+            font-size: 0.3rem; /* 아이콘 크기 더 줄임 */
+        }
+
+        /* 이전, 다음 버튼 스타일 */
+        .page-item.previous .page-link,
+        .page-item.next .page-link {
+            border-radius: 50%; /* 둥근 버튼 */
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .page-item.previous .page-link {
+            background-color: #ffffff; /* 흰색 배경 */
+            border: 1px solid #d0d0d0; /* 연한 회색 테두리 */
+        }
+
+        .page-item.next .page-link {
+            background-color: #ffffff; /* 흰색 배경 */
+            border: 1px solid #d0d0d0; /* 연한 회색 테두리 */
+        }
+
+        /* 이전, 다음 버튼 호버 스타일 */
+        .page-item.previous .page-link:hover,
+        .page-item.next .page-link:hover {
+            background-color: #f0f0f0; /* 마우스 오버시 연한 회색 배경 */
+        }
+
+        /* 작은 화면에서 페이지 링크 크기 조정 */
+        @media (max-width: 576px) {
+            .page-item .page-link {
+                width: 1.5rem; /* 작은 화면에서 더 작은 버튼 */
+                height: 1.5rem; /* 작은 화면에서 더 작은 버튼 */
+                font-size: 0.55rem; /* 작은 화면에서 더 작은 폰트 */
+            }
+
+            .page-link .bi {
+                font-size: 0.45rem; /* 작은 화면에서 아이콘 더 작게 */
+            }
+        }
+    </style>
+</head>
+
+<body class="user-info-page">
+
+<div layout:fragment="content">
+    <main class="main">
+        <!-- Page Title -->
+        <div class="page-title" style="background-color: #003300;">
+            <div class="container text-center">
+                <h1 style="color: white;">회원관리 페이지</h1>
+                <nav class="breadcrumbs">
+                    <div>
+                        <span style="color: white;">회원관리에 관한 페이지(회원정보, 회원검색 및 권한변경)</span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- End Page Title -->
+
+        <!-- User Info Section -->
+        <section id="user-info" class="user-info section">
+            <div class="container">
+                <div class="row justify-content-center" data-aos="fade-up">
+                    <div class="col-md-12 col-lg-12">
+                        <!--상단 유형분류 버튼 메뉴들-->
+                        <div class="mb-5">
+                            <div class="d-flex flex-wrap align-items-center link-container">
+                                <span class="fs-5 fw-bold me-1">ㆍ</span>
+                                <a class="text-decoration-none fw-bold me-2" th:classappend="${category == ''} ? 'text-darkgreen' : 'text-secondary'"
+                                   th:href="@{/admin/user_info}">회원 정보</a>
+                                <span class="fs-5 fw-bold me-1">ㆍ</span>
+<!--                                <a class="text-decoration-none fw-bold me-2" th:classappend="${category == '자유게시판'} ? 'text-darkgreen' : 'text-secondary'"-->
+<!--                                   th:href="@{/admin/board_suggest}">건의글</a>-->
+<!--                                <span class="fs-5 fw-bold me-1">ㆍ</span>-->
+                                <a class="text-decoration-none fw-bold me-2" th:classappend="${category == '정보게시판'} ? 'text-darkgreen' : 'text-secondary'"
+                                   th:href="@{/admin/report}">신고글</a>
+                            </div>
+                        </div>
+
+
+                        <!-- 검색 필터 폼 -->
+                        <form action="#" th:action="@{/admin/user_info}" method="get"
+                              class="d-flex flex-wrap justify-content-center align-items-center mb-4">
+
+                            <!-- 회원 검색 유형 선택 -->
+                            <div class="form-group">
+                                <label for="memberType" class="visually-hidden">검색유형</label>
+                                <select id="memberType" name="searchType" class="form-select rounded-pill">
+                                    <option value="all" th:selected="${memberType == 'all'}">검색유형</option>
+                                    <option value="name" th:selected="${memberType == 'name'}">이름</option>
+                                    <option value="birth" th:selected="${memberType == 'birth'}">생년월일</option>
+                                    <option value="address" th:selected="${memberType == 'address'}">주소</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="searchType" class="visually-hidden">권한유형</label>
+                                <select id="searchType" name="searchType" class="form-select rounded-pill">
+                                    <option value="all" th:selected="${searchType == 'all'}">권한유형</option>
+                                    <option value="user" th:selected="${searchType == 'user'}">일반</option>
+                                    <option value="admin" th:selected="${searchType == 'admin'}">운영자</option>
+                                </select>
+                            </div>
+
+                            <!-- 검색어 입력 -->
+                            <div class="form-group">
+                                <input type="text" id="searchKeyword" name="searchKeyword" class="form-control rounded-pill"
+                                       th:value="${searchKeyword}" placeholder="검색어를 입력하세요" />
+                            </div>
+
+                            <!-- 검색 버튼 -->
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-secondary rounded-pill">
+                                    <i class="bi bi-search"></i> 검색
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- user 테이블 전체 -->
+                        <div id="container">
+                            <!-- 대형 화면 테이블 뷰 -->
+                            <div id="table-view" class="view">
+                                <table class="table table-hover" style="font-size: 0.8rem;">
+                                    <!-- 테이블 헤더 -->
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center" style="max-width: 80px;">아이디</th> <!-- 가로 길이 줄임 -->
+                                        <th class="text-center" style="max-width: 120px;">이메일</th> <!-- 가로 길이 줄임 -->
+                                        <th class="text-center" style="max-width: 80px;">생년월일</th> <!-- 가로 길이 줄임 -->
+                                        <th class="text-center" style="max-width: 80px;">이름</th> <!-- 가로 길이 줄임 -->
+                                        <th class="text-center" style="max-width: 150px;">주소</th>
+                                        <th class="text-center" style="max-width: 80px;"></th> <!-- 권한 넓힘 -->
+                                        <th class="text-center" style="max-width: 120px;">권한</th>
+                                        <th class="text-center" style="max-width: 100px;"></th>
+                                        <th class="text-center">작업</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="user : ${userDTOS.content}">
+                                    <tr>
+                                        <td class="text-center align-middle text-truncate" style="max-width: 50px;" th:text="${user.id}"></td>
+                                        <td class="text-center align-middle text-truncate" style="max-width: 80px;" th:text="${user.username}"></td> <!-- 가로 길이 줄임 -->
+                                        <td class="text-center align-middle text-truncate" style="max-width: 120px;" th:text="${user.email}"></td> <!-- 가로 길이 줄임 -->
+                                        <td class="text-center align-middle text-truncate" style="max-width: 80px;" th:text="${user.birth}"></td> <!-- 가로 길이 줄임 -->
+                                        <td class="text-center align-middle text-truncate" style="max-width: 80px;" th:text="${user.name}"></td> <!-- 가로 길이 줄임 -->
+                                        <td class="text-center align-middle text-truncate" style="max-width: 150px;" th:text="${user.address}"></td>
+
+                                        <td class="align-middle text-center" style="max-width: 80px; padding: 0;">
+                                            <span th:text="${user.roleType.name() == 'user' ? '일반' : '운영자'}" class="me-2 text-center" style="line-height: 2.25rem; text-align: center;"></span>
+                                        </td> <!-- 권한 넓힘 -->
+                                        <td class="align-middle text-center" style="max-width: 80px; padding: 0;">
+                                            <form th:action="@{/admin/user_info/update_role}" method="post" class="d-flex align-items-center"> <!-- 수평 가운데 정렬 유지 -->
+                                                <input type="hidden" name="userId" th:value="${user.id}">
+                                                <select name="roleType" class="form-control level-select me-2" required style="font-size: 0.8rem; width: 120px; height: 2.25rem; text-align: center;"> <!-- 가로 길이 조정 -->
+                                                    <option value="user" th:selected="${user.roleType.name() == 'user'}">일반</option>
+                                                    <option value="admin" th:selected="${user.roleType.name() == 'admin'}">운영자</option>
+                                                </select>
+                                            </form>
+                                        </td> <!-- 권한 넓힘 -->
+                                        <td class="align-middle text-center" style="max-width: 70px; padding: 0;">
+                                            <button type="submit" class="btn text-info rounded-pill" style="font-size: 0.8rem; font-weight: bold; border: none; background: none;">변경</button>
+                                        </td> <!-- 권한 넓힘 -->
+                                        <td class="align-middle text-center">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <form th:action="@{/admin/user_info/delete}" method="post" class="me-2">
+                                                    <input type="hidden" name="userId" th:value="${user.id}">
+                                                    <button type="submit" class="btn btn-outline-danger rounded-pill" style="font-size: 0.8rem;">삭제</button>
+                                                </form>
+                                            </div>
+                                        </td><!--삭제버튼-->
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+                        <!--페이지 넘버-->
+                        <nav>
+                            <ul class="pagination pagination-sm justify-content-center mt-5">
+                                <!-- 이전 버튼 -->
+                                <li class="page-item previous" th:classappend="${pageInfo.currentPage == 1} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/admin/user_info(searchType=${searchType}, searchKeyword=${searchKeyword}, page=${pageInfo.prevPage - 1}, category=${category})}">
+                                        <span class="bi bi-chevron-double-left"></span>
+                                    </a>
+                                </li>
+
+                                <!-- 페이지 번호 -->
+                                <li class="page-item" th:each="i : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}"
+                                    th:classappend="${pageInfo.currentPage == i} ? 'active' : ''">
+                                    <a class="page-link" th:href="@{/admin/user_info(searchType=${searchType}, searchKeyword=${searchKeyword}, page=${i - 1}, category=${category})}">
+                                        <span th:text="${i}"></span>
+                                    </a>
+                                </li>
+
+                                <!-- 다음 버튼 -->
+                                <li class="page-item next" th:classappend="${pageInfo.currentPage >= pageInfo.endPage} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/admin/user_info(searchType=${searchType}, searchKeyword=${searchKeyword}, page=${pageInfo.nextPage - 1}, category=${category})}">
+                                        <span class="bi bi-chevron-double-right"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav><!--/페이지 넘버-->
+                    </div>
+                </div>
+            </div>
+        </section><!-- /User Info Section -->
+
+    </main>
+</div>
+</body>
+
+</html>
