@@ -565,9 +565,9 @@
           <div class="post-content mt-lg-1 text-center">
             <p th:text="${boardDTO.content}">내용</p>
             <div>
-              <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${boardDTO.boardImg}|"
-                   class="post-image"
-                   th:if="${boardDTO.boardImg != null}" />
+                <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${boardDTO.boardImg}|"
+                     class="post-image"
+                     th:if="${boardDTO.boardImg != null and !#strings.isEmpty(boardDTO.boardImg)}">
             </div>
           </div>
 
@@ -581,11 +581,9 @@
               <p class="comment-body" th:text="${comment.body}">댓글 내용</p>
               <div class="comment-footer d-flex justify-content-between align-items-center">
                 <span class="comment-date" th:text="${#temporals.format(comment.modDate, 'yyyy-MM-dd HH:mm')}">2024-01-01 12:00</span>
-                <a th:href="@{/comment/remove(no=${boardDTO.id},id=${comment.id})}" class="text-button">삭제</a>
-                <span th:unless="${#authentication != null and #authentication.name == comment.nickName}">
-                  <span sec:authorize="hasAnyRole('ROLE_admin','ROLE_master')">
+
+                <span th:if="${#authentication != null and (#authentication.name == comment.nickName or #authorization.expression('hasAnyRole(''ROLE_admin'', ''ROLE_master'')'))}">
                     <a th:href="@{/comment/remove(no=${boardDTO.id},id=${comment.id})}" class="text-button">삭제</a>
-                  </span>
                 </span>
               </div>
               <!-- 댓글 아래에 구분선 추가 -->

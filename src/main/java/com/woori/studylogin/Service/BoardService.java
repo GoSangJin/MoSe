@@ -44,7 +44,7 @@ public class BoardService {
         boardDTO.setLikeCount(0);
         boardDTO.setViewCount(0);
         boardDTO.setCommentCount(0);
-
+        boardDTO.setBoardImg(null);
         String newFileName = "";
         if (!file.isEmpty()) {
             newFileName = fileUpload.upload(file, imgUploadLocation);
@@ -64,6 +64,7 @@ public class BoardService {
         boardDTO.setLikeCount(boardEntity.getLikeCount());
         boardDTO.setViewCount(boardEntity.getViewCount());
         boardDTO.setCommentCount(boardEntity.getCommentCount());
+        boardDTO.setBoardImg(boardEntity.getBoardImg());
 
         String deleteFile = boardEntity.getBoardImg();
         String newFileName = "";

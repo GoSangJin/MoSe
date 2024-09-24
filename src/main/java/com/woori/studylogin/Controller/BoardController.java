@@ -126,6 +126,7 @@ public class BoardController {
     @PostMapping("/board/edit")
     public String updateBoard(@ModelAttribute BoardDTO boardDTO,
                               @RequestParam(value = "file", required = false) MultipartFile file,
+                              @RequestParam(value = "removeImage", required = false) String removeImage,
                               HttpSession session,
                               RedirectAttributes redirectAttributes) throws IOException {
         //사용자 아이디를 읽어서
@@ -143,7 +144,10 @@ public class BoardController {
 
 
         boardDTO.setAuthor(username); // 아이디를 작성자에 저장해서 서비스로 전달
-
+            // 이미지 삭제 로직
+            if ("true".equals(removeImage)) {
+                boardDTO.setBoardImg(null); // 이미지 필드를 null로 설정하여 이미지 삭제
+            }
         // 파일이 null이 아니고 비어있지 않은 경우에만 파일 처리
             if (file != null && !file.isEmpty()) {
                 boardService.update(boardDTO, file);

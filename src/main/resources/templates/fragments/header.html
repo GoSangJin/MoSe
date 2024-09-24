@@ -25,13 +25,13 @@
                     <li sec:authorize="hasAnyRole('ROLE_admin', 'ROLE_master')">
                         <a th:href="@{/admin/user_info}">관리/운영자</a>
                     </li>
-                    <li><a th:href="@{/guide/main}">가이드</a></li>
+                    <li><a th:href="@{/guide/info}">가이드</a></li>
                     <li class="dropdown">
                         <a href="#">
                             <span>체험/행사</span>
                             <i class="bi bi-chevron-down toggle-dropdown"></i>
                         </a>
-                        <ul>
+                        <ul>1
                             <li><a th:href="@{/product/list}">체험정보</a></li>
                             <li><a th:href="@{/event}">행사정보</a></li>
                         </ul>

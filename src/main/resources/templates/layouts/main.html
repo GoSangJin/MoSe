@@ -287,6 +287,33 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 </script>
+    <!--게시글 수정 이미지 삭제-->
+    <script>
+  function removeImage() {
+    // 이미지 미리보기를 숨기거나 제거
+    document.getElementById('imageContainer').style.display = 'none';
+
+    // 만약 서버에 빈 값을 전송하기 위해 hidden input을 사용한다면
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'removeImage';
+    hiddenInput.value = 'true';
+    document.querySelector('form').appendChild(hiddenInput);
+  }
+
+  function previewImage(input) {
+    const file = input.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.getElementById('currentImage');
+        img.src = e.target.result;
+        img.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+</script>
 </th:block>
 </body>
 <!--레이아웃은 각작업별로 분리된 html을 배치할 위치를 지정-->
