@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/main}" xmlns="http://www.w3.org/1999/html">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Services - Active Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!--icons-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .btn-open {
+      background-color: #FFA07A; /* 주황색 */
+      color: white;
+      border: none;
+    }
+
+    .btn-closed {
+      background-color: #808080; /* 회색 */
+      color: white;
+      border: none;
+    }
+
+    .card {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      max-height: 600px; /* 카드의 최대 높이 설정 */
+    }
+
+    .card-body {
+      flex: 1;
+    }
+  </style>
+
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">살아보기</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;">청장년 귀농귀촌 희망자가 농촌지역 실제 이주 전에 희망지역에서 미리 살아볼 수 있는 기회를 제공하는 사업입니다.</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- 체험정보 title -->
+
+    <section id="services-2" class="services-2 section" >
+      <div class="container">
+        <h3 style="padding-left: 15px;">체험정보</h3>
+
+        <!-- 상단 버튼 영역 -->
+        <div class="mb-3 text-end" style="padding-left: 15px;" sec:authorize="hasAnyRole('ROLE_admin', 'ROLE_master')">
+          <a href="/product/new" class="btn rounded-pill" style="background-color: #006400; color: white;">
+            <strong>등록하기</strong>
+          </a>
+        </div>
+
+        <!-- 모집중/모집완료 버튼 -->
+        <div class="btn-group mb-3" role="group" style="padding-left: 15px;">
+          <a th:href="@{/product/list(status='OPEN')}" class="btn btn-open rounded-pill">
+            <strong>모집중</strong>
+          </a>
+          <a th:href="@{/product/list(status='CLOSED')}" class="btn btn-closed rounded-pill">
+            <strong>모집완료</strong>
+          </a>
+        </div>
+
+        <!-- 체험정보 카드 목록 -->
+        <div class="container" data-aos="fade-up">
+          <div class="row">
+            <!-- Card Start -->
+            <div class="col-md-3 col-lg-3 mb-4" th:each="product : ${list.content}">
+              <div class="card">
+                <div style="position: relative;">
+                  <!-- 이미지 섹션 -->
+                  <div class="img" style="background-color: white; margin-bottom: -10px;">
+                    <a th:href="@{/product/view(id=${product.id})}">
+                      <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${product.image_url}|"
+                           class="card-img-top"
+                           alt="상품 이미지"
+                           style="height: 200px; object-fit: cover;"
+                           th:if="${product.image_url != null}" />
+                      <img th:src="@{/assets/img/no_image.jpg}"
+                           class="card-img-top"
+                           alt="대체 이미지"
+                           th:if="${product.image_url == null}"
+                           style="height: 200px; object-fit: cover;" />
+                    </a>
+                    <!-- Status Button -->
+                    <div style="position: absolute; top: 10px; right: 10px;">
+                      <button class="btn btn-sm"
+                              th:classappend="${product.status.name() == 'OPEN' ? 'btn-open' : 'btn-closed'}"
+                              style="border-radius: 50px;">
+                        <span th:text="${product.status.description}" style="font-weight: bold;">상태</span>
+                      </button>
+                    </div>
+                    <!-- /Status Button -->
+                  </div>
+                  <!-- /이미지 섹션 -->
+
+                  <!-- 마을 내용 - 카드 바디 -->
+                  <div class="card-body">
+                    <!-- 지역 이름 -->
+                    <p style="color: #888; margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;"
+                       th:text="${product.local_name != null ? product.local_name : '정보 없음'}">지역 이름</p>
+
+                    <!-- 마을 이름 -->
+                    <h5 class="card-title" style="font-weight: bold; color: green; margin-top: 0;
+                line-height: 1.2; font-size: 1.125rem;" th:text="${product.title}">마을 이름</h5>
+
+                    <!-- 카드 내용 -->
+                    <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
+                      <strong>입주가능일 : </strong>
+                      <span th:text="${product.moveInDate != null ? #temporals.format(product.moveInDate, 'yyyy.MM.dd')
+                              : '날짜 정보 없음'}" style="color: #888;">입주 가능일</span>
+                    </p>
+                    <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
+                      <strong>신청기간 : </strong>
+                      <span th:text="${product.applicationStartDate != null && product.applicationEndDate != null ?
+                              #temporals.format(product.applicationStartDate, 'yyyy.MM.dd') + ' ~ ' +
+                              #temporals.format(product.applicationEndDate, 'yyyy.MM.dd') : '기간 정보 없음'}"
+                            style="color: #888;">신청 기간</span>
+                    </p>
+                    <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
+                      <strong>모집인원 : </strong>
+                      <span th:text="${product.recruitmentCnt != null ? product.recruitmentCnt : '인원 정보 없음'}"
+                            style="color: #888;">모집 인원 </span>명
+                    </p>
+                  </div>
+                  <!-- /마을 내용 - 카드 바디 -->
+
+                </div>
+              </div>
+            </div><!-- /Card End -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+</body>
+</html>
