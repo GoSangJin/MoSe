@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>가이드 안내</title>
+  <meta name="description" content="가이드 절차에 대한 안내입니다.">
+  <meta name="keywords" content="가이드, 절차, 귀농, 단계">
+
+  <!-- Favicons -->
+  <link th:href="@{/assets/img/favicon.png}" rel="icon">
+  <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link th:href="@{/assets/css/main.css}" rel="stylesheet">
+
+  <style>
+    /* 기본 스타일 */
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .step-container {
+      display: flex;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .step-container img {
+      width: 150px;
+      height: auto;
+      margin-right: 30px;
+    }
+
+    .step-description {
+      max-width: 600px;
+    }
+
+    .step-number {
+      display: inline-block;
+      background-color: #007a33;
+      color: #fff;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .step-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .step-text {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    /* 여백 조정 */
+    .procedure-guide {
+      padding: 40px 0;
+    }
+
+    .container img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .step-image {
+      margin: 0 200px 20px 0; /* 오른쪽 50px, 아래 20px */
+    }
+
+    /* 화면 크기에 따른 반응형 조정 */
+    @media (max-width: 768px) {
+      .step-container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .step-container img {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body class="guide-info-page">
+
+<div layout:fragment="content">
+  <main class="main">
+    <!-- 페이지 제목 -->
+    <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">가이드 절차 안내</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;">모든세대 홈페이지에 대한 가이드 안내입니다.</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- End 페이지 제목 -->
+
+    <!-- 절차 안내 섹션 -->
+    <section id="procedure-guide" class="procedure-guide section">
+      <div class="container">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-8 col-lg-8 offset-md-3 offset-lg-3">
+            <div th:each="guide : ${guideList}" class="step-container">
+              <img th:src="@{/assets/img/guide/step_{guide.id}.png}" alt="STEP {guide.id} 이미지" class="step-image">
+              <div class="step-description">
+                <span class="step-number" th:text="'STEP ' + ${guide.id}"></span>
+                <h4 class="step-title" th:text="${guide.title}"></h4>
+                <p class="step-text" th:text="${guide.description}"></p>
+              </div>
+            </div>
+
+            <!-- 기존 단계들 -->
+            <div class="step-container">
+              <img th:src="@{/assets/img/guide/step_01.png}" alt="STEP 1 이미지" class="step-image">
+              <div class="step-description">
+                <span class="step-number">STEP 01</span>
+                <h4 class="step-title">귀농 정보를 수집하자!</h4>
+                <p class="step-text">귀농귀촌종합센터, 농업 관련 기관에서 필요한 정보를 수집하고 박람회 및 교육과정에 참여하세요.</p>
+              </div>
+            </div>
+
+            <div class="step-container">
+              <img th:src="@{/assets/img/guide/step_02.png}" alt="STEP 2 이미지" class="step-image">
+              <div class="step-description">
+                <span class="step-number">STEP 02</span>
+                <h4 class="step-title">가족들과 충분히 의논하자</h4>
+                <p class="step-text">귀농 결심에 대해 가족과 상의하고 동의를 얻습니다.</p>
+              </div>
+            </div>
+
+            <div class="step-container">
+              <img th:src="@{/assets/img/guide/step_03.png}" alt="STEP 3 이미지" class="step-image">
+              <div class="step-description">
+                <span class="step-number">STEP 03</span>
+                <h4 class="step-title">어떤 작물을 기를까?</h4>
+                <p class="step-text">자신의 여건과 적성에 맞는 작목을 선택하세요.</p>
+              </div>
+            </div>
+
+            <div class="step-container">
+              <img th:src="@{/assets/img/guide/step_04.png}" alt="STEP 4 이미지" class="step-image">
+              <div class="step-description">
+                <span class="step-number">STEP 04</span>
+                <h4 class="step-title">영농 기술을 습득하자!</h4>
+                <p class="step-text">교육 참여 및 선배 농가 견학을 통해 기술을 습득하세요.</p>
+              </div>
+            </div>
+
+            <div class="step-container">
+              <img th:src="@{/assets/img/guide/step_05.png}" alt="STEP 5 이미지" class="step-image">
+              <div class="step-description">
+                <span class="step-number">STEP 05</span>
+                <h4 class="step-title">어디서 정착할까?</h4>
+                <p class="step-text">생활 여건과 선정한 작목에 적합한 장소를 선택하세요.</p>
+              </div>
+            </div>
+
+            <div class="step-container">
+              <img th:src="@{/assets/img/guide/step_06.png}" alt="STEP 6 이미지" class="step-image">
+              <div class="step-description">
+                <span class="step-number">STEP 06</span>
+                <h4 class="step-title">주택과 농지를 확인하자!</h4>
+                <p class="step-text">주택과 농지를 신중하게 선택하세요.</p>
+              </div>
+            </div>
+
+            <div class="step-container">
+              <img th:src="@{/assets/img/guide/step_07.png}" alt="STEP 7 이미지" class="step-image">
+              <div class="step-description">
+                <span class="step-number">STEP 07</span>
+                <h4 class="step-title">영농계획을 수립하자!</h4>
+                <p class="step-text">농업 계획을 세우고 장기적인 수익 구조를 설계하세요.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End 절차 안내 섹션 -->
+  </main>
+</div>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+
+</html>
