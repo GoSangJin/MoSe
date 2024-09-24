@@ -72,20 +72,23 @@ public class FruitService {
         Pageable pageable = PageRequest.of(current, size, Sort.by(Sort.Direction.DESC, "id"));
 
         Page<FruitEntity> fruitEntities;
-        if (searchType.equals("name")) {
-            fruitEntities = fruitRepository.findByFruitNameContaining(search, pageable);
-        } else {
-            fruitEntities = fruitRepository.findAll(pageable);
-        }
+        // 검색 타입에 따른 필터링 처리
+    if (searchType.equals("name") && !search.isEmpty()) {
+        // 검색어가 있는 경우 해당 검색어를 포함하는 작물 이름으로 필터링
+        fruitEntities = fruitRepository.findByFruitNameContaining(search, pageable);
+    } else {
+        // 검색어가 없거나 다른 타입일 경우 전체 조회
+        fruitEntities = fruitRepository.findAll(pageable);
+    }
 
-        Page<FruitDTO> fruitDTOPage = fruitEntities.map(fruitEntity -> {
-            FruitDTO fruitDTO = modelMapper.map(fruitEntity, FruitDTO.class);
-            List<DiseaseDTO> diseaseDTOList = diseaseService.getDiseasesByFruitId(fruitEntity.getId());
-            fruitDTO.setDiseaseDTOList(diseaseDTOList);
-            return fruitDTO;
-        });
-
-        return fruitDTOPage;
+    // FruitEntity에서 FruitDTO로 변환
+    return fruitEntities.map(fruitEntity -> {
+        FruitDTO fruitDTO = modelMapper.map(fruitEntity, FruitDTO.class);
+        // 작물에 연결된 병해 정보 리스트 가져오기
+        List<DiseaseDTO> diseaseDTOList = diseaseService.getDiseasesByFruitId(fruitEntity.getId());
+        fruitDTO.setDiseaseDTOList(diseaseDTOList);
+        return fruitDTO;
+    });
     }
 
     public FruitDTO read(Integer id) {

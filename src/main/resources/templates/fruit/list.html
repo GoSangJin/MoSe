@@ -59,30 +59,38 @@
 <body class="services-page">
   <div layout:fragment="content">
     <main class="main">
-      <div class="page-title light-background">
-        <div class="container">
-          <h1>병해정보</h1>
-          <nav class="breadcrumbs">
-            <ol>
-              <li><a th:href="@{/}">메인</a></li>
-              <li><a th:href="@{/fruit}">병해정보</a></li>
-            </ol>
-          </nav>
-        </div>
-      </div><!-- End Page Title -->
+      <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">병해도감</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;">각종 작물에 대한 병해정보를 볼 수 있는 페이지입니다.</span>
+          </div>
+        </nav>
+      </div>
+    </div>
 
       <!-- Services 2 Section -->
       <section id="services-2" class="services-2 section">
         <div class="container">
           <!-- Title and Register Button -->
           <div class="row mb-3">
-            <div class="col-md-10">
-              <h2>작물 목록</h2>
+                <div class="col-md-10">
+                    <h2>작물 목록</h2>
+                </div>
+                <div class="col-md-2" sec:authorize="hasAnyRole('admin', 'master')">
+                    <a th:href="@{/fruit/create}" class="btn rounded-pill" style="background-color: #006400; color: white;">등록하기</a>
+                </div>
             </div>
-            <div class="col-md-2" sec:authorize="hasAnyRole('admin', 'master')">
-              <a th:href="@{/fruit/create}" class="btn rounded-pill" style="background-color: #006400; color: white;">등록하기</a>
+
+            <div class="row mb-3">
+                <div class="col-md-4 offset-md-4">
+                    <form th:action="@{/fruit}" method="get" class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="작물 이름 검색" th:value="${search}">
+                        <button class="btn btn-outline-secondary" type="submit">검색</button>
+                    </form>
+                </div>
             </div>
-          </div>
 
 
           <!-- Fruit List -->
@@ -128,10 +136,16 @@
 
           <!-- Pagination -->
           <nav>
-            <ul class="pagination">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/fruit(page=1, searchType=${searchType}, search=${search})}"><<</a>
+                </li>
               <li th:each="i : ${#numbers.sequence(startPage, endPage)}" class="page-item" th:classappend="${currentPage == i} ? 'active'">
                 <a class="page-link" th:href="@{/fruit(page=${i}, searchType=${searchType}, search=${search})}" th:text="${i}">1</a>
               </li>
+                <li class="page-item" th:classappend="${currentPage == lastPage} ? 'disabled'">
+                    <a class="page-link" th:href="@{/fruit(page=${lastPage}, searchType=${searchType}, search=${search})}">>></a>
+                </li>
             </ul>
           </nav>
         </div>

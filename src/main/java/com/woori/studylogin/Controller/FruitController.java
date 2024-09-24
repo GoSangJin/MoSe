@@ -95,22 +95,18 @@ public class FruitController {
     }
 
     // 전체조회(Get)
-    @GetMapping("/fruit")
+@GetMapping("/fruit")
 public String getAllFruits(@PageableDefault(page = 1) Pageable pageable,
-                           @RequestParam(value = "searchType", defaultValue = "") String searchType,
+                           @RequestParam(value = "searchType", defaultValue = "name") String searchType, // 검색 유형 기본값을 'name'으로 설정
                            @RequestParam(value = "search", defaultValue = "") String search, Model model) {
 
+    // 검색 조건에 맞는 과일 목록을 가져옴
     Page<FruitDTO> fruitPage = fruitService.list(searchType, search, pageable);
     List<FruitDTO> fruitDTOList = fruitPage.getContent(); // 페이지에서 리스트만 추출
     model.addAttribute("fruitDTOList", fruitDTOList);
     model.addAttribute("bucket", bucket);
     model.addAttribute("region", region);
     model.addAttribute("folder", folder);
-
-    for (FruitDTO fruit : fruitDTOList) {
-        System.out.println(fruit.getFruitName() + ": " + fruit.getDiseaseDTOList());
-    }
-
 
     Map<String, Integer> pageInfo = PaginationUtil.Pagination(fruitPage);
     model.addAllAttributes(pageInfo);
