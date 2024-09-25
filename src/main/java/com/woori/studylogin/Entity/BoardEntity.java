@@ -27,7 +27,7 @@ public class BoardEntity extends BaseEntity {
     private String title; // 글 제목
     private String author; //작성자
     @Lob //65535byte(Large Object)
-    @Column(name="content", length=200)
+    @Column(name="content" ,columnDefinition = "TEXT")
     private String content; // 글 내용
     @Column(name="viewCount")
     private Integer viewCount=0;
@@ -36,7 +36,7 @@ public class BoardEntity extends BaseEntity {
 //    private String category;
     @Column(name="likeCount")
     private Integer likeCount=0;
-    private String boardImg;
+    private String boardImg = null;
 
     @Enumerated(EnumType.STRING)
     private CategoryType category;
@@ -48,4 +48,7 @@ public class BoardEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "board",cascade = CascadeType.ALL)
     private List<LikeEntity> likes;
+
+    @OneToMany(mappedBy = "board",cascade = CascadeType.ALL)
+    private List<ReportEntity> reports;
 }
