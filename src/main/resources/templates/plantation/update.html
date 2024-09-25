@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Update - 재배정보 수정</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">재배정보 수정</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;"> 설명 칸 </span>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- 재배정보 수정하기 -->
+    <section id="services-2" class="services-2 section">
+      <div class="container mb-3 mt-5">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-6 col-lg-4">
+            <!-- 상단 제목 -->
+            <h2>재배정보 수정하기</h2>
+            <form th:action="@{/plantation/update}" th:object="${plantationDTO}" method="post" enctype="multipart/form-data">
+              <input type="hidden" id="id" th:field="*{id}">
+              <div class="form-group mb-2">
+                <label for="title">과일/채소 이름</label>
+                <input type="text" id="title" th:field="*{title}" class="form-control" required>
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="efficacy">효능</label>
+                <input type="text" id="efficacy" th:field="*{efficacy}" class="form-control" required>
+              </div>
+              <div class="form-group mb-3">
+                <label for="region">수확시기</label>
+                <input type="text" id="region" th:field="*{region}" class="form-control" required>
+              </div>
+              <div class="form-group mb-3">
+                <label for="harvest">적응지역</label>
+                <input type="text" id="harvest" th:field="*{harvest}" class="form-control" required>
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="cultivation">재배방법</label>
+                <input type="text" id="cultivation" th:field="*{cultivation}" class="form-control" required>
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="characteristics">특징</label>
+                <input type="text" id="characteristics" th:field="*{characteristics}" class="form-control">
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="precautions">유의사항</label>
+                <input type="text" id="precautions" th:field="*{precautions}" class="form-control">
+              </div>
+
+              <div>
+                      <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${plantationDTO.thumbnail_img}|"
+                           class="post-image"
+                           th:if="${plantationDTO.thumbnail_img != null and !#strings.isEmpty(plantationDTO.thumbnail_img)}">
+                  </div>
+
+                  <div class="mb-4" style="margin-top: 30px; margin-left: 20px; margin-right: 20px;">
+                      <div class="mb-3 d-flex align-items-center">
+                          <input class="form-control" type="file" id="thumbnail_img" name="file" onchange="previewImage(this)" style="flex: 1;">
+                          <button type="button" class="btn btn-danger ms-2" onclick="removeImage()">이미지 삭제</button>
+                      </div>
+                  </div>
+
+              <div class="form-group mb-3">
+                <label for="statusSelect">상태</label>
+                <select id="statusSelect" th:field="*{status}" class="form-select" style="color: orange;">
+                  <option th:each="status : ${plantTypes}"
+                          th:value="${status}"
+                          th:text="${status.description}">Select Status</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-outline-success rounded-pill mb-3">수정하기</button>
+              <a th:href="@{/plantation/list}" class="btn btn-outline-danger rounded-pill mb-3">취소</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section><!-- /재배정보 수정하기 -->
+  </main>
+</div>
+
+</body>
+
+</html>
