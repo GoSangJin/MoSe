@@ -56,7 +56,9 @@ public class BoardService {
     }
 
     // 수정
-    public void update(BoardDTO boardDTO, MultipartFile file) throws IOException {
+    public void update(BoardDTO boardDTO,
+                       boolean removeImage,
+                       MultipartFile file) throws IOException {
 
         BoardEntity boardEntity = boardRepository.findById(boardDTO.getId())
                 .orElseThrow(() -> new IllegalArgumentException("No board found with id: " + boardDTO.getId()));
@@ -64,11 +66,17 @@ public class BoardService {
         boardDTO.setLikeCount(boardEntity.getLikeCount());
         boardDTO.setViewCount(boardEntity.getViewCount());
         boardDTO.setCommentCount(boardEntity.getCommentCount());
-        boardDTO.setBoardImg(boardEntity.getBoardImg());
 
         String deleteFile = boardEntity.getBoardImg();
         String newFileName = "";
 
+        // removeImage가 true일 경우 기존 이미지를 삭제
+        if (removeImage) {
+            if (deleteFile != null && !deleteFile.isEmpty()) {
+                fileUpload.deleteFile(deleteFile, imgUploadLocation);  // 기존 이미지 삭제
+            }
+            boardDTO.setBoardImg(null);  // 이미지 필드를 null로 설정
+        }
         if (file != null && !file.isEmpty()) {
             if (deleteFile != null && !deleteFile.isEmpty()) {
                 fileUpload.deleteFile(deleteFile, imgUploadLocation);
@@ -81,6 +89,10 @@ public class BoardService {
         }
 
         modelMapper.map(boardDTO, boardEntity);
+        // 만약 removeImage가 true이고 파일이 없으면 boardEntity의 이미지 필드를 null로 설정
+        if (removeImage && (file == null || file.isEmpty())) {
+            boardEntity.setBoardImg(null);  // Entity의 이미지 필드를 null로 설정
+        }
         boardRepository.save(boardEntity);
     }
 

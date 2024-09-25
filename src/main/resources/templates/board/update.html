@@ -136,7 +136,8 @@
 
                   <!-- 이미지가 있을 때만 표시 -->
                   <div>
-                      <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${boardDTO.boardImg}|"
+                      <img id="currentImage"
+                           th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${boardDTO.boardImg}|"
                            class="post-image"
                            th:if="${boardDTO.boardImg != null and !#strings.isEmpty(boardDTO.boardImg)}">
                   </div>

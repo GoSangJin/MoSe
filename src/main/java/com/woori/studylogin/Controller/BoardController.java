@@ -144,16 +144,9 @@ public class BoardController {
 
 
         boardDTO.setAuthor(username); // 아이디를 작성자에 저장해서 서비스로 전달
-            // 이미지 삭제 로직
-            if ("true".equals(removeImage)) {
-                boardDTO.setBoardImg(null); // 이미지 필드를 null로 설정하여 이미지 삭제
-            }
-        // 파일이 null이 아니고 비어있지 않은 경우에만 파일 처리
-            if (file != null && !file.isEmpty()) {
-                boardService.update(boardDTO, file);
-            } else {
-                boardService.update(boardDTO, null); // 파일이 없을 경우 파일 파라미터를 null로 전달
-            }
+             boolean removeImgFlag = "true".equals(removeImage);  // 이미지 삭제 여부 확인
+
+            boardService.update(boardDTO, removeImgFlag, file);
 
 
         redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 수정되었습니다.");
