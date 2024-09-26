@@ -61,6 +61,7 @@
       white-space: nowrap; /* 텍스트가 넘치지 않도록 설정 */
       overflow: hidden; /* 넘치는 텍스트 숨기기 */
       text-overflow: ellipsis; /* 넘치는 텍스트에 대해 ellipsis 표시 */
+      max-width: 70px; /* 최대 너비 설정, 필요에 따라 조정 가능 */
     }
 
     .table th {
@@ -134,17 +135,11 @@
       color: black; /* 작성자 색상 검정으로 변경 */
     }
 
-    /* 제목에 대한 스타일 (변경 없음) */
-    .text-center span.title {
-      /* 제목의 경우 기본 색상 유지 */
-    }
 
     /* 호버 시 배경색 */
     .table-hover tbody tr:hover {
       background-color: #f1f1f1;
     }
-
-
 
 
     /* 카드 뷰 스타일 (모바일용) */
@@ -221,11 +216,24 @@
     }
 
     /* 일반 카드 제목 */
+    /* 카드 제목 스타일 */
     .card-title {
       font-size: 0.9rem; /* 제목 글씨 크기 줄임 */
       font-weight: bold;
       margin-bottom: 0.25rem; /* 제목과 내용 간의 여백 줄임 */
       line-height: 1.2; /* 제목의 행간격 줄임 */
+      white-space: nowrap; /* 줄 바꿈 방지 */
+      overflow: hidden; /* 넘치는 텍스트 숨김 */
+      text-overflow: ellipsis; /* 넘치는 텍스트에 대해 ellipsis 표시 */
+      max-width: 150px; /* 최대 너비 설정 (필요에 따라 조정 가능) */
+    }
+
+    /* 텍스트 센터 스타일 */
+    .text-center span.title {
+      white-space: nowrap; /* 줄 바꿈 방지 */
+      overflow: hidden; /* 넘치는 텍스트 숨김 */
+      text-overflow: ellipsis; /* 넘치는 텍스트에 대해 ellipsis 표시 */
+      max-width: 150px; /* 최대 너비 설정 (필요에 따라 조정 가능) */
     }
 
     .card-title a {
@@ -265,6 +273,9 @@
     .card-info .card-author {
       font-size: 0.8rem; /* 작성자 글씨 크기 조정 */
       color: #333; /* 글자 색상 변경 */
+      white-space: nowrap; /* 줄 바꿈 방지 */
+      overflow: hidden; /* 넘치는 텍스트 숨김 */
+      text-overflow: ellipsis; /* 넘치는 텍스트에 대해 ellipsis 표시 */
     }
 
     /* 등록일, 추천수, 조회수 글자 더 작게 설정 */
@@ -275,14 +286,12 @@
       color: #666; /* 글자 색상 약간 연하게 설정 */
     }
 
+
     /* 공지사항과 일반 카드를 구분하기 위한 상단 여백 */
     .board-section {
       margin-top: 20px;
       margin-bottom: 10px;
     }
-
-
-
 
     /* 페이지 네비게이션 스타일 */
     .pagination {
@@ -295,12 +304,12 @@
     .page-item .page-link {
       border-radius: 50%;
       margin: 0 0.15rem;
-      width: 1.4rem; /* 버튼 크기 더 줄임 */
-      height: 1.4rem; /* 버튼 크기 더 줄임 */
+      width: 2rem; /* 버튼 크기를 늘림 */
+      height: 2rem; /* 버튼 크기를 늘림 */
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.5rem; /* 폰트 크기 더 줄임 */
+      font-size: 0.75rem; /* 폰트 크기를 늘림 */
     }
 
     .page-item.active .page-link {
@@ -322,15 +331,15 @@
 
     /* 아이콘 크기 조정 */
     .page-link .bi {
-      font-size: 0.3rem; /* 아이콘 크기 더 줄임 */
+      font-size: 0.6rem; /* 아이콘 크기 늘림 */
     }
 
     /* 이전, 다음 버튼 스타일 */
     .page-item.previous .page-link,
     .page-item.next .page-link {
       border-radius: 50%; /* 둥근 버튼 */
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 2rem; /* 이전, 다음 버튼 크기 늘림 */
+      height: 2rem; /* 이전, 다음 버튼 크기 늘림 */
     }
 
     .page-item.previous .page-link {
@@ -350,13 +359,13 @@
 
     @media (max-width: 576px) {
       .page-item .page-link {
-        width: 1.5rem; /* 작은 화면에서 더 작은 버튼 */
-        height: 1.5rem; /* 작은 화면에서 더 작은 버튼 */
-        font-size: 0.55rem; /* 작은 화면에서 더 작은 폰트 */
+        width: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+        height: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+        font-size: 0.65rem; /* 작은 화면에서 폰트 크기 조정 */
       }
 
       .page-link .bi {
-        font-size: 0.45rem; /* 작은 화면에서 아이콘 더 작게 */
+        font-size: 0.55rem; /* 작은 화면에서 아이콘 크기 조정 */
       }
     }
 
@@ -509,7 +518,6 @@
                 <span th:if="${category == '자유게시판'}">자유게시판</span>
                 <span th:if="${category == '정보게시판'}">정보게시판</span>
                 <span th:if="${category == '질문게시판'}">질문게시판</span>
-                <span th:if="${category == '건의게시판'}">건의게시판</span>
               </h2>
               <!-- 등록하기 버튼을 반응형으로 조정 -->
               <div class="d-flex justify-content-end align-items-center mb-3">
@@ -536,10 +544,6 @@
                 <span class="fs-5 fw-bold me-1">ㆍ</span>
                 <a class="text-decoration-none fw-bold me-2" th:classappend="${category == '질문게시판'} ? 'text-darkgreen' : 'text-secondary'"
                    th:href="@{/board/list(category='질문게시판')}">질문</a>
-                <span class="fs-5 fw-bold me-1">ㆍ</span>
-                <a class="text-decoration-none fw-bold" th:classappend="${category == '건의게시판'} ? 'text-darkgreen' : 'text-secondary'"
-                   th:href="@{/board/list(category='건의게시판')}">건의사항</a>
-              </div>
             </div>
 
             <!--테이블 전체-->
@@ -684,7 +688,6 @@
                   <option value="자유게시판" th:selected="${category == '자유게시판'}">자유게시판</option>
                   <option value="정보게시판" th:selected="${category == '정보게시판'}">정보게시판</option>
                   <option value="질문게시판" th:selected="${category == '질문게시판'}">질문게시판</option>
-                  <option value="건의게시판" th:selected="${category == '건의게시판'}">건의게시판</option>
                 </select>
               </div>
 
@@ -740,11 +743,67 @@
             </nav><!--/페이지 넘버-->
           </div>
         </div>
-
+      </div>
     </section><!-- /Services 2 Section -->
 
   </main>
 </div>
+<th:block layout:fragment="script">
+  <script th:inline="javascript">
+    <!-- 게시판 list (반응형)테이블/카드 뷰 스크립트 -->
+
+    function updateView() {
+      const tableView = document.getElementById('table-view');
+      const cardView = document.getElementById('card-view');
+
+      if (!tableView || !cardView) {
+        console.error("테이블 뷰 또는 카드 뷰 요소를 찾을 수 없습니다.");
+        return; // 요소가 없으면 함수 종료
+      }
+
+      if (window.innerWidth <= 600) {
+        tableView.style.display = 'none'; // 작은 화면에서 테이블 숨기기
+        cardView.style.display = 'block'; // 카드 뷰 보이기
+      } else {
+        tableView.style.display = 'block'; // 큰 화면에서 테이블 보이기
+        cardView.style.display = 'none'; // 카드 뷰 숨기기
+      }
+    }
+
+    window.addEventListener('resize', updateView); // 화면 크기 조정 시 호출
+    window.addEventListener('load', updateView); // 페이지 로드 시 호출
+
+
+  </script>
+  <!--게시판 list 검색 키워드-->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 검색 키워드를 가져옵니다.
+      const searchKeyword = new URLSearchParams(window.location.search).get('searchKeyword');
+
+      // 모든 게시물 행을 가져옵니다.
+      const rows = Array.from(document.querySelectorAll('tbody tr'));
+
+      // 검색 키워드가 있는 경우 필터링합니다.
+      if (searchKeyword) {
+        rows.forEach(row => {
+          const title = row.querySelector('th:nth-of-type(3)').innerText.toLowerCase();
+          const content = row.querySelector('th:nth-of-type(4)').innerText.toLowerCase();
+          const isNotice = row.querySelector('th:nth-of-type(1)').innerText.trim() === '공지사항';
+
+          // 제목이나 내용에 검색 키워드가 포함되지 않거나 공지사항인 경우 숨깁니다.
+          if (title.includes(searchKeyword.toLowerCase()) || content.includes(searchKeyword.toLowerCase())) {
+            if (isNotice) {
+              row.style.display = 'none';
+            }
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      }
+    });
+  </script>
+</th:block>>
 
 </body>
 

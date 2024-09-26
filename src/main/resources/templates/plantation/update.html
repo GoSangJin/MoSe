@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>재배정보 수정하기</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Ensure Bootstrap CSS is included in your project -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+
+
+  <!-- =======================================================
+  * Template Name: Active
+  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+
+  <style>
+    /* 플레이스홀더 글자 크기 및 색상 조정 */
+    ::placeholder {
+      font-size: 0.8rem; /* 글자 크기 조정 */
+      color: #6c757d; /* 플레이스홀더 색상 */
+    }
+  </style>
+
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">재배정보</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;"> 과일이나 채소에 관한 재배방법이나 특징, 유의사항 등 다양한 정보들이 있어요. </span>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- 재배정보 수정하기 -->
+    <section id="services-2" class="services-2 section">
+      <div class="container mb-3 mt-5">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-6 col-lg-4">
+            <!-- 상단 제목 -->
+            <h2>재배정보 수정하기</h2>
+            <form th:action="@{/plantation/update}" th:object="${plantationDTO}" method="post" enctype="multipart/form-data">
+              <input type="hidden" id="id" th:field="*{id}">
+
+              <div class="form-group mt-5 mb-4" style="font-weight: bold">
+                <label for="statusSelect">유형 : </label>
+                <select id="statusSelect" th:field="*{status}" class="form-select" style="color: orange; font-weight: bold">
+                  <option th:each="status : ${plantTypes}"
+                          th:value="${status}"
+                          th:text="${status.description}">Select Status</option>
+                </select>
+              </div>
+
+              <div class="form-group mb-4" style="font-weight: bold">
+                <label for="title">과일/채소 이름 : </label>
+                <input type="text" id="title" th:field="*{title}" class="form-control" placeholder="과일/채소 이름을 입력하세요" required>
+              </div>
+
+              <div class="form-group mb-4" style="font-weight: bold">
+                <label for="efficacy">효능 : </label>
+                <textarea type="text" id="efficacy" th:field="*{efficacy}" class="form-control" required rows="2" style="resize: none; overflow: auto;"
+                          placeholder="효능을 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '효능을 입력하세요'"></textarea>
+              </div>
+
+              <div class="form-group mb-4" style="font-weight: bold">
+                <label for="region">재배지역 : </label>
+                <textarea type="text" id="region" th:field="*{region}" class="form-control" required rows="2" style="resize: none; overflow: auto;"
+                          placeholder="재배지역을 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '재배지역을 입력하세요'"></textarea>
+              </div>
+
+              <div class="form-group mb-4" style="font-weight: bold">
+                <label for="harvest">수확시기 : </label>
+                <textarea type="text" id="harvest" th:field="*{harvest}" class="form-control" required rows="2" style="resize: none; overflow: auto;"
+                          placeholder="수확시기를 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '수확시기를 입력하세요'"></textarea>
+              </div>
+
+              <div class="form-group mb-4" style="font-weight: bold">
+                <label for="cultivation">재배방법 : </label>
+                <textarea id="cultivation"  th:field="*{cultivation}" class="form-control"  required rows="3" style="resize: none; overflow: auto;"
+                          placeholder="재배방법을 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '재배방법을 입력하세요'"></textarea>
+              </div>
+
+              <div class="form-group mb-4" style="font-weight: bold">
+                <label for="characteristics">특징 : </label>
+                <textarea id="characteristics"  th:field="*{characteristics}" class="form-control"  required rows="3" style="resize: none; overflow: auto;"
+                          placeholder="특징을 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '특징을 입력하세요'"></textarea>
+              </div>
+
+              <div class="form-group mb-4" style="font-weight: bold">
+                <label for="precautions">유의사항 : </label>
+                <textarea id="precautions"  th:field="*{precautions}" class="form-control"  required rows="3" style="resize: none; overflow: auto;"
+                          placeholder="유의사항을 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '유의사항을 입력하세요'"></textarea>
+              </div>
+
+              <!--이미지 파일 수정(등록된 이미지파일 보이기)-->
+              <div class="text-center mb-4"> <!-- 중앙 정렬을 위한 div -->
+                <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${plantationDTO.thumbnail_img}|"
+                     class="post-image"
+                     th:if="${plantationDTO.thumbnail_img != null and !#strings.isEmpty(plantationDTO.thumbnail_img)}"
+                     style="max-width: 90%; height: auto;"> <!-- 이미지 크기 조정 -->
+              </div>
+
+              <div class="mb-4" style="margin-top: 30px; margin-left: 20px; margin-right: 20px;">
+                <div class="mb-3 d-flex align-items-center" >
+                  <input class="form-control" type="file" id="thumbnail_img" name="file" onchange="previewImage(this)" style="flex: 1;">
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-outline-success rounded-pill mb-3">저장</button>
+              <a th:href="@{/plantation/list}" class="btn btn-outline-danger rounded-pill mb-3">취소</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section><!-- /재배정보 수정하기 -->
+
+  </main>
+</div>
+
+</body>
+
+</html>
