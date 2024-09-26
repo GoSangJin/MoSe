@@ -22,9 +22,16 @@ public class DocumentController {
 
     // 공문 목록 페이지
     @GetMapping("/document/list")
-    public String listDocuments(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(required = false) String title, Model model) {
+    public String listDocuments(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "15") int size,
+            @RequestParam(required = false) String title,
+            Model model) {
+
         Page<DocumentDTO> documentPage = documentService.getDocuments(page, size, title);
-        model.addAttribute("documents", documentPage.getContent());
+
+        model.addAttribute("documents", documentPage.getContent()); // 데이터가 documents에 추가되었는지 확인
+        model.addAttribute("list", documentPage); // list 변수도 추가
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", documentPage.getTotalPages());
         return "document/list"; // list.html

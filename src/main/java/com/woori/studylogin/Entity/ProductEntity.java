@@ -62,5 +62,5 @@ public class ProductEntity extends BaseEntity {
     private String supportCenter; // 시군 지원 센터
 
     @Enumerated(EnumType.STRING)
-    private RegionType region;
+    private RegionType regionType;
 }

@@ -1,5 +1,6 @@
 package com.woori.studylogin.Service;
 
+import com.woori.studylogin.Constant.RegionType;
 import com.woori.studylogin.Constant.StatusType;
 import com.woori.studylogin.DTO.ProductDTO;
 import com.woori.studylogin.Entity.ProductEntity;
@@ -102,11 +103,13 @@ public class ProductService {
 
     //전체조회
     public Page<ProductDTO> findAll(Pageable page) {
-        int current = page.getPageNumber() - 1;
-        int size = 12;
-        Pageable pageable = PageRequest.of(current, size, Sort.by(Sort.Direction.DESC, "id"));
-        Page<ProductEntity> productEntities = productRepository.findAll(pageable);
+        // PageNumber가 0부터 시작하므로 -1을 하지 않음
+        int current = page.getPageNumber();
+        int size = 12; // 페이지 당 데이터 수
+        Pageable pageable = PageRequest.of(current, size, Sort.by(Sort.Direction.DESC, "id")); // 페이지 요청 생성
+        Page<ProductEntity> productEntities = productRepository.findAll(pageable); // 데이터 조회
 
+        // ProductEntity를 ProductDTO로 매핑하여 반환
         return productEntities.map(productEntity -> modelMapper.map(productEntity, ProductDTO.class));
     }
 
@@ -115,4 +118,13 @@ public class ProductService {
         Page<ProductEntity> productEntities = productRepository.findByStatus(status, pageable);
         return productEntities.map(productEntity -> modelMapper.map(productEntity, ProductDTO.class));
     }
+
+    public Page<ProductDTO> findByRegionType(RegionType regionType, Pageable pageable) {
+        Page<ProductEntity> productEntities = productRepository.findByRegionType(regionType, pageable);
+        return productEntities.map(productEntity -> modelMapper.map(productEntity, ProductDTO.class));
+    }
+
+
+
+
 }

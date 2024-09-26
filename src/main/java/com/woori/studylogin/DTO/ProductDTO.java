@@ -42,5 +42,5 @@ public class ProductDTO {
     private String manager; // 마을 운영자
     private String supportCenter; // 시군 지원 센터
 
-    private RegionType region;
+    private RegionType regionType;
 }

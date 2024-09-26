@@ -68,6 +68,30 @@
                 </tr>
                 </tbody>
             </table>
+
+            <!-- 페이지 네비게이션 -->
+            <div class="row">
+                <div class="col text-center">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:class="${list.hasPrevious()} ? '' : 'disabled'">
+                                <a class="page-link" th:href="@{/document/list(page=0, size=${size}, title=${title})}" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, list.totalPages - 1)}"
+                                th:class="${i == list.number ? 'active' : ''}">
+                                <a class="page-link" th:href="@{/document/list(page=${i}, size=${size}, title=${title})}" th:text="${i + 1}"></a>
+                            </li>
+                            <li class="page-item" th:class="${list.hasNext()} ? '' : 'disabled'">
+                                <a class="page-link" th:href="@{/document/list(page=${list.totalPages - 1}, size=${size}, title=${title})}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
     </main>
 </div>

@@ -19,7 +19,7 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -59,6 +59,14 @@
 
     .card-body {
       flex: 1;
+    }
+
+    /* 드롭다운 크기 조절 */
+    #region-select {
+      width: 150px; /* 드롭다운 너비 설정 */
+      height: 30px; /* 드롭다운 높이 설정 */
+      font-size: 0.875rem; /* 글씨 크기 설정 */
+      padding: 2px 8px; /* 안쪽 여백 설정 */
     }
   </style>
 
@@ -103,6 +111,18 @@
           <a th:href="@{/product/list(status='CLOSED')}" class="btn btn-closed rounded-pill">
             <strong>모집완료</strong>
           </a>
+        </div>
+
+        <!-- 지역별 분류 드롭다운 -->
+        <div class="mb-3" style="padding-left: 15px;">
+          <label for="region-select" class="form-label">지역별 분류</label>
+          <select id="region-select" class="form-select"
+                  onchange="location.href=this.value + (this.value.includes('?') ? '&' : '?') + 'regionType=' + encodeURIComponent(this.value) + '&page=0'">
+            <option th:value="@{/product/list(status='OPEN')}" th:text="'전체'"></option>
+            <option th:each="region : ${regionType}"
+                    th:value="@{/product/list(regionType=${region.name()}, status='OPEN')}"
+                    th:text="${region.name()}"></option>
+          </select>
         </div>
 
         <!-- 체험정보 카드 목록 -->
@@ -173,6 +193,34 @@
               </div>
             </div><!-- /Card End -->
           </div>
+
+          <div class="row">
+            <div class="col text-center">
+              <nav>
+                <ul class="pagination justify-content-center">
+                  <!-- 첫 페이지로 이동 -->
+                  <li class="page-item" th:class="${list.hasPrevious()} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/product/list(page=0, status=${selectedStatus}, regionType=${selectedRegion})}" aria-label="First">
+                      <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                  </li>
+
+                  <!-- 페이지 번호 -->
+                  <li class="page-item" th:each="i : ${#numbers.sequence(0, list.totalPages - 1)}" th:class="${i == list.number ? 'active' : ''}">
+                    <a class="page-link" th:href="@{/product/list(page=${i}, status=${selectedStatus}, regionType=${selectedRegion})}" th:text="${i + 1}"></a>
+                  </li>
+
+                  <!-- 마지막 페이지로 이동 -->
+                  <li class="page-item" th:class="${list.hasNext()} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/product/list(page=${list.totalPages - 1}, status=${selectedStatus}, regionType=${selectedRegion})}" aria-label="Last">
+                      <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
