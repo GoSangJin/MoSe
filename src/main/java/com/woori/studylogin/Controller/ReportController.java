@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.IOException;
 
 @Controller
-public class ReportController  {
+public class ReportController {
 
     @Autowired
     private ReportService reportService;
@@ -27,29 +27,29 @@ public class ReportController  {
     }
 
     @PostMapping("/report")
-public String reportPost(@RequestParam Integer boardId, @RequestParam String title,
-                         @RequestParam String description, @RequestParam String username) {
-    System.out.println("Received username: " + username); // 디버깅용 로그
-    try {
-        ReportDTO reportDTO = new ReportDTO();
-        reportDTO.setTitle(title);
-        reportDTO.setDescription(description);
-        reportDTO.setBoardId(boardId);
-        reportDTO.setReporterUsername(username);
-        reportService.saveReport(reportDTO);
-        return "redirect:/board/report?boardId=" + boardId + "&success=true";
-    } catch (Exception e) {
-        return "redirect:/board/report?boardId=" + boardId + "&error=" + e.getMessage();
+    public String reportPost(@RequestParam Integer boardId, @RequestParam String title,
+                             @RequestParam String description, @RequestParam String username) {
+        System.out.println("Received username: " + username); // 디버깅용 로그
+        try {
+            ReportDTO reportDTO = new ReportDTO();
+            reportDTO.setTitle(title);
+            reportDTO.setDescription(description);
+            reportDTO.setBoardId(boardId);
+            reportDTO.setReporterUsername(username);
+            reportService.saveReport(reportDTO);
+            return "redirect:/board/report?boardId=" + boardId + "&success=true";
+        } catch (Exception e) {
+            return "redirect:/board/report?boardId=" + boardId + "&error=" + e.getMessage();
+        }
     }
-}
 
     @GetMapping("/admin/report")
     public String viewReport(@RequestParam(defaultValue = "0") int page, Model model) {
-    Page<ReportDTO> reports = reportService.getAllReports(PageRequest.of(page, 10));
-    model.addAttribute("reports", reports);
-    model.addAttribute("currentPage", page);
-    return "/admin/report";
-}
+        Page<ReportDTO> reports = reportService.getAllReports(PageRequest.of(page, 10));
+        model.addAttribute("reports", reports);
+        model.addAttribute("currentPage", page);
+        return "/admin/report";
+    }
 
     @GetMapping("/admin/report_content")
     public String viewReportedPosts(@RequestParam Integer id, Model model) {
@@ -61,21 +61,23 @@ public String reportPost(@RequestParam Integer boardId, @RequestParam String tit
 
     @PostMapping("/admin/handleReport")
     public String handleReport(@RequestParam("reportId") String reportIdStr,
-                           @RequestParam("suspensionType") String suspensionType)  throws IOException {
-    Integer reportId = null;
-    try {
-        reportId = Integer.valueOf(reportIdStr);
-    } catch (NumberFormatException e) {
-        // 오류 처리 로직
-        e.printStackTrace();
+                               @RequestParam("suspensionType") String suspensionType) throws IOException {
+        Integer reportId = null;
+        try {
+            reportId = Integer.valueOf(reportIdStr);
+        } catch (NumberFormatException e) {
+            // 오류 처리 로직
+            e.printStackTrace();
+        }
+
+        reportService.handleReport(reportId, suspensionType);
+        // reportId와 suspensionType을 사용해 신고 처리
+
+        return "redirect:/admin/report";
     }
-
-    reportService.handleReport(reportId, suspensionType);
-    // reportId와 suspensionType을 사용해 신고 처리
-
-    return "redirect:/admin/report";
-}
-
-
-
+    @GetMapping("/report/delete")
+    public String deleteReport(Integer id) throws IOException {
+        reportService.deleteReport(id);
+        return "redirect:/admin/report";
+    }
 }

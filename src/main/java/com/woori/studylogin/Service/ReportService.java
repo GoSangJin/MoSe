@@ -57,6 +57,11 @@ public class ReportService {
         return dto;
     }
 
+    @Transactional
+    public void deleteReport(Integer id) throws IOException {
+        reportRepository.deleteById(id);
+    }
+
     @Transactional(readOnly = true)
     public ReportDTO getReportById(Integer reportId) {
         ReportEntity reportEntity = reportRepository.findById(reportId)

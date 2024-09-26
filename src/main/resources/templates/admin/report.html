@@ -165,6 +165,8 @@
                                     <!-- 처리 버튼 -->
                                     <button type="button" class="btn btn-outline-danger rounded-pill"
                                             th:onclick="'openModal(' + ${report.id} + ')'">신고 처리</button>
+                                    <a th:href="@{/report/delete(id=${report.id})}" class="btn btn-outline-danger rounded-pill"
+                                       th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -199,13 +201,12 @@
         <div id="suspensionModal" class="modal">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">신고 처리</h5>
-                        <!-- 오른쪽 끝으로 이동하고 배경색을 없앤 닫기 버튼 -->
+                    <div class="modal-header" style="padding: 15px;">
+                        <h5 class="modal-title" style="margin-left: 20px; margin-top: 10px;">신고 처리</h5> <!-- 왼쪽 마진 추가 -->
                         <button type="button" class="close" onclick="closeModal()" style="border: none; padding: 0; font-size: 20px; position: absolute; right: 15px; top: 15px; cursor: pointer;">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <form th:action="@{/admin/handleReport}" method="post">
+                    <div class="modal-body" style="padding: 20px;">
+                        <form th:action="@{/admin/handleReport}" method="post" style="padding: 20px;">
                             <input type="hidden" id="reportId" name="reportId">
                             <div class="form-group">
                                 <label for="suspensionType">처분 유형:</label>
@@ -217,20 +218,16 @@
                                 </select>
                             </div>
                             <!-- 셀렉트 옵션과 처리 버튼 간의 간격 넓힘 -->
-                            <div class="form-group mt-4 text-right">
+                            <div class="form-group mt-4 d-flex justify-content-center">
                                 <!-- 작아진 처리 버튼 -->
-                                <button type="submit" class="btn btn-danger" style="border-radius: 0; border: 1px solid #ccc; padding: 5px 15px; font-size: 0.8rem;">처리</button>
+                                <button type="submit" class="btn btn-danger rounded-pill" style="border-radius: 0; border: 1px solid #ccc; padding: 5px 15px; font-size: 0.8rem;">처리</button>
                             </div>
+
                         </form>
                     </div>
-                    <!-- Pagination -->
-
                 </div>
             </div>
         </div>
-
-
-
     </main>
 
 </div>

@@ -144,9 +144,9 @@ public class BoardController {
 
 
         boardDTO.setAuthor(username); // 아이디를 작성자에 저장해서 서비스로 전달
-             boolean removeImgFlag = "true".equals(removeImage);  // 이미지 삭제 여부 확인
+        boolean removeImgFlag = "true".equals(removeImage);  // 이미지 삭제 여부 확인
 
-            boardService.update(boardDTO, removeImgFlag, file);
+        boardService.update(boardDTO, removeImgFlag, file);
 
 
         redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 수정되었습니다.");
@@ -192,6 +192,7 @@ public class BoardController {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<CommentDTO> commentDTOS = commentService.getCommentsByPage(id, pageable);
+
         model.addAttribute("userDTO", userDTO);
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
@@ -201,10 +202,12 @@ public class BoardController {
         model.addAttribute("username", username);
         System.out.println("UserDTO RoleType: " + userDTO.getRoleType()); // RoleType 값 확인
 
-        // 사용자가 이미 추천했는지 여부를 세션에 저장
-
-        Boolean hasLiked = (Boolean) session.getAttribute("hasLiked_" + id);
-        model.addAttribute("hasLiked", hasLiked != null && hasLiked);
+        // 사용자가 이미 추천했는지 여부 확인
+        boolean hasLiked = false; // 기본값 false
+        if (username != null) {
+            hasLiked = boardService.hasLiked(id, username); // 데이터베이스에서 좋아요 여부 확인
+        }
+        model.addAttribute("hasLiked", hasLiked);
 
         // Pagination info
         Map<String, Integer> pageInfo = PaginationUtil.Pagination(commentDTOS);
