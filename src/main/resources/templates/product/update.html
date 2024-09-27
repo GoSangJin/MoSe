@@ -30,13 +30,6 @@
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: Active
-  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
-  * Updated: Jun 29 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body class="services-page">
@@ -64,14 +57,15 @@
           <div class="col-md-6 col-lg-4">
             <!-- 상단 제목 -->
             <h2>체험정보 수정하기</h2>
-            <form th:action="@{/product/update}" th:object="${productDTO}" method="post" enctype="multipart/form-data">
-              <input type="hidden" name="id" th:field="*{id}">
+            <form th:action="@{/product/edit}" th:object="${productDTO}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" th:field="*{id}">
+
               <div class="form-group mb-2">
                 <label for="local_name">지역 이름</label>
                 <input type="text" id="local_name" name="local_name" class="form-control" th:value="${productDTO.local_name}" required>
               </div>
 
-              <!--우편번호찾기-->
+              <!-- 우편번호 찾기 및 주소 입력 -->
               <div class="form-group mb-1">
                 <div class="row">
                   <div class="col">
@@ -82,11 +76,9 @@
                   </div>
                 </div>
               </div>
-              <!--주소입력-->
               <div class="form-group mb-1">
                 <input type="text" id="address" name="address" class="form-control" th:field="*{address}" required>
               </div>
-              <!--상세주소입력-->
               <div class="form-group mb-2">
                 <div class="row">
                   <div class="col">
@@ -98,6 +90,7 @@
                 </div>
               </div>
 
+              <!-- 나머지 정보들 수정 -->
               <div class="form-group mb-3">
                 <label for="title">마을 이름</label>
                 <input type="text" id="title" name="title" class="form-control" th:value="${productDTO.title}" required>
@@ -128,10 +121,12 @@
               </div>
 
               <div class="form-group mb-3">
-                <label for="status">상태</label>
-                <select id="status" name="status" class="form-control" th:field="*{status}" style="color: orange;">
-                  <option th:value="'OPEN'" th:text="'모집중'" th:selected="${productDTO.status == 'OPEN'}"></option>
-                  <option th:value="'CLOSED'" th:text="'모집완료'" th:selected="${productDTO.status == 'CLOSED'}"></option>
+                <label for="statusSelect">상태</label>
+                <select id="statusSelect" name="status" class="form-select" style="color: orange;">
+                  <option th:each="status : ${statusTypes}"
+                          th:value="${status}"
+                          th:text="${status.description}"
+                          th:selected="${status == selectedStatus}">Select Status</option>
                 </select>
               </div>
 
@@ -170,18 +165,12 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <!-- Daum API -->
-  <script>
-    function execDaumPostcode() {
-      new daum.Postcode({
-        oncomplete: function(data) {
-          // 우편번호와 주소를 입력합니다.
-          document.getElementById('postcode').value = data.zonecode;
-          document.getElementById('address').value = data.address;
-        }
-      }).open();
-    }
-  </script>
+  <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="/assets/vendor/aos/aos.js"></script>
+  <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/assets/js/main.js"></script>
+
 </div>
 </body>
 </html>

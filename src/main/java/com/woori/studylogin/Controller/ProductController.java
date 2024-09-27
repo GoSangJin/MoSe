@@ -67,7 +67,7 @@ public class ProductController {
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
-        return "product/update";
+        return "product/update"; // update.html로 이동
     }
 
     // 상품 수정 처리
@@ -77,7 +77,7 @@ public class ProductController {
                                 RedirectAttributes redirectAttributes) throws IOException {
         productService.update(productDTO, file);
         redirectAttributes.addFlashAttribute("message", "상품이 성공적으로 수정되었습니다.");
-        return "redirect:/product/list";
+        return "redirect:/product/list"; // 수정 후 목록으로 리다이렉트
     }
 
     // 삭제(Get)

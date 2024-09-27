@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Services - Active Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Active
+  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+<main>
+  <div layout:fragment="content">
+
+    <div class="page-title light-background">
+      <div class="container-fluid">
+        <h3 class="container" th:text="${username} + '님의 게시글 목록입니다.'"></h3>
+        <nav class="breadcrumbs">
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <div class="container">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>카테고리</th>
+          <th>제목</th>
+          <th>작성일</th>
+          <th>추천수</th>
+          <th>조회수</th>
+        </tr>
+        </thead>
+        <tbody th:each="board : ${userInfo}">
+        <tr>
+          <td th:text="${board.category}"></td>
+          <td>
+            <a th:href="@{/board/view(id=${board.id})}">
+              <span th:text="${board.title}"></span>
+            </a>
+          </td>
+          <td th:text="${#temporals.format(board.regDate, 'MM-dd')}"></td>
+          <td th:text="${board.likeCount}"></td>
+          <td th:text="${board.viewCount}"></td>
+        </tr>
+        </tbody>
+      </table>
+      <a th:href="@{/board/list}" class="btn btn-secondary mb-3">목록으로</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

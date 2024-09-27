@@ -55,28 +55,42 @@ public class ProductService {
 
     //수정(수정->파일추가)
     public void update(ProductDTO productDTO, MultipartFile file) throws IOException {
-        //유효성검사(Save작업전 데이터베이스 존재여부 확인)
+        // 유효성 검사(Save 작업 전 데이터베이스 존재 여부 확인)
         ProductEntity productEntity = productRepository.findById(productDTO.getId()).orElseThrow(() ->
                 new IllegalArgumentException("No product found with id: " + productDTO.getId()));
 
-        String deleteFile = productEntity.getImage_url(); //현재저장된 이미지파일명
+        String deleteFile = productEntity.getImage_url(); // 현재 저장된 이미지 파일명
 
-        //MultipartFile 작업(물리적 저장)
-        String oriFileName = file.getOriginalFilename(); //업로드된 파일명을 읽기
-        String newFileName = ""; //S3에 저장된 파일명
+        // MultipartFile 작업(물리적 저장)
+        String oriFileName = file.getOriginalFilename(); // 업로드된 파일명 읽기
+        String newFileName = ""; // S3에 저장된 파일명
 
-        if (oriFileName != null) { //유효성검사(작업이 가능한지 확인)-작업할 파일이 있으면
-            //기존파일을 삭제
-            if (deleteFile.length() != 0) { //이전에 저장된 파일이 존재하면
-                fileUpload.deleteFile(deleteFile, imgUploadLocation);
+        if (oriFileName != null && !oriFileName.isEmpty()) { // 유효성 검사(작업할 파일이 있는지 확인)
+            // 기존 파일 삭제
+            if (deleteFile != null && !deleteFile.isEmpty()) { // 이전에 저장된 파일이 존재하면
+                fileUpload.deleteFile(deleteFile, imgUploadLocation); // 기존 파일 삭제
             }
+
+            // 새로운 파일을 S3에 업로드
             newFileName = fileUpload.upload(file, imgUploadLocation);
-            productDTO.setImage_url(newFileName); //데이터베이스에 상품이미지이름을 추가
+            productEntity.setImage_url(newFileName); // 데이터베이스에 상품 이미지 URL 업데이트
         }
 
-        //값을 변환해서 저장(DTO에 대한 작업)
-        ProductEntity data = modelMapper.map(productDTO, ProductEntity.class);
-        productRepository.save(data);
+        // 다른 필드 값 업데이트
+        productEntity.setLocal_name(productDTO.getLocal_name());
+        productEntity.setTitle(productDTO.getTitle());
+        productEntity.setMoveInDate(productDTO.getMoveInDate());
+        productEntity.setApplicationStartDate(productDTO.getApplicationStartDate());
+        productEntity.setApplicationEndDate(productDTO.getApplicationEndDate());
+        productEntity.setRecruitmentCnt(productDTO.getRecruitmentCnt());
+        productEntity.setResidents(productDTO.getResidents());
+        productEntity.setRepresentative(productDTO.getRepresentative());
+        productEntity.setManager(productDTO.getManager());
+        productEntity.setSupportCenter(productDTO.getSupportCenter());
+        productEntity.setStatus(productDTO.getStatus());
+
+        // 데이터베이스에 저장
+        productRepository.save(productEntity);
     }
 
     //삭제

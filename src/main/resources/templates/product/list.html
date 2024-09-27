@@ -117,11 +117,19 @@
         <div class="mb-3" style="padding-left: 15px;">
           <label for="region-select" class="form-label">지역별 분류</label>
           <select id="region-select" class="form-select"
-                  onchange="location.href=this.value + (this.value.includes('?') ? '&' : '?') + 'regionType=' + encodeURIComponent(this.value) + '&page=0'">
-            <option th:value="@{/product/list(status='OPEN')}" th:text="'전체'"></option>
+                  onchange="location.href=this.value + (this.value.includes('?') ? '&' : '?') + 'page=0'">
+            <!-- 전체 옵션 -->
+            <option value="/product/list?status=OPEN"
+                    th:if="${selectedRegion == null}"
+                    selected>전체</option>
+            <option value="/product/list?status=OPEN"
+                    th:if="${selectedRegion != null}">전체</option>
+
+            <!-- 각 지역 옵션 -->
             <option th:each="region : ${regionType}"
                     th:value="@{/product/list(regionType=${region.name()}, status='OPEN')}"
-                    th:text="${region.name()}"></option>
+                    th:text="${region.name()}"
+                    th:selected="${selectedRegion != null and selectedRegion == region.name()}"></option>
           </select>
         </div>
 
