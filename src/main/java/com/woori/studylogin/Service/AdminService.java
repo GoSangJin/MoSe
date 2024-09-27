@@ -25,7 +25,7 @@ public class AdminService {
 
         if (!roleType.isEmpty()) {
             // 역할에 따라 사용자 필터링
-            userPage = userRepository.findByRoleType(RoleType.valueOf(roleType), pageable);
+            userPage = findUsersByRoleAndSearch(roleType, searchType, searchValue, pageable);
         } else {
             userPage = findUsers(searchType, searchValue, pageable);
         }
@@ -39,6 +39,23 @@ public class AdminService {
                 "searchType", searchType,
                 "searchValue", searchValue
         );
+    }
+
+    private Page<UserEntity> findUsersByRoleAndSearch(String roleType, String searchType, String searchValue, Pageable pageable) {
+        // 역할에 따라 사용자 필터링 및 검색
+        Page<UserEntity> userPage = userRepository.findByRoleType(RoleType.valueOf(roleType), pageable);
+
+        if ("name".equals(searchType) && searchValue != null && !searchValue.isEmpty()) {
+            return userRepository.findByRoleTypeAndNameContaining(RoleType.valueOf(roleType), searchValue, pageable);
+        }
+        if ("birth".equals(searchType) && searchValue != null && !searchValue.isEmpty()) {
+            return userRepository.findByRoleTypeAndBirthContaining(RoleType.valueOf(roleType), searchValue, pageable);
+        }
+        if ("address".equals(searchType) && searchValue != null && !searchValue.isEmpty()) {
+            return userRepository.findByRoleTypeAndAddressContaining(RoleType.valueOf(roleType), searchValue, pageable);
+        }
+
+        return userPage; // 기본적으로 역할만으로 필터링
     }
 
     private Page<UserEntity> findUsers(String searchType, String searchValue, Pageable pageable) {

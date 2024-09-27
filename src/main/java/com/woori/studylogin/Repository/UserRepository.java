@@ -21,6 +21,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     Page<UserEntity> findByNameContainingOrBirthContainingOrAddressContaining(String name, String birth, String address, Pageable pageable);
 
     List<UserEntity> findByIsSuspendedTrue();
+    Page<UserEntity> findByRoleTypeAndNameContaining(RoleType roleType, String name, Pageable pageable);
+    Page<UserEntity> findByRoleTypeAndBirthContaining(RoleType roleType, String birth, Pageable pageable);
+    Page<UserEntity> findByRoleTypeAndAddressContaining(RoleType roleType, String address, Pageable pageable);
+
 
     // 페이지네이션을 지원하는 역할 필터링 메소드
     Page<UserEntity> findByRoleType(RoleType roleType, Pageable pageable);
