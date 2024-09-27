@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Services - Active Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+</head>
+
+<body>
+<div layout:fragment="content">
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title" style="background-color: darkgreen;">
+            <div class="container text-center">
+                <h1 style="color: white;">Q&A</h1>
+                <nav class="breadcrumbs">
+                    <div>
+                        <span style="color: white;">자주묻는 질문</span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- End Page Title -->
+
+        <div class="page-title" style="background-color: white;">
+            <div class="container text-lg-start">
+                <h1 style="color: white;">Q&A</h1>
+                <nav class="breadcrumbs">
+        <div class="table-container">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>내용</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <!--Q&A목록 반복 -->
+                <tr th:each="data:${list}"> <!--보내온 개수만큼 반복, list에 내용들이 data 하나씩 이동, 없을때까지 반복-->-->
+                    <td th:text="${data.id}">1</td> <!각 필요한 변수를 적용-->
+                    <!--수정, 삭제, 상세보기 => 대상이 존재(기본기값으로 찾아서)-->
+                    <td th:text="${data.title}">TEST</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+                    <!-- Include card component for each item -->
+                    <div th:each="data : ${list}" class="card show" id="cardId__${data.id}">
+                        <div class="card-header2" id="heading__${data.id}">
+                            <ul class="q-tit">
+                                <li>정책</li>
+                            </ul>
+                            <strong>${data.title}</strong>
+                            <button class="btn btn-link btn-block text-left accordion-btn" type="button" data-toggle="collapse" data-target="#collapseId__${data.id}" aria-expanded="true" aria-controls="collapseId__${data.id}">
+                                버튼
+                            </button>
+                        </div>
+                        <div id="collapseId__${data.id}" class="collapse" aria-labelledby="heading__${data.id}" data-parent="#accordion">
+                            <div class="card-body">
+                                <!-- Your content goes here -->
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</div>
+</body>
+</html>
+
