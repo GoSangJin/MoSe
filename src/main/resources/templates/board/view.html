@@ -214,7 +214,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 5px;
+      margin-bottom: 12px;
     }
 
     .comment-header .nick-name {
@@ -277,12 +277,12 @@
 
     /* 댓글 내용 스타일 */
     .comment p {
-      margin-top: 2px; /* 댓글 내용과 작성자 간의 여백 좁히기 */
+      margin-top: 8px; /* 댓글 내용과 작성자 간의 여백 좁히기 */
       margin-right: 10px; /* 댓글 내용 오른쪽 여백 추가 */
       line-height: 1.1; /* 댓글 내용 행간 조정 (좁게 설정) */
       margin-left: 10px; /* 댓글 내용 왼쪽 여백 추가 */
       padding-right: 30px; /* 오른쪽에 패딩을 추가하여 글자 넘침 방지 */
-      font-size: 15px !important; /* 댓글 글씨 크기 조정 (우선순위 높이기) */
+      font-size: 12px !important; /* 댓글 글씨 크기 조정 (우선순위 높이기) */
     }
 
     /* 작성일 텍스트 스타일 */
@@ -391,7 +391,7 @@
         white-space: nowrap;
       }
       .post-content p {
-        font-size: 12px;
+        font-size: 14px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -437,7 +437,7 @@
         font-size: 10px;
       }
       .post-content p {
-        font-size: 10px;
+        font-size: 14px;
       }
       .post-actions .btn {
         padding: 2px 4px; /* 버튼의 여백을 줄임 */
@@ -574,7 +574,7 @@
           <!-- 댓글 목록 -->
           <div class="comment-list">
             <div th:each="comment : ${commentDTOS}" class="comment">
-              <div class="comment-header d-flex justify-content-between align-items-center mb-1">
+              <div class="comment-header d-flex justify-content-between align-items-center">
                 <a th:href="@{/user/info(username=${comment.nickName})}" th:text="${comment.nickName}"></a>
                 <span th:if="${#authentication != null and #authentication.name == comment.nickName}"></span>
               </div>
@@ -587,7 +587,7 @@
                 </span>
               </div>
               <!-- 댓글 아래에 구분선 추가 -->
-              <hr class="comment-divider">
+              <hr class="comment-divider mt-2 mb-3">
             </div>
           </div>
 
