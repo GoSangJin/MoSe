@@ -57,7 +57,7 @@ public class FruitController {
     // 수정(Get, Post)
     @GetMapping("/fruit/update")
     public String showUpdateForm(@RequestParam Integer id, Model model) {
-        FruitDTO fruitDTO = fruitService.read(id);
+        FruitDTO fruitDTO = fruitService.findById(id);
         model.addAttribute("fruitDTO", fruitDTO);
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
@@ -67,11 +67,21 @@ public class FruitController {
 
     @PostMapping("/fruit/update")
     public String updateFruit(@ModelAttribute FruitDTO fruitDTO,
-                              @RequestParam("file") MultipartFile file,
+                              @RequestParam(value = "file", required = false) MultipartFile file,
+                              @RequestParam(value = "removeImage", required = false) String removeImage,
                               RedirectAttributes redirectAttributes) throws IOException {
 
         fruitService.update(fruitDTO, file);
-
+        
+        if ("true".equals(removeImage)) {
+                fruitDTO.setFruitImg(null); // 이미지 필드를 null로 설정하여 이미지 삭제
+            }
+        // 파일이 null이 아니고 비어있지 않은 경우에만 파일 처리
+            if (file != null && !file.isEmpty()) {
+                fruitService.update(fruitDTO, file);
+            } else {
+                fruitService.update(fruitDTO, null); // 파일이 없을 경우 파일 파라미터를 null로 전달
+            }
         redirectAttributes.addFlashAttribute("message", "과일이 성공적으로 수정되었습니다.");
         return "redirect:/fruit";
     }
@@ -86,7 +96,7 @@ public class FruitController {
     // 개별조회(Get)
     @GetMapping("/fruit/read")
     public String getFruitById(@RequestParam Integer id, Model model) {
-        FruitDTO fruitDTO = fruitService.read(id);
+        FruitDTO fruitDTO = fruitService.findById(id);
         model.addAttribute("fruitDTO", fruitDTO);
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);

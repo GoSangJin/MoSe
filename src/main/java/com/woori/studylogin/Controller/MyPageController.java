@@ -31,6 +31,7 @@ public class MyPageController {
 
     @GetMapping("/user/mypage")
     public String myPage(@RequestParam(value = "page", defaultValue = "0") int page,
+                         @RequestParam(value = "commentPage", defaultValue = "0") int commPage,
                          @RequestParam(value = "size", defaultValue = "10") int size,
                          @RequestParam(value = "boardId", required = false) Integer boardId,
                          Model model) {
@@ -48,9 +49,11 @@ public class MyPageController {
         Page<BoardDTO> boardDTOS = boardService.myBoards(username, pageable);
         model.addAttribute("boardDTOS", boardDTOS);
 
-        Page<CommentDTO> commentPage = commentService.myComments(username, pageable);
+        Pageable commPageable = PageRequest.of(commPage, size, Sort.by(Sort.Direction.DESC, "regDate"));
+        Page<CommentDTO> commentPage = commentService.myComments(username, commPageable);
         model.addAttribute("commentsPage", commentPage);
-
+        System.out.println(boardDTOS);
+        System.out.println(commentPage);
         // 페이지와 사이즈 정보 추가
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);

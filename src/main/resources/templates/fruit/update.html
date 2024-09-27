@@ -64,16 +64,29 @@
         <div class="row justify-content-center" data-aos="fade-up">
           <div class="col-md-6 col-lg-4"> <!--주작업공간-->
             <h2>등록</h2>
-            <form th:action="@{/fruit/create}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/fruit/update}" method="post" enctype="multipart/form-data">
               <input type="hidden" name="id" th:value="${fruitDTO.id}">
               <div class="mb-3">
                 <label for="fruitName" class="form-label">작물명</label>
                 <input type="text" class="form-control" id="fruitName" name="fruitName" th:value="${fruitDTO.fruitName}" required>
               </div>
-              <div class="mb-3">
-                <label for="fruitImg" class="form-label">이미지</label>
-                <input class="form-control" type="file" id="fruitImg" name="file" required>
-                  <img th:src="@{'/images/img/'+${fruitDTO.fruitImg}}" alt="Current Book Image" class="mt-2" style="width: 300px; height: 411px;" th:if="${fruitDTO.fruitImg != null}">
+<!--              <div class="mb-3">-->
+<!--                <label for="fruitImg" class="form-label">이미지</label>-->
+<!--                <input class="form-control" type="file" id="fruitImg" name="file" required>-->
+<!--                  <img th:src="@{'/images/img/'+${fruitDTO.fruitImg}}" alt="Current Book Image" class="mt-2" style="width: 300px; height: 411px;" th:if="${fruitDTO.fruitImg != null}">-->
+<!--              </div>-->
+
+              <div class="text-center mb-4"> <!-- 중앙 정렬을 위한 div -->
+                <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${fruitDTO.fruitImg}|"
+                     class="post-image"
+                     th:if="${fruitDTO.fruitImg != null and !#strings.isEmpty(fruitDTO.fruitImg)}"
+                     style="max-width: 90%; height: auto;"> <!-- 이미지 크기 조정 -->
+              </div>
+
+              <div class="mb-4" style="margin-top: 30px; margin-left: 20px; margin-right: 20px;">
+                <div class="mb-3 d-flex align-items-center" >
+                  <input class="form-control" type="file" id="fruitImg" name="file" onchange="previewImage(this)" style="flex: 1;">
+                </div>
               </div>
               <button type="submit" class="btn btn-primary">등록</button>
             </form>

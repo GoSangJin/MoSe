@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,31 +34,48 @@ public class FruitService {
     private final FileUpload fileUpload;
 
     public void create(FruitDTO fruitDTO, MultipartFile file) throws IOException {
-        String fileName = "";
-        if (!file.isEmpty()) {
-            fileName = fileUpload.upload(file, imgUploadLocation);
+        String oriFileName = file.getOriginalFilename();
+        String newFileName = "";
+
+        if(oriFileName != null) {
+            newFileName = fileUpload.upload(file, imgUploadLocation);
         }
+        fruitDTO.setFruitImg(newFileName);
 
-        fruitDTO.setFruitImg(fileName);
-
+        //상품정보
         FruitEntity fruitEntity = modelMapper.map(fruitDTO, FruitEntity.class);
         fruitRepository.save(fruitEntity);
     }
 
     public void update(FruitDTO fruitDTO, MultipartFile file) throws IOException {
+        //유효성검사(Save작업전 데이터베이스 존재여부 확인)
         FruitEntity fruitEntity = fruitRepository.findById(fruitDTO.getId()).orElseThrow();
+        String deleteFile = fruitEntity.getFruitImg(); //현재저장된 이미지파일명
 
-        fileUpload.deleteFile(fruitEntity.getFruitImg(), imgUploadLocation);
+        //MultipartFile 작업(물리적 저장)
+        String newFileName = ""; //S3에 저장된 파일명
 
-        String newFileName = "";
-        if (!file.isEmpty()) {
+//        if(oriFileName != null) { //유효성검사(작업이 가능한지 확인)-작업할 파일이 있으면
+//            //기존파일을 삭제
+//            if(deleteFile.length() != 0) { //이전에 저장된 파일이 존재하면
+//                fileUpload.deleteFile(deleteFile, imgUploadLocation);
+//            }
+//            newFileName = fileUpload.upload(file, imgUploadLocation);
+//            fruitDTO.setThumbnail_img(newFileName); //데이터베이스에 상품이미지이름을 추가
+//        }
+        if (file != null && !file.isEmpty()) {
+            if (deleteFile != null && !deleteFile.isEmpty()) {
+                fileUpload.deleteFile(deleteFile, imgUploadLocation);
+            }
             newFileName = fileUpload.upload(file, imgUploadLocation);
+            fruitDTO.setFruitImg(newFileName);
+        }else {
+            // 파일이 없으면 기존 이미지 유지
+            fruitDTO.setFruitImg(fruitEntity.getFruitImg());
         }
-
-        fruitDTO.setFruitImg(newFileName);
-
-        FruitEntity updatedEntity = modelMapper.map(fruitDTO, FruitEntity.class);
-        fruitRepository.save(updatedEntity);
+        //값을 변환해서 저장(DTO에 대한 작업)
+        FruitEntity data = modelMapper.map(fruitDTO, FruitEntity.class);
+        fruitRepository.save(data);
     }
 
     public void delete(Integer id) throws Exception {
@@ -91,9 +109,13 @@ public class FruitService {
     });
     }
 
-    public FruitDTO read(Integer id) {
-        FruitEntity fruitEntity = fruitRepository.findById(id).orElseThrow();
-        return modelMapper.map(fruitEntity, FruitDTO.class);
+    public FruitDTO findById(Integer id) {
+        Optional<FruitEntity> read = fruitRepository.findById(id);
+        if (read.isPresent()) {
+            return modelMapper.map(read, FruitDTO.class);
+        } else {
+            throw new IllegalArgumentException("No plantation found with id: " + id);
+        }
     }
 }
 
