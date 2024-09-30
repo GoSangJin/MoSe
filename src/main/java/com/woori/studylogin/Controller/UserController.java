@@ -84,7 +84,7 @@ public class UserController {
     //다른 유저 게시글 목록 보기
     @GetMapping("/user/info")
     public String getUserPosts(@RequestParam String username,
-                               @PageableDefault(page = 0, size = 10) Pageable pageable,
+                               @PageableDefault(page = 0, size = 15) Pageable pageable,
                                Model model) {
         // 유저의 게시글 목록 가져오기
         Page<BoardDTO> userInfo = boardService.findByAuthor(username, pageable);

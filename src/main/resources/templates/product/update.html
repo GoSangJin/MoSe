@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Services - Active Bootstrap Template</title>
+  <title>체험정보 수정하기 - Active Bootstrap Template</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -18,7 +18,7 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -30,16 +30,6 @@
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
 
-  <!-- Bootstrap CSS -->
-
-
-  <!-- =======================================================
-  * Template Name: Active
-  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
-  * Updated: Jun 29 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body class="services-page">
@@ -60,21 +50,22 @@
     </div>
     <!-- End Page Title -->
 
-    <!-- 체험정보 등록하기 -->
+    <!-- 체험정보 수정하기 -->
     <section id="services-2" class="services-2 section">
       <div class="container mb-3 mt-5">
         <div class="row justify-content-center" data-aos="fade-up">
           <div class="col-md-6 col-lg-4">
             <!-- 상단 제목 -->
             <h2>체험정보 수정하기</h2>
-            <form th:action="@{/product/new}" th:object="${productDTO}" method="post" enctype="multipart/form-data">
-              <input type="hidden" name="id" th:field="*{id}">
+            <form th:action="@{/product/edit}" th:object="${productDTO}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" th:field="*{id}">
+
               <div class="form-group mb-2">
                 <label for="local_name">지역 이름</label>
                 <input type="text" id="local_name" name="local_name" class="form-control" th:value="${productDTO.local_name}" required>
               </div>
 
-              <!--우편번호찾기-->
+              <!-- 우편번호 찾기 및 주소 입력 -->
               <div class="form-group mb-1">
                 <div class="row">
                   <div class="col">
@@ -85,11 +76,9 @@
                   </div>
                 </div>
               </div>
-              <!--주소입력-->
               <div class="form-group mb-1">
                 <input type="text" id="address" name="address" class="form-control" th:field="*{address}" required>
               </div>
-              <!--상세주소입력-->
               <div class="form-group mb-2">
                 <div class="row">
                   <div class="col">
@@ -101,6 +90,7 @@
                 </div>
               </div>
 
+              <!-- 나머지 정보들 수정 -->
               <div class="form-group mb-3">
                 <label for="title">마을 이름</label>
                 <input type="text" id="title" name="title" class="form-control" th:value="${productDTO.title}" required>
@@ -125,17 +115,28 @@
                 <input type="number" id="recruitmentCnt" name="recruitmentCnt" class="form-control" th:value="${productDTO.recruitmentCnt}" min="0">
               </div>
 
-              <div class="form-group mb-3">
-                <label for="image_url">상품 이미지 URL</label>
-                <input type="file" id="image_url" name="file" class="form-control" required>
-
+<!--              <div class="form-group mb-3">-->
+<!--                <label for="image_url">상품 이미지 URL</label>-->
+<!--                <input type="file" id="image_url" name="file" class="form-control" required>-->
+<!--              </div>-->
+              <div class="text-center mb-4"> <!-- 중앙 정렬을 위한 div -->
+                <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${productDTO.image_url}|"
+                     class="post-image"
+                     th:if="${productDTO.image_url != null and !#strings.isEmpty(productDTO.image_url)}"
+                     style="max-width: 90%; height: auto;"> <!-- 이미지 크기 조정 -->
               </div>
-
+              <div class="mb-4" style="margin-top: 30px; margin-left: 20px; margin-right: 20px;">
+                <div class="mb-3 d-flex align-items-center" >
+                  <input class="form-control" type="file" id="image_url" name="file" onchange="previewImage(this)" style="flex: 1;">
+                </div>
+              </div>
               <div class="form-group mb-3">
-                <label for="status">상태</label>
-                <select id="status" name="status" class="form-control" th:field="*{status}" style="color: orange;">
-                  <option th:value="'OPEN'" th:text="'모집중'"></option>
-                  <option th:value="'CLOSED'" th:text="'모집완료'"></option>
+                <label for="statusSelect">상태</label>
+                <select id="statusSelect" name="status" class="form-select" style="color: orange;">
+                  <option th:each="status : ${statusTypes}"
+                          th:value="${status}"
+                          th:text="${status.description}"
+                          th:selected="${status == selectedStatus}">Select Status</option>
                 </select>
               </div>
 
@@ -166,11 +167,20 @@
           </div>
         </div>
       </div>
-    </section><!-- /체험정보 등록하기 -->
+    </section><!-- /체험정보 수정하기 -->
   </main>
+
   <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="/assets/vendor/aos/aos.js"></script>
+  <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/assets/js/main.js"></script>
+
 </div>
-
 </body>
-
 </html>

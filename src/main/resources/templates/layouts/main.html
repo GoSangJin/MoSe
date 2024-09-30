@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="ko"
-xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <th:block layout:fragment="css"></th:block>
-<style>
-    /* 본문 상단 여백 조정 */
-    .main {
-        margin-bottom: 170px; /* 본문과 푸터 사이의 여백 조정 */
-        padding-top: 30px; /* 본문 상단 여백 조정 (필요에 따라 조정) */
-    }
+    <style>
+        /* 본문 상단 여백 조정 */
+        .main {
+            margin-bottom: 170px; /* 본문과 푸터 사이의 여백 조정 */
+            padding-top: 30px; /* 본문 상단 여백 조정 (필요에 따라 조정) */
+        }
 
-</style>
+    </style>
 </head>
 <body>
 <!--헤더-->
@@ -129,6 +129,8 @@ xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout">
         }
     </script>
     <!--report script-->
+
+
     <script>
         function openReportWindow(boardId) {
             console.log("Board ID:", boardId); // 콘솔에 출력하여 확인
@@ -149,27 +151,27 @@ xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout">
 
     <!--유튜브 썸네일-->
     <script>
-document.addEventListener("DOMContentLoaded", function() {
-  // 모든 eventImg 요소를 선택
-  document.querySelectorAll(".card-img-top").forEach(function(img) {
-    // 데이터 속성에서 URL을 가져옵니다
-    const url = img.getAttribute("data-url");
-    // 비디오 ID를 추출합니다
-    const videoId = getYouTubeVideoId(url);
-    // 비디오 ID가 있는 경우 썸네일 URL을 설정합니다
-    if (videoId) {
-      img.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-    }
-  });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 모든 eventImg 요소를 선택
+            document.querySelectorAll(".card-img-top").forEach(function(img) {
+                // 데이터 속성에서 URL을 가져옵니다
+                const url = img.getAttribute("data-url");
+                // 비디오 ID를 추출합니다
+                const videoId = getYouTubeVideoId(url);
+                // 비디오 ID가 있는 경우 썸네일 URL을 설정합니다
+                if (videoId) {
+                    img.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                }
+            });
 
-  // YouTube 비디오 ID 추출 함수
-  function getYouTubeVideoId(url) {
-    const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=|.+\/|.*[?&]v=)([a-zA-Z0-9_-]{11})|(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})/;
-    const match = url.match(regex);
-    return match ? (match[1] || match[2]) : null;
-  }
-});
-</script>
+            // YouTube 비디오 ID 추출 함수
+            function getYouTubeVideoId(url) {
+                const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=|.+\/|.*[?&]v=)([a-zA-Z0-9_-]{11})|(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})/;
+                const match = url.match(regex);
+                return match ? (match[1] || match[2]) : null;
+            }
+        });
+    </script>
 
     <script>
         function previewImage(input) {
@@ -194,53 +196,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     </script>
 
-    <!--게시판 list 검색 키워드-->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 검색 키워드를 가져옵니다.
-            const searchKeyword = new URLSearchParams(window.location.search).get('searchKeyword');
-
-            // 모든 게시물 행을 가져옵니다.
-            const rows = Array.from(document.querySelectorAll('tbody tr'));
-
-            // 검색 키워드가 있는 경우 필터링합니다.
-            if (searchKeyword) {
-                rows.forEach(row => {
-                    const title = row.querySelector('th:nth-of-type(3)').innerText.toLowerCase();
-                    const content = row.querySelector('th:nth-of-type(4)').innerText.toLowerCase();
-                    const isNotice = row.querySelector('th:nth-of-type(1)').innerText.trim() === '공지사항';
-
-                    // 제목이나 내용에 검색 키워드가 포함되지 않거나 공지사항인 경우 숨깁니다.
-                    if (title.includes(searchKeyword.toLowerCase()) || content.includes(searchKeyword.toLowerCase())) {
-                        if (isNotice) {
-                            row.style.display = 'none';
-                        }
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-            }
-        });
-    </script>
-    <!-- 게시판 list (반응형)테이블/카드 뷰 스크립트 -->
-    <script>
-        function updateView() {
-            const tableView = document.getElementById('table-view');
-            const cardView = document.getElementById('card-view');
-
-            if (window.innerWidth <= 600) {
-                tableView.style.display = 'none'; // 작은 화면에서 테이블 숨기기
-                cardView.style.display = 'block'; // 카드 뷰 보이기
-            } else {
-                tableView.style.display = 'block'; // 큰 화면에서 테이블 보이기
-                cardView.style.display = 'none'; // 카드 뷰 숨기기
-            }
-        }
-
-        window.addEventListener('resize', updateView); // 화면 크기 조정 시 호출
-        window.addEventListener('load', updateView); // 페이지 로드 시 호출
-
-    </script>
     <!-- 게시판 댓글 입력 제한 스크립트 -->
     <script>
         function checkLength(textarea) {
@@ -251,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     </script>
-    <!--신고처리-->
+
     <script>
         function setReportId(reportId){
             document.getElementById('reportId').value = reportId;
@@ -266,100 +221,13 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('suspensionModal').style.display = 'none';
         }
     </script>
-    <!--지역검색-->
-    <script>
-    $(document).ready(function() {
-        $('.form-select').change(function() {
-            var selectedRegion = $(this).val();
-            $.ajax({
-                url: '/event',
-                type: 'GET',
-                data: { regionType: selectedRegion },
-                success: function(response) {
-                    // 받아온 HTML을 적절한 요소에 삽입
-                    $('#eventContainer').html(response);
-                }
-            });
-        });
-    });
-</script>
-    <!--게시글 수정 이미지 삭제-->
-    <script>
-    function removeImage() {
-        // 이미지 미리보기를 숨기거나 제거
-        const img = document.getElementById('currentImage');
-        img.style.display = 'none'; // 이미지를 숨김 처리
 
-        // 서버에 빈 값을 전송하기 위해 hidden input을 추가
-        const hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = 'removeImage';
-        hiddenInput.value = 'true';
-        document.querySelector('form').appendChild(hiddenInput);
 
-        // 파일 입력 필드를 초기화하여 파일 전송이 안 되도록 처리
-        document.getElementById('boardImg').value = ''; // 파일 입력 필드 비우기
-    }
 
-    function previewImage(input) {
-        const file = input.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.getElementById('currentImage');
-                img.src = e.target.result;
-                img.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-</script>
-    <!-- 마이페이지용 스크립트 -->
-    <script>
-        // 페이지 로드 시 저장된 탭 상태 불러오기
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const activeTabId = localStorage.getItem('activeTab');
-            if (activeTabId) {
-                const activeTab = document.getElementById(activeTabId);
-                if (activeTab) {
-                    setActiveTab(activeTab);
-                }
-            } else {
-                // 기본 탭이 없으면 첫 번째 탭 활성화
-                const firstTab = document.querySelector('.nav-link');
-                if (firstTab) {
-                    setActiveTab(firstTab);
-                }
-            }
-        });
-        // 탭을 클릭할 때 상태를 저장하고 스타일 변경
-        document.querySelectorAll('.nav-link').forEach(tab => {
-            tab.addEventListener('click', function () {
-                // 모든 탭 스타일을 비활성화 상태로 변경
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.style.color = 'gray';
-                    link.style.fontWeight = 'lighter';
-                    link.style.borderBottom = '2px solid transparent';
-                });
-                // 클릭한 탭 스타일 변경
-                this.style.color = 'black';
-                this.style.fontWeight = 'bold';
-                this.style.borderBottom = '2px solid #014421'; // 진한 녹색
-                // 탭 ID를 로컬 스토리지에 저장
-                localStorage.setItem('activeTab', this.getAttribute('id'));
-            });
-        });
-        function setActiveTab(tab) {
-            tab.click();
-        }
-        /* 마이페이지 글자넘침-반응형*/
-        document.querySelectorAll('.comment-body').forEach(el => {
-            // 텍스트가 특정 길이를 초과할 경우 data-long-text 속성을 추가
-            if (el.innerText.length >20) { // 예시로 50글자로 설정
-                el.setAttribute('data-long-text', true);
-            }
-        });
-    </script>
+
+
+
+
 </th:block>
 </body>
 <!--레이아웃은 각작업별로 분리된 html을 배치할 위치를 지정-->

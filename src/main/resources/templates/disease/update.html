@@ -66,6 +66,7 @@
             <h2>등록</h2>
             <form th:action="@{/disease/update}" method="post" enctype="multipart/form-data">
               <input type="hidden" name="id" th:value="${diseaseDTO.id}">
+              <input type="hidden" name="fruitId" th:value="${diseaseDTO.fruitId}">
               <div class="mb-3">
                 <label for="diseaseName" class="form-label">병명</label>
                 <input type="text" class="form-control" id="diseaseName" name="diseaseName"  th:value="${diseaseDTO.diseaseName}" required>
@@ -82,11 +83,29 @@
                 <label for="prevention" class="form-label">예방법</label>
                 <input type="text" class="form-control" id="prevention" name="prevention" th:value="${diseaseDTO.prevention}" required>
               </div>
+<!--              <div class="mb-3">-->
+<!--                <label for="diseaseImg" class="form-label">이미지</label>-->
+<!--                <input class="form-control" type="file" id="diseaseImg" name="files" multiple>-->
+<!--                <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${diseaseDTO.diseaseImg}|"-->
+<!--                     class="post-image"-->
+<!--                     th:if="${diseaseDTO.diseaseImg != null and !#strings.isEmpty(diseaseDTO.diseaseImg)}"-->
+<!--                     style="max-width: 90%; height: auto;"> &lt;!&ndash; 이미지 크기 조정 &ndash;&gt;-->
+<!--              </div>-->
               <div class="mb-3">
-                <label for="diseaseImg" class="form-label">이미지</label>
-                <input class="form-control" type="file" id="diseaseImg" name="file">
-                <img th:src="@{'/images/img/'+${diseaseDTO.diseaseImg}}" alt="Current Book Image"
-                     class="mt-2" style="width: 300px; height: 411px;" th:if="${diseaseDTO.diseaseImg != null}">
+                <label for="diseaseImg" class="form-label">이미지 ※최대 4개까지 등록 가능합니다.</label>
+                <input class="form-control" type="file" id="diseaseImg" name="files" multiple onchange="previewImages(this)">
+
+                <!-- 기존 이미지 표시 영역 -->
+                <div id="existing-image-container" class="text-center mt-3">
+                  <span th:each="image : ${diseaseDTO.diseaseImg}">
+                    <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${image}|"
+                         class="post-image"
+                         style="max-width: 20%; height: auto;"> <!-- 이미지 크기 조정 및 간격 추가 -->
+                  </span>
+                </div>
+
+                <!-- 새로 선택한 이미지 미리보기 영역 -->
+                <div id="preview-container" class="text-center mt-3"></div>
               </div>
               <button type="submit" class="btn btn-primary">등록</button>
             </form>
@@ -99,7 +118,53 @@
 
   </main>
 </div>
+<th:block layout:fragment="script">
+  <script>
+  document.getElementById('diseaseImg').addEventListener('change', function() {
+    const maxFiles = 4;
+    if (this.files.length > maxFiles) {
+      alert('최대 4개의 파일만 업로드할 수 있습니다.');
+      this.value = ''; // 선택 초기화
+    }
+  });
+</script>
+  <script>
+  function previewImages(input) {
+  // 기존 이미지 컨테이너 숨기기
+  const existingImageContainer = document.getElementById('existing-image-container');
+  if (existingImageContainer) {
+    existingImageContainer.style.display = 'none';
+  }
 
+  // 새로 선택한 파일의 미리보기 초기화
+  const previewContainer = document.getElementById('preview-container');
+  previewContainer.innerHTML = "";
+
+  if (input.files) {
+    Array.from(input.files).forEach(file => {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.classList.add('post-image');
+          img.style.maxWidth = '20%';
+          img.style.height = 'auto';
+          img.style.marginTop ='10px'
+          img.style.marginBottom ='10px'
+          previewContainer.appendChild(img);
+        }
+
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+}
+
+
+</script>
+</th:block>
 </body>
 
 </html>

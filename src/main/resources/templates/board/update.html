@@ -50,7 +50,6 @@
 
     .custom-select-wrapper .form-control::after {
       content: "\f0d7"; /* 아래 방향 아이콘 */
-      font-family: "Bootstrap Icons";
       font-size: 1.2rem;
       position: absolute;
       top: 50%;
@@ -76,7 +75,7 @@
         <h1 style="color: white;">게시판 정보</h1>
         <nav class="breadcrumbs">
           <div>
-            <span style="color: white;">귀농귀촌에 관한 정보나 건의사항이나 질문이 있으시면 언제든지 문의해주세요.</span>
+            <span style="color: white;">귀농귀촌 정보에 관한 문의사항이나 질문이 있으시면 자유롭게 게시판을 이용해주세요.</span>
           </div>
         </nav>
       </div>
@@ -89,7 +88,7 @@
       <div class="container">
         <div class="row justify-content-center" data-aos="fade-up">
           <div class="col-md-8 col-lg-6">
-            <h1 class="mb-3">게시글 수정</h1>
+            <h3 class="mb-4">게시글 수정</h3>
             <form th:action="@{/board/edit}" th:object="${boardDTO}" method="post" enctype="multipart/form-data">
               <input type="hidden" name="id" th:field="*{id}">
               <!-- 첫 번째 카드 바디 (카테고리 및 제목 입력) -->
@@ -126,32 +125,45 @@
 
               <!-- 두 번째 카드 바디 (내용 및 이미지 업로드) -->
               <div class="card mb-4">
-                <div class="card-body p-4">
+                <div class="card-body" style="padding-bottom: 0;"> <!-- 패딩 하단에 여유 공간 추가 -->
                   <!-- 내용 입력 -->
-                  <div class="mb-3" style="margin-left: 20px; margin-right: 20px;">
+                  <div class="mb-1" style="margin-left: 20px; margin-right: 20px;">
                     <!-- 내용 라벨을 제거하고 textarea에 플레이스홀더 추가, 보더 없애기 -->
-                    <textarea class="form-control" id="content" name="content" rows="10" required th:text="${boardDTO.content}"
-                              placeholder="내용을 입력하세요" style="border: none; resize: none; height: 150px;"></textarea>
+                    <textarea class="form-control" id="content" name="content" rows="2" required th:text="${boardDTO.content}"
+                              placeholder="내용을 입력하세요" style="border: none; resize: none; height: auto;"></textarea>
                   </div>
 
                   <!-- 이미지가 있을 때만 표시 -->
-                  <div>
+                  <div class="mb-4" style="margin: 20px;">
+                    <div class="mb-5">
                       <img id="currentImage"
                            th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${boardDTO.boardImg}|"
                            class="post-image"
-                           th:if="${boardDTO.boardImg != null and !#strings.isEmpty(boardDTO.boardImg)}">
-                  </div>
+                           th:if="${boardDTO.boardImg != null and !#strings.isEmpty(boardDTO.boardImg)}"
+                           style="max-width: 100%; height: auto; display: block; margin: 0 auto;"/>
+                    </div>
 
-                  <div class="mb-4" style="margin-top: 30px; margin-left: 20px; margin-right: 20px;">
-                      <div class="mb-3 d-flex align-items-center">
-                          <input class="form-control" type="file" id="boardImg" name="file" onchange="previewImage(this)" style="flex: 1;">
-                          <button type="button" class="btn btn-danger ms-2" onclick="removeImage()">이미지 삭제</button>
+                    <div class="d-flex justify-content-center align-items-center" style="margin-top: 20px; gap: 12px;">
+                      <!-- 파일 업로드 input -->
+                      <div class="position-relative" style="flex: 0.8;">
+                        <input class="form-control" type="file" id="boardImg" name="file" onchange="previewImage(this)"
+                               style="width: 100%; padding: 6px; border-radius: 8px; border: 1px solid #ced4da; font-size: 14px;">
                       </div>
-                  </div><!-- /이미지업로드 -->
+
+                      <!-- 삭제 버튼 -->
+                      <button type="button" class="btn btn-danger"
+                              style="border-radius: 8px; padding: 6px 12px; font-size: 14px;"
+                              onclick="removeImage()">이미지 삭제</button>
+                    </div>
 
 
+
+
+
+                  </div>
                 </div>
               </div>
+
 
               <!-- 버튼 -->
               <div class="mt-2">
@@ -165,6 +177,37 @@
     </section><!-- /Services 2 Section -->
   </main>
 </div>
+<th:block layout:fragment="script">
+    <!--게시글 수정 이미지 삭제-->
+    <script>
+    function removeImage() {
+        // 이미지 미리보기를 숨기거나 제거
+        const img = document.getElementById('currentImage');
+        img.style.display = 'none'; // 이미지를 숨김 처리
 
+        // 서버에 빈 값을 전송하기 위해 hidden input을 추가
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'removeImage';
+        hiddenInput.value = 'true';
+        document.querySelector('form').appendChild(hiddenInput);
+
+        // 파일 입력 필드를 초기화하여 파일 전송이 안 되도록 처리
+        document.getElementById('boardImg').value = ''; // 파일 입력 필드 비우기
+    }
+    function previewImage(input) {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('currentImage');
+                img.src = e.target.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+</th:block>
 </body>
 </html>
