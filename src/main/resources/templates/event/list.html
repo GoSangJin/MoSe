@@ -35,17 +35,82 @@
   <link href="/assets/css/main.css" rel="stylesheet">
 
   <style>
-    .btn-open {
-      background-color: #FFA07A; /* 주황색 */
-      color: white;
-      border: none;
+
+    /* 페이지 네비게이션 스타일 */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      flex-wrap: wrap;
     }
 
-    .btn-closed {
-      background-color: #808080; /* 회색 */
-      color: white;
-      border: none;
+    .page-item .page-link {
+      border-radius: 50%;
+      margin: 0 0.15rem;
+      width: 2rem; /* 버튼 크기를 늘림 */
+      height: 2rem; /* 버튼 크기를 늘림 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem; /* 폰트 크기를 늘림 */
     }
+
+    .page-item.active .page-link {
+      background-color: #014421; /* 진한 녹색 배경 */
+      color: #fff; /* 흰색 텍스트 */
+      border-color: #014421; /* 진한 녹색 테두리 */
+    }
+
+    .page-item .page-link:hover {
+      background-color: #f0f0f0; /* 마우스 오버시 연한 회색 배경 */
+      color: #000;
+    }
+
+    .page-item.disabled .page-link {
+      color: #d0d0d0;
+      pointer-events: none;
+      background-color: #fff;
+    }
+
+    /* 아이콘 크기 조정 */
+    .page-link .bi {
+      font-size: 0.6rem; /* 아이콘 크기 늘림 */
+    }
+
+    /* 이전, 다음 버튼 스타일 */
+    .page-item.previous .page-link,
+    .page-item.next .page-link {
+      border-radius: 50%; /* 둥근 버튼 */
+      width: 2rem; /* 이전, 다음 버튼 크기 늘림 */
+      height: 2rem; /* 이전, 다음 버튼 크기 늘림 */
+    }
+
+    .page-item.previous .page-link {
+      background-color: #ffffff; /* 흰색 배경 */
+      border: 1px solid #d0d0d0; /* 연한 회색 테두리 */
+    }
+
+    .page-item.next .page-link {
+      background-color: #ffffff; /* 흰색 배경 */
+      border: 1px solid #d0d0d0; /* 연한 회색 테두리 */
+    }
+
+    .page-item.previous .page-link:hover,
+    .page-item.next .page-link:hover {
+      background-color: #f0f0f0; /* 마우스 오버시 연한 회색 배경 */
+    }
+
+    @media (max-width: 576px) {
+      .page-item .page-link {
+        width: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+        height: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+        font-size: 0.65rem; /* 작은 화면에서 폰트 크기 조정 */
+      }
+
+      .page-link .bi {
+        font-size: 0.55rem; /* 작은 화면에서 아이콘 크기 조정 */
+      }
+    }      /* 페이지 네비게이션 스타일-end*/
 
     .card {
       border-radius: 15px;
@@ -76,7 +141,7 @@
         <h1 style="color: white;">행사정보</h1>
         <nav class="breadcrumbs">
           <div>
-            <span style="color: white;">각 지역들의 행사 목록입니다.</span>
+            <span style="color: white;">각 지역별 각종행사 및 유익한 정보 안내입니다.</span>
           </div>
         </nav>
       </div>
@@ -86,29 +151,44 @@
     <!-- 행사정보 title -->
     <section id="services-2" class="services-2 section">
       <div class="container">
-        <h3 style="padding-left: 15px;">행사정보</h3>
+        <h3 style="padding-left: 15px; margin-bottom: 15px">행사정보</h3>
 
-        <!-- 상단 버튼 영역 -->
-          <div class="mb-3 d-flex align-items-center" style="padding-left: 15px;">
-              <a th:href="@{/event/create}" class="btn rounded-pill" sec:authorize="hasAnyRole('admin','master')"
-                 style="background-color: #006400; color: white; margin-right: 15px;">
-                  <strong>등록하기</strong>
+        <!-- 상단 등록버튼 (권한에 따라 표시) 영역 -->
+        <div class="mb-3" style="padding-left: 15px;">
+          <div class="d-flex justify-content-between align-items-center">
+            <!-- 지역 드롭다운 -->
+            <div style="width: 200px; text-align: left;"> <!-- 가로 길이 유지 및 왼쪽 정렬 -->
+              <form action="#" method="get">
+                <select name="regionType" class="form-select rounded-pill" onchange="this.form.submit()" style="border-radius: 0.25rem; text-align: center;">
+                  <option value="all" th:selected="${selectedRegion == null}" style="text-align: center;">모든 지역</option>
+                  <option th:each="region : ${regionTypes}"
+                          th:value="${region}"
+                          th:text="${region}"
+                          th:selected="${selectedRegion != null && selectedRegion.equalsIgnoreCase(region)}" style="text-align: center;"></option>
+                </select>
+              </form>
+            </div>
+
+            <div class="d-flex align-items-center" style="margin-right: 0; margin-left: auto;"> <!-- 왼쪽으로 이동 -->
+              <!-- 등록하기 버튼 -->
+              <a th:href="@{/event/create}" class="btn btn-outline-success rounded-pill"
+                 sec:authorize="hasAnyRole('admin','master')">
+                <strong>등록하기</strong>
               </a>
 
-              <!-- 지역 드롭다운 -->
-              <form action="#" method="get" class="ms-2">
-    <select name="regionType" class="form-select" onchange="this.form.submit()">
-        <option value="all" th:selected="${selectedRegion == null}">모든 지역</option>
-        <option th:each="region : ${regionTypes}"
-                th:value="${region}"
-                th:text="${region}"
-                th:selected="${selectedRegion != null && selectedRegion.equalsIgnoreCase(region)}"></option>
-    </select>
-</form>
+              <!-- 초기화 버튼 -->
+              <a th:href="@{/event}" class="btn btn-outline-danger rounded-pill" style="margin-left: 5px;" onclick="resetForm()">
+                <strong><i class="bi bi-arrow-clockwise"></i> 초기화</strong>
+              </a>
+            </div>
 
           </div>
+        </div>
+
+
+
         <!-- 행사정보 카드 목록 -->
-        <div class="container" data-aos="fade-up">
+        <div class="container" data-aos="fade-up" style="margin-bottom: 30px;"> <!-- 행사 정보 카드 목록에 마진 바텀 추가 -->
           <div class="row">
             <!-- Card Start -->
             <div class="col-md-3 col-lg-3 mb-4" th:each="event : ${eventDTOList}">
@@ -118,56 +198,106 @@
                   <div class="img" style="background-color: white; margin-bottom: -10px;">
                     <a th:href="${event.eventUrl}" class="glightbox d-flex align-items-center" >
                       <img id="eventImg" th:attr="data-url=${event.eventUrl}" class="card-img-top"
-                   alt="이미지" style="height: 200px; object-fit: cover;">
-<!--                           class="card-img-top"-->
-<!--                           alt="이미지"-->
-<!--                           style="height: 200px; object-fit: cover;">-->
+                           alt="이미지" style="height: 200px; object-fit: cover;">
                     </a>
                   </div>
 
                   <!-- 카드 바디 -->
-                  <div class="card-body">
+                  <div class="card-body" style="padding: 0.3rem;">
                     <!-- 행사명 -->
-                    <h5 class="card-title" style="font-weight: bold; color: green; margin-top: 0;
-                line-height: 1.2; font-size: 1.125rem;" th:text="${event.eventName}">마을 이름</h5>
+                    <p style="color: #888; font-size: 0.75rem; margin-bottom: 0.15rem; margin-top: 0.8rem; padding-left: 0.5rem;">
+                      <span th:text="${event.regionType}">지역 정보</span>
+                    </p>
+                    <h5 class="card-title" style="font-weight: bold; margin: 0; line-height: 1.6rem; font-size: 0.75rem;
+                        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 0.5rem;"
+                        th:text="${event.eventName}">행사명</h5>
 
                     <!-- 행사 설명 -->
-                    <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 1rem;">
-                      <p>출처 : <span th:text="${event.eventUrl}"></span></p>
-                      <span th:text="${event.description}" style="color: #888;">행사 설명</span>
-                        <p>지역: <span th:text="${event.regionType}">지역 정보</span></p>
-                    <div>
-                      <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/update(id=${event.id})}" class="btn btn-outline-info rounded-pill mb-3">수정하기</a>
-                      <a sec:authorize="hasAnyRole('admin','master')" th:href="@{/event/delete(id=${event.id})}" class="btn btn-outline-danger rounded-pill mb-3">삭제하기</a>
+                    <p class="card-text" style="margin-top: 0; margin-bottom: 0; line-height: 1.5; font-size: 0.75rem; color: #888;
+                       white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 0.5rem;">
+                      <span th:text="${event.description}">행사 설명</span>
+                    </p>
+
+                    <!-- 출처 -->
+                    <p style="margin-top: 1rem; font-size: 0.7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 0.5rem;">
+                      출처: <span th:text="${event.eventUrl}"></span>
+                    </p>
+
+                    <!-- 수정, 삭제 버튼 오른쪽으로 이동 -->
+                    <div style="margin-top: 0.25rem; text-align: right;">
+                      <a th:href="@{/event/update(id=${event.id})}" sec:authorize="hasAnyRole('admin','master')"
+                         style="font-size: 0.75rem; padding: 0; color: #17a2b8; text-decoration: underline; margin-right: 0.1rem;">수정</a>
+                      <a th:href="@{/event/delete(id=${event.id})}" sec:authorize="hasAnyRole('admin','master')"
+                         style="font-size: 0.75rem; padding: 0 0.5rem 0 0; color: #dc3545; text-decoration: underline;">삭제</a>
                     </div>
-                  </div>
-                  <!-- /마을 내용 - 카드 바디 -->
-                </div>
+                  </div><!-- /카드 바디 -->
+
+
+                </div> <!-- /이미지 섹션 -->
+
               </div>
             </div><!-- /Card End -->
+
             <!-- Pagination -->
-          <nav>
             <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/event(page=1, searchType=${searchType}, search=${search})}"><<</a>
+              <ul class="pagination pagination-sm justify-content-center mt-5">
+                <!-- 이전 버튼 -->
+                <li class="page-item previous" th:classappend="${currentPage == 1} ? 'disabled'">
+                  <a class="page-link" th:href="@{/event(page=${currentPage - 1}, searchType=${searchType}, search=${search})}">
+                    <span class="bi bi-chevron-double-left"></span>
+                  </a>
                 </li>
-              <li th:each="i : ${#numbers.sequence(startPage, endPage)}" class="page-item" th:classappend="${currentPage == i} ? 'active'">
-                <a class="page-link" th:href="@{/event(page=${i}, searchType=${searchType}, search=${search})}" th:text="${i}">1</a>
-              </li>
-                <li class="page-item" th:classappend="${currentPage == lastPage} ? 'disabled'">
-                    <a class="page-link" th:href="@{/event(page=${lastPage}, searchType=${searchType}, search=${search})}">>></a>
+
+                <!-- 페이지 번호 -->
+                <li th:each="i : ${#numbers.sequence(startPage, endPage)}" class="page-item" th:classappend="${currentPage == i} ? 'active'">
+                  <a class="page-link" th:href="@{/event(page=${i}, searchType=${searchType}, search=${search})}" th:text="${i}">1</a>
                 </li>
-            </ul>
-          </nav>
-          </nav>
+
+                <!-- 다음 버튼 -->
+                <li class="page-item next" th:classappend="${currentPage == lastPage} ? 'disabled'">
+                  <a class="page-link" th:href="@{/event(page=${currentPage + 1}, searchType=${searchType}, search=${search})}">
+                    <span class="bi bi-chevron-double-right"></span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+
+
           </div>
         </div>
+
 
       </div>
     </section>
   </main>
 </div>
+<th:block layout:fragment="script">
+  <script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+      // 모든 eventImg 요소를 선택
+      document.querySelectorAll(".card-img-top").forEach(function(img) {
+        // 데이터 속성에서 URL을 가져옵니다
+        const url = img.getAttribute("data-url");
+        // 비디오 ID를 추출합니다
+        const videoId = getYouTubeVideoId(url);
+        // 비디오 ID가 있는 경우 썸네일 URL을 설정합니다
+        if (videoId) {
+          img.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+        }
+      });
+
+      // YouTube 비디오 ID 추출 함수
+      function getYouTubeVideoId(url) {
+        const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=|.+\/|.*[?&]v=)([a-zA-Z0-9_-]{11})|(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})/;
+        const match = url.match(regex);
+        return match ? (match[1] || match[2]) : null;
+      }
+    });
+  </script>
+</th:block>
+
+
+
 <!-- JavaScript and other resources -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

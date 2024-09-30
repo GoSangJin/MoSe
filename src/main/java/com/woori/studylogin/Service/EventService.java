@@ -31,43 +31,38 @@ public class EventService {
     private final FileUpload fileUpload;
 
     // 삽입
-    public void create(EventDTO eventDTO, MultipartFile file) throws IOException {
-        String oriFileName = file.getOriginalFilename();
-        String newFileName = "";
-
-        // 파일이 null이 아니고 비어있지 않을 경우
-        if (oriFileName != null && !oriFileName.isEmpty()) {
-        newFileName = fileUpload.upload(file, imgUploadLocation);
-        eventDTO.setEventImg(newFileName);
-    }
-
-    EventEntity eventEntity = modelMapper.map(eventDTO, EventEntity.class);
-    eventRepository.save(eventEntity);
+    public void create(EventDTO eventDTO, MultipartFile file) {
+        // 파일 업로드 로직 제거
+        EventEntity eventEntity = modelMapper.map(eventDTO, EventEntity.class);
+        eventRepository.save(eventEntity);
     }
 
     // 수정
-    public void update(EventDTO eventDTO, MultipartFile file) throws IOException {
-        EventEntity eventEntity = eventRepository.findById(eventDTO.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+public void update(EventDTO eventDTO, MultipartFile file) throws IOException {
+    EventEntity eventEntity = eventRepository.findById(eventDTO.getId())
+            .orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
-        String deleteFile = eventEntity.getEventImg();
-        String newFileName = "";
-
-        // 파일이 null이 아니고 비어있지 않을 경우
-        if (file != null && !file.isEmpty()) {
-            if (deleteFile != null && !deleteFile.isEmpty()) {
-                fileUpload.deleteFile(deleteFile, imgUploadLocation);
-            }
-            newFileName = fileUpload.upload(file, imgUploadLocation);
-            eventDTO.setEventImg(newFileName);
-        } else {
-            // 파일이 null이거나 비어있을 경우 기존 이미지를 유지
-            eventDTO.setEventImg(deleteFile);
-        }
-
-        EventEntity data = modelMapper.map(eventDTO, EventEntity.class);
-        eventRepository.save(data);
+    // URL을 통한 이미지 URL 업데이트
+    if (eventDTO.getEventImg() == null || eventDTO.getEventImg().isEmpty()) {
+        // URL이 비어있으면 기존 이미지를 유지합니다.
+        eventDTO.setEventImg(eventEntity.getEventImg());
     }
+
+    // 파일이 null이 아니고 비어있지 않을 경우
+    if (file != null && !file.isEmpty()) {
+        // 기존 파일 삭제 처리
+        if (eventEntity.getEventImg() != null && !eventEntity.getEventImg().isEmpty()) {
+            fileUpload.deleteFile(eventEntity.getEventImg(), imgUploadLocation);
+        }
+        // 새로운 파일 업로드
+        String newFileName = fileUpload.upload(file, imgUploadLocation);
+        eventDTO.setEventImg(newFileName);
+    }
+
+    EventEntity data = modelMapper.map(eventDTO, EventEntity.class);
+    eventRepository.save(data);
+}
+
 
     // 삭제
     public void delete(Integer id) throws IOException {

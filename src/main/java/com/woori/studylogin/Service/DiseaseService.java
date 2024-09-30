@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,27 +67,43 @@ public class DiseaseService {
         DiseaseEntity diseaseEntity = diseaseRepository.findById(diseaseDTO.getId()).orElseThrow();
         List<String> oldFileNames = diseaseEntity.getDiseaseImg();
 
-        for (String oldFileName : oldFileNames) {
-            fileUpload.deleteFile(oldFileName, imgUploadLocation);
+        // 새 파일이 존재하는지 확인
+        boolean hasNewFiles = files != null && files.length > 0 && Arrays.stream(files).anyMatch(file -> !file.isEmpty());
+
+        // 새 파일이 존재할 경우 기존 파일 삭제
+        if (hasNewFiles && oldFileNames != null) {
+            for (String oldFileName : oldFileNames) {
+                fileUpload.deleteFile(oldFileName, imgUploadLocation);
+            }
         }
 
+        // 새 파일 이름을 저장할 리스트
         List<String> newFileNames = new ArrayList<>();
         for (MultipartFile file : files) {
-            if (!file.isEmpty()) {
+            if (file != null && !file.isEmpty()) {
                 String newFileName = fileUpload.upload(file, imgUploadLocation);
                 newFileNames.add(newFileName);
             }
         }
 
+        // 새 파일이 존재하지 않을 경우 기존 파일 유지
+        if (!hasNewFiles) {
+            newFileNames = oldFileNames; // 기존 파일 유지
+        }
+
+        // DTO에 새로운 파일 이름 설정
         diseaseDTO.setDiseaseImg(newFileNames);
 
+        // 질병 엔티티 업데이트
         DiseaseEntity updatedEntity = modelMapper.map(diseaseDTO, DiseaseEntity.class);
 
+        // 과일 정보 설정
         if (diseaseDTO.getFruitId() != null) {
             FruitEntity fruitEntity = fruitRepository.findById(diseaseDTO.getFruitId()).orElseThrow();
             updatedEntity.setFruit(fruitEntity);
         }
 
+        // 업데이트된 질병 엔티티 저장
         diseaseRepository.save(updatedEntity);
     }
 

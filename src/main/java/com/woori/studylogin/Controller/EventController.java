@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,19 +45,14 @@ public class EventController {
         return "event/create";
     }
 
+    // 삽입
     @PostMapping("/event/create")
-    public String createProc(@ModelAttribute EventDTO eventDTO, Model model,
-                             MultipartFile file) throws IOException {
+    public String createProc(@ModelAttribute EventDTO eventDTO, Model model) throws IOException {
         // URL과 이미지 URL을 동일하게 설정
-    String eventUrl = eventDTO.getEventUrl(); // eventUrl에서 URL 값을 가져옴
-    eventDTO.setEventImg(eventUrl); // 이미지 URL을 URL 값으로 설정
-    // 파일이 업로드된 경우
-    if (!file.isEmpty()) {
-        String oriFileName = file.getOriginalFilename();
-        String newFileName = fileUpload.upload(file, imgUploadLocation);
-        eventDTO.setEventImg(newFileName);
-    }
-        eventService.create(eventDTO, file);
+        String eventUrl = eventDTO.getEventUrl(); // eventUrl에서 URL 값을 가져옴
+        eventDTO.setEventImg(eventUrl); // 이미지 URL을 URL 값으로 설정
+
+        eventService.create(eventDTO, null);
         return "redirect:/event";
     }
 
@@ -76,8 +70,20 @@ public class EventController {
     }
 
     @PostMapping("/event/update")
-    public String updateProc(EventDTO eventDTO, MultipartFile file)throws IOException {
-        eventService.update(eventDTO,file);
+    public String updateProc(EventDTO eventDTO) throws IOException {
+        // 기존 이벤트 정보 가져오기
+        EventDTO existingEvent = eventService.read(eventDTO.getId());
+
+        // URL과 이미지 URL을 동일하게 설정 (업데이트 시 새 URL 사용)
+    if (eventDTO.getEventUrl() != null && !eventDTO.getEventUrl().isEmpty()) {
+        // 새로운 URL로 이미지 URL 설정
+        eventDTO.setEventImg(eventDTO.getEventUrl());
+    } else {
+        // 기존 이미지 URL 유지
+        eventDTO.setEventImg(existingEvent.getEventImg());
+    }
+
+        eventService.update(eventDTO, null);
         return "redirect:/event";
     }
 

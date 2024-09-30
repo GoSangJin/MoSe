@@ -260,7 +260,7 @@
                                 </li>
 
                                 <!-- 페이지 번호 -->
-                                <li class="page-item" th:each="i : ${#numbers.sequence(0, reports.totalPages - 1)}"
+                                <li class="page-item" th:each="i : ${#numbers.sequence(0, reports.totalPages)}"
                                     th:classappend="${i == reports.number} ? 'active' : ''">
                                     <a class="page-link" th:href="@{/admin/report(page=${i})}">
                                         <span th:text="${i + 1}"></span>
