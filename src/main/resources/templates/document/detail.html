@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>공문 상세</title>
+
+  <!-- 추가적인 메타데이터 및 스타일시트 링크 -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">공문 정보</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;">공문에 관한 정보로 필요한 자료를 보실 수 있어요.</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- End Page Title -->
+
+
+    <div class="container" style="margin-top: 2.5rem">
+      <div class="row justify-content-center" data-aos="fade-up">
+        <div class="col-md-8 col-lg-6">
+<!--          <h2 style="margin-bottom: 1.3rem;">공문정보 상세</h2>-->
+          <!-- 수정 및 삭제 버튼 추가 -->
+          <div class="mt-4 d-flex gap-2 justify-content-between mb-3"> <!-- mb-3 추가로 아래쪽 마진 -->
+            <div>
+              <a class="btn btn-outline-info rounded-pill btn-sm" th:href="@{/document/update/{id}(id=${document.id})}">수정</a>
+              <form th:action="@{/document/delete/{id}(id=${document.id})}" th:method="delete" style="display:inline;">
+                <button type="submit" class="btn btn-outline-danger rounded-pill btn-sm"
+                        th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+              </form>
+            </div>
+            <div>
+              <a th:href="@{/document/list}" class="btn btn-secondary btn-sm">목록</a> <!-- 목록 버튼을 오른쪽 정렬 -->
+            </div>
+          </div>
+
+
+          <!--제목 및 내용-->
+          <div class="card">
+            <div class="card-body" style="padding: 1.5rem;"> <!-- 패딩 추가 -->
+
+              <!-- 문서 제목 -->
+              <h4 th:text="${document.title}" style="font-weight: bold; text-align: left; margin-bottom: 0.8rem;"></h4>
+
+              <!-- 업로드 날짜를 왼쪽 정렬로 설정 -->
+              <p style="text-align: left; font-size: 0.85rem; margin-left: 2px; margin-bottom: 0;">등록일 :
+                <span th:text="${#temporals.format(document.uploadDate, 'yyyy-MM-dd')}"></span>
+              </p>
+
+              <!-- 게시글 상단과 내용 사이에 구분선 추가 -->
+              <hr class="my-2 custom-hr" style="border-color: #343a40; border-width: 2px; margin-bottom: 0.5rem;">
+
+              <!-- 게시글 내용 -->
+              <div class="post-content mt-4">
+                <strong style="font-weight: bold; margin-bottom: 0.5rem;">☞ 내용</strong> <!-- 줄여진 마진 -->
+                <p style="margin-top: 0.2rem;" th:text="${document.content}"></p> <!-- 줄여진 마진 -->
+              </div>
+
+              <!-- 첨부파일 이름 -->
+              <div class="post-content mt-6" style="margin-top: 2rem;">
+                <strong style="font-weight: bold;">☞ 첨부파일명 : </strong>
+                <!-- 파일명 클릭 시 다운로드 기능 추가 -->
+                <a th:href="${document.downloadUrl}" th:text="${document.fileName}" download></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </main>
+</div>
+
+</body>
+</html>

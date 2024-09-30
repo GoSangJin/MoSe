@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>공문 목록</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <style>
+
+        #table-view th, #table-view td {
+            text-align: center; /* 텍스트 가운데 정렬 */
+            vertical-align: middle; /* 수직 가운데 정렬 */
+            padding: 10px; /* 각 셀에 패딩 추가 */
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse; /* 경계선 겹치지 않도록 설정 */
+            border-top: 2px solid #b0b0b0; /* 테이블 상단 경계선 */
+            border-bottom: 2px solid #dee2e6; /* 테이블 하단 경계선 */
+        }
+
+        .table thead {
+            background-color: #f1f3f5; /* 테이블 헤더 배경색 */
+            border-bottom: 2px solid #dee2e6; /* 헤더 하단 경계선 추가 */
+            position: sticky; /* 스크롤 시 상단에 고정 */
+            top: 0;
+            z-index: 2; /* 다른 내용 위에 오도록 설정 */
+        }
+
+        .table th, .table td {
+            padding: 0.75rem; /* 각 셀의 패딩 */
+            text-align: center; /* 텍스트 가운데 정렬 */
+            border-bottom: 1px solid #dee2e6; /* 행의 경계선 추가 */
+            border-right: none; /* 열 경계선 제거 */
+            white-space: nowrap; /* 텍스트가 넘치지 않도록 설정 */
+            overflow: hidden; /* 넘치는 텍스트 숨기기 */
+            text-overflow: ellipsis; /* 넘치는 텍스트에 대해 ellipsis 표시 */
+            max-width: 70px; /* 최대 너비 설정, 필요에 따라 조정 가능 */
+        }
+
+        /* 페이지 네비게이션 스타일 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .page-item .page-link {
+            border-radius: 50%;
+            margin: 0 0.15rem;
+            width: 2rem; /* 버튼 크기 */
+            height: 2rem; /* 버튼 크기 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem; /* 기본 폰트 크기 */
+        }
+
+        .page-item.active .page-link {
+            background-color: #014421; /* 진한 녹색 배경 */
+            color: #fff; /* 흰색 텍스트 */
+            border-color: #014421; /* 진한 녹색 테두리 */
+        }
+
+        .page-item .page-link:hover {
+            background-color: #f0f0f0; /* 마우스 오버시 연한 회색 배경 */
+            color: #000;
+        }
+
+        .page-item.disabled .page-link {
+            color: #d0d0d0;
+            pointer-events: none;
+            background-color: #fff;
+        }
+
+        /* 아이콘 크기 조정 */
+        .page-link .bi {
+            font-size: 0.6rem; /* 기본 아이콘 크기 */
+        }
+
+        /* 이전, 다음 버튼 스타일 */
+        .page-item.previous .page-link,
+        .page-item.next .page-link {
+            border-radius: 50%; /* 둥근 버튼 */
+            width: 2rem; /* 버튼 크기 */
+            height: 2rem; /* 버튼 크기 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-item.previous .page-link,
+        .page-item.next .page-link {
+            background-color: #ffffff; /* 흰색 배경 */
+            border: 1px solid #d0d0d0; /* 연한 회색 테두리 */
+        }
+
+        .page-item.previous .page-link:hover,
+        .page-item.next .page-link:hover {
+            background-color: #f0f0f0; /* 마우스 오버시 연한 회색 배경 */
+        }
+
+        /* 큰 화면에서 기본 설정 */
+        .form-control {
+            width: auto; /* 기본적으로 입력창 너비는 자동 */
+        }
+
+        .btn-secondary {
+            white-space: nowrap; /* 검색 버튼 텍스트 줄바꿈 방지 */
+        }
+
+        /* 화면이 768px 이하로 줄어들었을 때 */
+        @media (max-width: 768px) {
+            .btn {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem; /* 버튼 크기 축소 */
+            }
+
+            .form-control {
+                width: 100%; /* 검색창 너비를 100%로 설정 */
+                margin-bottom: 0.5rem; /* 검색창 아래에 간격 추가 */
+                padding: 0.5rem 1.5rem; /* 검색 버튼과 동일한 패딩 적용 */
+            }
+
+            .btn-secondary{
+                width: 100%; /* 버튼도 너비 100%로 설정 */
+            }
+
+            .d-flex {
+                flex-direction: column; /* 입력창과 버튼을 세로로 나열 */
+            }
+
+            /* 새 공문 올리기와 초기화 버튼 크기 축소 */
+            .btn-success, .btn-outline-danger {
+                font-size: 0.75rem; /* 텍스트 크기 축소 */
+                padding: 0.4rem 0.9rem; /* 패딩 축소 */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .btn {
+                font-size: 0.6rem;
+                padding: 0.3rem 0.6rem; /* 버튼 크기 축소 */
+            }
+
+            .form-control {
+                height: 2.5rem;
+                width: 100%; /* 입력창 너비 100% */
+                padding: 0.4rem 1.2rem; /* 패딩 조정 */
+            }
+
+            .btn-secondary {
+                width: 100%; /* 검색 버튼 너비도 100% */
+            }
+
+            /* 새 공문 올리기와 초기화 버튼 더 작게 */
+            .btn-success, .btn-outline-danger {
+                font-size: 0.7rem; /* 더 작은 폰트 */
+                padding: 0.3rem 0.7rem; /* 패딩 축소 */
+            }
+
+            /* 페이지네이션 버튼 크기 축소 */
+            .page-item .page-link {
+                width: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+                height: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+                font-size: 0.65rem; /* 작은 화면에서 폰트 크기 조정 */
+            }
+
+            /* 이전, 다음 버튼 아이콘 크기 조정 */
+            .page-link .bi {
+                font-size: 0.55rem; /* 작은 화면에서 아이콘 크기 축소 */
+            }
+
+            /* 이전, 다음 버튼 크기 일관성 유지 */
+            .page-item.previous .page-link,
+            .page-item.next .page-link {
+                width: 1.75rem; /* 작은 화면에서 동일하게 크기 축소 */
+                height: 1.75rem;
+            }
+        }
+
+    </style>
+
+
+
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title" style="background-color: #003300;">
+            <div class="container text-center">
+                <h1 style="color: white;">공문 정보</h1>
+                <nav class="breadcrumbs">
+                    <div>
+                        <span style="color: white;">공문에 관한 정보로 필요한 자료를 보실 수 있어요.</span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- End Page Title -->
+
+
+        <div class="container" style="margin-top: 2rem">
+            <div class="row justify-content-center" data-aos="fade-up">
+                <div class="col-md-10 col-lg-10">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2>공문 목록</h2>
+                        <!-- 권한에 따라 버튼 표시 -->
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;"> <!-- 필요에 따라 gap 값을 조정, flex-wrap 추가 -->
+                            <a class="btn btn-success rounded-pill" th:if="${#authorization.expression('hasAnyRole(''admin'', ''master'')')}"
+                               th:href="@{/document/insert}" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                                새 공문 올리기
+                            </a>
+
+                            <a th:href="@{/document/list}" class="btn btn-outline-danger rounded-pill" onclick="resetForm()"
+                               style="display: flex; align-items: center; justify-content: center; padding: 0.5rem 1rem; font-size: 0.875rem;">
+                                <strong><i class="bi bi-arrow-clockwise"></i> 초기화</strong>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-center flex-wrap"> <!-- flex-wrap 추가 -->
+                        <!-- 검색 폼 추가 -->
+                        <form class="d-flex w-100 justify-content-center" th:action="@{/document/list}" method="get" style="flex-wrap: wrap;">
+                            <input class="form-control me-2 rounded-pill" type="search" name="title" placeholder="제목으로 검색" aria-label="Search"
+                                   style="height: 2.5rem; font-size: 0.875rem; padding: 0.5rem 1.5rem;"> <!-- 검색 버튼과 같은 높이 및 패딩 추가 -->
+                            <button class="btn btn-secondary rounded-pill" type="submit"
+                                    style="padding: 0.5rem 1.5rem; font-size: 0.875rem; white-space: nowrap;">
+                                <i class="bi bi-search"></i> 검색
+                            </button>
+                        </form>
+                    </div><!--/검색폼-->
+
+                    <!--테이블 -->
+                    <div id="table-view" class="view">
+                        <table class="table table-hover text-center"> <!-- 테이블 전체를 가운데 정렬 -->
+                            <!-- 테이블 헤더 -->
+                            <thead class="table-light">
+                            <tr>
+                                <th scope="col" style="width: 10%;">번호</th>
+                                <th scope="col" style="width: 50%;">제목</th>
+                                <th scope="col" style="width: 20%;">첨부파일</th>
+                                <th scope="col" style="width: 20%;">등록일</th>
+                            </tr>
+                            </thead>
+
+                            <!-- 테이블 본문 -->
+                            <tbody th:each="document : ${documents}">
+                            <tr>
+                                <td th:text="${document.id}"></td>
+                                <td>
+                                    <a th:href="@{/document/detail/{id}(id=${document.id})}" th:text="${document.title}" style="font-size: 1rem;"></a>
+                                </td>
+
+                                <!--첨부파일 다운-->
+                                <td>
+                                    <a th:href="${document.downloadUrl}" download>
+                                        <i class="bi bi-file-earmark-post-fill" style="font-size: 1.2rem; color: gray;"></i> <!-- 아이콘 크기 및 색상 조정 -->
+                                    </a>
+                                </td>
+
+                                <td th:text="${#temporals.format(document.uploadDate, 'MM-dd')}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div> <!--/테이블 -->
+
+                    <!-- 페이지 네비게이션 -->
+                    <div class="row">
+                        <div class="col text-center">
+                            <nav>
+                                <ul class="pagination pagination-sm justify-content-center mt-5">
+                                    <!-- 이전 버튼 -->
+                                    <li class="page-item previous" th:classappend="${list.hasPrevious()} ? '' : 'disabled'">
+                                        <a class="page-link" th:href="@{/document/list(page=${list.number - 1}, size=${size}, title=${title})}">
+                                            <span class="bi bi-chevron-double-left"></span> <!-- 아이콘 추가 -->
+                                        </a>
+                                    </li>
+
+                                    <!-- 페이지 번호 -->
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, list.totalPages - 1)}"
+                                        th:classappend="${i == list.number} ? 'active' : ''">
+                                        <a class="page-link" th:href="@{/document/list(page=${i}, size=${size}, title=${title})}" th:text="${i + 1}"></a>
+                                    </li>
+
+                                    <!-- 다음 버튼 -->
+                                    <li class="page-item next" th:classappend="${list.hasNext()} ? '' : 'disabled'">
+                                        <a class="page-link" th:href="@{/document/list(page=${list.number + 1}, size=${size}, title=${title})}">
+                                            <span class="bi bi-chevron-double-right"></span> <!-- 아이콘 추가 -->
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+
+</html>

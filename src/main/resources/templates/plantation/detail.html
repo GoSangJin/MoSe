@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>재배정보 상세보기</title>
+  <title>재배정보</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -148,8 +148,21 @@
       <div class="container">
         <div class="row justify-content-center" data-aos="fade-up">
           <div class="col-md-10">
-            <!-- 상단 제목 -->
-            <h2 style="margin-bottom: 2rem;">재배정보 상세보기</h2>
+<!--            &lt;!&ndash; 상단 제목 &ndash;&gt;-->
+<!--            <h2 style="margin-bottom: 2rem;">재배정보 상세보기</h2>-->
+            <!-- 버튼들 -->
+            <div class="mt-5" style="display: flex; justify-content: space-between;">
+              <div style="display: flex;gap: 2px;">
+                <!-- 수정하기 버튼 (권한에 따라 표시) -->
+                <a th:href="@{/plantation/update(id=${plantationDTO.id})}" class="btn btn-outline-info rounded-pill mb-4"
+                   sec:authorize="hasAnyRole('admin', 'master')">수정</a>
+                <!-- 삭제하기 버튼 -->
+                <a th:href="@{/plantation/delete(id=${plantationDTO.id})}" class="btn btn-outline-danger rounded-pill mb-4"
+                   sec:authorize="hasAnyRole('admin', 'master')" th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+              </div>
+              <!-- 목록 보기 버튼 -->
+              <a th:href="@{/plantation/list}" class="btn btn-outline-success rounded-pill mb-4">목록</a>
+            </div>
 
             <div class="row g-4">
               <div class="col-md-12">
@@ -164,22 +177,18 @@
                           <span class="vlg_nm" th:text="${plantationDTO.status}" style="font-size: 1.5rem; font-weight: bold;"></span>
                         </div>
                       </th>
-
-
-                      <th class="text-left" style="width: 50%; background-color: #f8f9fa; padding: 10px 0; text-align: left;"> <!-- 왼쪽 정렬로 변경 -->
-                        <span class="ctpv_nm_and_sgg_nm" th:text="${plantationDTO.title}" style="color: #008000; font-size: 1.5rem; font-weight: bold; display: block;"></span> <!-- 중앙 정렬 속성 제거 -->
+                      <th class="text-left" style="width: 50%; background-color: #f8f9fa; padding: 10px 0; text-align: left;">
+                        <span class="ctpv_nm_and_sgg_nm" th:text="${plantationDTO.title}" style="color: #008000; font-size: 1.5rem; font-weight: bold; display: block;"></span>
                       </th>
                     </tr>
                     </thead>
-
                     <tbody>
                     <!-- 내용이 들어갈 부분 -->
                     </tbody>
                   </table>
 
-
                   <!-- 이미지와 내용 -->
-                  <div class="image-info-container mt-5 mb-2" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 2px; flex-wrap: wrap; width: 100%;"> <!-- Flexbox 수평 정렬 -->
+                  <div class="image-info-container mt-5 mb-2" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 2px; flex-wrap: wrap; width: 100%;">
                     <!-- 이미지 -->
                     <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${plantationDTO.thumbnail_img}|"
                          class="img-fluid mb-3"
@@ -187,41 +196,37 @@
                          alt="과일/채소 이미지" />
 
                     <ul class="fruit-vegetable-info" style="line-height: 1.7; list-style-type: none; display: flex; flex-direction: column; align-items: flex-start;">
-                      <li style="margin-bottom: 20px;"> <!-- 항목 간 간격 조정 -->
+                      <li style="margin-bottom: 20px;">
                         <strong style="font-size: 1.2rem; display: inline-block; width: 100px; text-align: left;">수확시기 :</strong>
                         <span style="font-size: 1rem; display: inline-block; width: calc(100% - 100px); margin-left: 3px;"
                               th:text="${plantationDTO.harvest}">수확시기</span>
                       </li>
-
-                      <li style="margin-bottom: 20px;"> <!-- 항목 간 간격 조정 -->
+                      <li style="margin-bottom: 20px;">
                         <strong style="font-size: 1.2rem; display: inline-block; width: 100px; text-align: left;">재배지역 :</strong>
                         <span style="font-size: 1rem; display: inline-block; width: calc(100% - 100px); margin-left: 3px;"
                               th:text="${plantationDTO.region}">재배지역</span>
                       </li>
-
-                      <li style="margin-bottom: 20px;"> <!-- 항목 간 간격 조정 -->
+                      <li style="margin-bottom: 20px;">
                         <strong style="font-size: 1.2rem; display: inline-block; width: 100px; text-align: left;">효능효과 :</strong>
                         <span style="font-size: 1rem; display: inline-block; width: calc(100% - 100px); margin-left: 3px;"
                               th:text="${plantationDTO.efficacy}">효능효과</span>
                       </li>
                     </ul>
-
                   </div><!-- /이미지와 내용 -->
-
 
                   <!-- 세부 정보 -->
                   <div class="detail-info mt-5" style="line-height: 1.8; padding: 16px; border-radius: 20px;">
                     <!-- 재배방법 article -->
                     <article style="margin-bottom: 5rem;">
                       <h3 class="text-dark font-weight-bold" style="display: flex; align-items: center;">
-                        <i class="bi bi-record-circle-fill" style="font-size: 1.2rem; margin-right: 0.5rem; margin-top: -0.3rem;"></i> <!-- 동그라미 아이콘 -->
+                        <i class="bi bi-record-circle-fill" style="font-size: 1.2rem; margin-right: 0.5rem; margin-top: -0.3rem;"></i>
                         재배방법
                       </h3>
-                      <hr style="border-bottom: 2px solid #000;" /> <!-- 하단 구분선 검정색으로 -->
+                      <hr style="border-bottom: 2px solid #000;" />
 
                       <div class="cuList mb-4" style="padding: 0 20px">
                         <ul>
-                          <li th:text="${plantationDTO.cultivation}"></li> <!-- 재배 방법에 대한 추가 설명 -->
+                          <li th:text="${plantationDTO.cultivation}"></li>
                         </ul>
                       </div>
                     </article> <!-- /재배방법 article -->
@@ -229,10 +234,10 @@
                     <!-- 특징 article -->
                     <article style="margin-bottom: 5rem;">
                       <h3 class="text-dark font-weight-bold" style="display: flex; align-items: center;">
-                        <i class="bi bi-record-circle-fill" style="font-size: 1.2rem; margin-right: 0.5rem; margin-top: -0.3rem;"></i> <!-- 동그라미 아이콘 -->
+                        <i class="bi bi-record-circle-fill" style="font-size: 1.2rem; margin-right: 0.5rem; margin-top: -0.3rem;"></i>
                         특징
                       </h3>
-                      <hr style="border-bottom: 2px solid #000;" /> <!-- 하단 구분선 검정색으로 -->
+                      <hr style="border-bottom: 2px solid #000;" />
 
                       <div class="cuList mb-4" style="padding: 0 20px">
                         <ul>
@@ -244,10 +249,10 @@
                     <!-- 유의사항 article -->
                     <article style="margin-bottom: 5rem;">
                       <h3 class="text-dark font-weight-bold" style="display: flex; align-items: center;">
-                        <i class="bi bi-record-circle-fill" style="font-size: 1.2rem; margin-right: 0.5rem; margin-top: -0.3rem;"></i> <!-- 동그라미 아이콘 -->
+                        <i class="bi bi-record-circle-fill" style="font-size: 1.2rem; margin-right: 0.5rem; margin-top: -0.3rem;"></i>
                         유의사항
                       </h3>
-                      <hr style="border-bottom: 2px solid #000;" /> <!-- 하단 구분선 검정색으로 -->
+                      <hr style="border-bottom: 2px solid #000;" />
 
                       <div class="cuList mb-4" style="padding: 0 20px">
                         <ul>
@@ -256,17 +261,6 @@
                       </div>
                     </article> <!-- /유의사항 article -->
 
-                    <!-- 버튼들 -->
-                    <div class="mt-5">
-                      <!-- 수정하기 버튼 (권한에 따라 표시) -->
-                      <a th:href="@{/plantation/update(id=${plantationDTO.id})}" class="btn btn-outline-info rounded-pill mb-4"
-                         sec:authorize="hasAnyRole('admin', 'master')">수정</a>
-                      <!-- 삭제하기 버튼 -->
-                      <a th:href="@{/plantation/delete(id=${plantationDTO.id})}" class="btn btn-outline-danger rounded-pill mb-4"
-                         sec:authorize="hasAnyRole('admin', 'master')" th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
-                      <!-- 목록 보기 버튼 -->
-                      <a th:href="@{/plantation/list}" class="btn btn-outline-success rounded-pill mb-4">목록</a>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -275,6 +269,7 @@
         </div>
       </div>
     </section> <!-- /재배정보Details Section -->
+
 
   </main>
 </div>
