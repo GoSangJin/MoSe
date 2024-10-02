@@ -103,7 +103,7 @@ public class ProductController {
     // 전체조회(Get)
     // 상품 전체 조회 (페이지 처리)
     @GetMapping("/product/list")
-    public String listProducts(@RequestParam(value = "status", defaultValue = "OPEN") StatusType status,
+    public String listProducts(@RequestParam(value = "status", required = false) StatusType status,
                                @RequestParam(value = "regionType", required = false) RegionType regionType,
                                @RequestParam(value = "page", defaultValue = "0") int page,
                                Model model) {
@@ -114,10 +114,16 @@ public class ProductController {
 
         Page<ProductDTO> productList;
 
+        // 상태와 지역 타입에 따른 필터링 로직
         if (regionType == null || regionType == RegionType.DEFAULT) {
-            productList = productService.findByStatus(status, pageable);
+            // 상태가 null이면 모든 상품을 가져오고, 특정 상태가 있으면 해당 상태에 맞는 상품을 가져옴
+            if (status == null) {
+                productList = productService.findAll(pageable); // 모든 상품 가져오기
+            } else {
+                productList = productService.findByStatus(status, pageable); // 상태 필터링
+            }
         } else {
-            productList = productService.findByRegionType(regionType, pageable);
+            productList = productService.findByRegionType(regionType, pageable); // 지역 타입 필터링
         }
 
         model.addAttribute("list", productList);
@@ -126,9 +132,9 @@ public class ProductController {
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
-        model.addAttribute("selectedStatus", status);
+        model.addAttribute("selectedStatus", status); // 현재 상태 저장
         model.addAttribute("regionType", filteredRegionTypes);
-        model.addAttribute("selectedRegion", regionType != null ? regionType.name() : "DEFAULT"); // 추가된 부분
+        model.addAttribute("selectedRegion", regionType != null ? regionType.name() : "DEFAULT");
 
         return "product/list";
     }

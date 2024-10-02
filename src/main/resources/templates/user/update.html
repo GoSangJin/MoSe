@@ -30,6 +30,7 @@
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
 
+  <!-- Custom CSS -->
   <style>
     /* 기본 레이아웃 스타일 (화면이 넓을 때) */
     .form-group {
@@ -40,7 +41,7 @@
     }
 
     .form-group label {
-      width: 150px; /* 라벨 너비를 늘림 */
+      width: 100px; /* 라벨 너비를 늘림 */
       margin-right: 15px; /* 라벨과 입력 필드 간의 간격 조정 */
       font-size: 1rem; /* 라벨 폰트 크기 증가 */
     }
@@ -49,7 +50,7 @@
     form {
       display: flex;
       flex-direction: column; /* 세로 방향으로 배치 */
-      align-items: center; /* 중앙 정렬 */
+      align-items: flex-start; /* 왼쪽 정렬 */
       gap: 1.5rem; /* 요소 간의 간격 조정 */
     }
 
@@ -85,6 +86,7 @@
     }
   </style>
 
+
 </head>
 
 <body class="services-page">
@@ -93,12 +95,12 @@
   <main class="main">
 
     <!-- Page Title -->
-    <div class="page-title" style="background-color: #003300; margin-bottom: 30px;">
+    <div class="page-title" style="background-color: #003300;">
       <div class="container text-center">
-        <h1 style="color: white;">회원가입 페이지</h1>
+        <h1 style="color: white;">회원정보 수정 페이지</h1>
         <nav class="breadcrumbs">
           <div>
-            <span style="color: white;">회원가입에 필요한 정보들을 입력하는 페이지</span>
+            <span style="color: white;">로그인한 해당 유저의 정보를 수정하는 페이지</span>
           </div>
         </nav>
       </div>
@@ -110,32 +112,16 @@
       <div class="container"> <!--여백폭-->
         <div class="row justify-content-center" data-aos="fade-up"><!--배치-->
           <div class="col-md-6 col-lg-4"><!--크기-->
-            <form th:action="@{/user/register}" th:object="${data}" method="post">
+            <form th:action="@{/user/update}" th:object="${data}" method="post">
+              <input type="hidden" name="id" th:field="*{id}">
               <div class="form-group mb-3">
                 <label for="username">아이디:</label>
-                <input type="text" id="username" name="username" class="form-control" th:field="*{username}" required pattern=".{8,}" title="아이디는 8글자 이상이어야 합니다.">
-              </div>
-              <div class="form-group mb-3">
-                <label for="password">비밀번호:</label>
-                <input type="password" id="password" name="password" class="form-control" th:field="*{password}" required
-                       pattern="(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}"
-                       title="비밀번호는 8글자 이상이어야 하며, 숫자와 특수문자가 포함되어야 합니다.">
-              </div>
-              <div class="form-group mb-3">
-                <label for="email">이메일:</label>
-                <input type="email" id="email" name="email" class="form-control" th:field="*{email}" required
-                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                       title="올바른 이메일 형식을 입력하세요. (예: example@domain.com)">
+                <span id="usernameDisplay" class="form-control" th:text="*{username}"></span>
+                <input type="hidden" id="username" name="username" th:field="*{username}">
               </div>
               <div class="form-group mb-3">
                 <label for="name">사용자 이름:</label>
                 <input type="text" id="name" name="name" class="form-control" th:field="*{name}" required>
-              </div>
-              <div class="form-group mb-3">
-                <label for="birth">생년월일:</label>
-                <input type="text" id="birth" name="birth" class="form-control" th:field="*{birth}" required
-                       pattern="^\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$"
-                       title="생년월일은 YYMMDD 형식으로 입력하세요. (예: 991010)">
               </div>
               <div class="form-group mb-1">
                 <div class="d-flex align-items-center">
@@ -156,7 +142,17 @@
                   </div>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary">회원가입</button>
+              <div class="form-group mb-3">
+                <div class="row">
+                  <div class="col pe-5">
+                    <button type="submit" class="btn btn-primary" style="margin-left: 0px;">회원수정</button> <!-- 여기에 margin-left 추가 -->
+                  </div>
+                  <div class="col ps-5">
+                    <!-- 비밀번호 변경 버튼 -->
+                    <button type="button" class="btn btn-secondary" style="width: 150%;" onclick="location.href='/user/re_enter_credentials'">비밀번호 변경</button>
+                  </div>
+                </div>
+              </div>
             </form>
           </div>
 
@@ -216,6 +212,7 @@
       }).open();
     }
   </script>
+
 </div>
 </body>
 
