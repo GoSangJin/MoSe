@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /* Event // event >> Ctrl + R 로 변수명 변경 */
 @Controller
@@ -108,32 +110,48 @@ public class EventController {
     //목록
     // 전체조회(Get)
     @GetMapping("/event")
-public String getAllEvents(@PageableDefault(page = 1) Pageable pageable,
-                           @RequestParam(required = false) String regionType,
-                           @RequestParam(value = "searchType", defaultValue = "") String searchType,
-                           @RequestParam(value = "search", defaultValue = "") String search,
-                           Model model) {
+    public String getAllEvents(@PageableDefault(page = 1) Pageable pageable,
+                               @RequestParam(required = false) String regionType,
+                               @RequestParam(value = "searchType", defaultValue = "") String searchType,
+                               @RequestParam(value = "search", defaultValue = "") String search,
+                               Model model) {
 
-    model.addAttribute("regionTypes", RegionType.values()); // 지역 타입 리스트 추가
-    // regionType이 "all"인 경우 모든 이벤트를 가져옵니다.
-    if (regionType == null || "all".equals(regionType)) {
-        regionType = null; // 모든 이벤트를 가져오도록 null로 설정
+        // DEFAULT를 제외한 RegionType 리스트 생성
+        List<RegionType> filteredRegionTypes = Arrays.stream(RegionType.values())
+                .filter(region -> !region.equals(RegionType.DEFAULT))
+                .collect(Collectors.toList());
+
+        model.addAttribute("regionTypes", filteredRegionTypes); // 지역 타입 리스트 추가
+
+        // "all"인 경우 또는 null인 경우 전체 조회로 처리
+        RegionType selectedRegion = null;
+        if (regionType != null && !"all".equalsIgnoreCase(regionType)) {
+            try {
+                selectedRegion = RegionType.valueOf(regionType);
+            } catch (IllegalArgumentException e) {
+                // 유효하지 않은 값인 경우 기본값(null)으로 유지
+                System.out.println("Invalid region type: " + regionType);
+            }
+        }
+
+        Page<EventDTO> eventPage = eventService.list(searchType, search, selectedRegion != null ? selectedRegion.name() : null, pageable);
+        List<EventDTO> eventDTOList = eventPage.getContent();
+
+        model.addAttribute("eventDTOList", eventDTOList);
+        model.addAttribute("selectedRegion", selectedRegion != null ? selectedRegion.name() : "all");
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
+        System.out.println("Selected region: " + regionType);
+
+        Map<String, Integer> pageInfo = PaginationUtil.Pagination(eventPage);
+        model.addAllAttributes(pageInfo);
+
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("search", search);
+
+        return "event/list";
     }
-    Page<EventDTO> eventPage = eventService.list(searchType, search, regionType, pageable);
-    List<EventDTO> eventDTOList = eventPage.getContent();
-    model.addAttribute("eventDTOList", eventDTOList);
-    model.addAttribute("selectedRegion", regionType);
-    model.addAttribute("bucket", bucket);
-    model.addAttribute("region", region);
-    model.addAttribute("folder", folder);
-    System.out.println("Selected region: " + regionType);
-    Map<String, Integer> pageInfo = PaginationUtil.Pagination(eventPage);
-    model.addAllAttributes(pageInfo);
 
-    model.addAttribute("searchType", searchType);
-    model.addAttribute("search", search);
-
-    return "event/list";
-}
 
 }

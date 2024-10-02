@@ -15,7 +15,7 @@
             <a th:href="@{/}" class="logo d-flex align-items-center me-auto">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <!-- <img src="/assets/img/logo.png" alt=""> -->
-                <img src="/assets/img/mose_logo_1.png"/>
+                <img src="/assets/img/mose_logo_1.svg"/>
             </a>
             <!--각 메뉴항목별 권한부여-->
             <!--isAnonymous(모두사용), isAuhenticated(로그인상태)-->
@@ -31,7 +31,7 @@
                             <span>체험/행사</span>
                             <i class="bi bi-chevron-down toggle-dropdown"></i>
                         </a>
-                        <ul>1
+                        <ul>
                             <li><a th:href="@{/product/list}">체험정보</a></li>
                             <li><a th:href="@{/event}">행사정보</a></li>
                         </ul>
@@ -53,7 +53,7 @@
                             <i class="bi bi-chevron-down toggle-dropdown"></i>
                         </a>
                         <ul>
-                            <li><a th:href="@{/diagnose/list}">병해진단</a></li>
+                            <li><a th:href="@{/diagnose}">병해진단</a></li>
                             <li><a th:href="@{/fruit}">병해도감</a></li>
                         </ul>
                     </li>

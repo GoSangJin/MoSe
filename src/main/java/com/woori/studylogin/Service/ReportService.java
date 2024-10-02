@@ -100,8 +100,8 @@ public class ReportService {
                 return today.plusDays(7);
             case "한달":
                 return today.plusMonths(1);
-            case "영구정지":
-                return null; // 영구 정지의 경우 종료일 설정하지 않음
+            case "1년":
+                return today.plusYears(1); // 영구 정지의 경우 종료일 설정하지 않음
             default:
                 throw new IllegalArgumentException("Invalid suspension type");
         }

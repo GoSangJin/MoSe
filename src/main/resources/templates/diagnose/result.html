@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Services - Active Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: Active
+    * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
+    * Updated: Jun 29 2024 with Bootstrap v5.3.3
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<body>
+<div layout:fragment="content">
+    <main class="main">
+            <!-- Page Title -->
+        <div class="page-title" style="background-color: #003300;">
+          <div class="container text-center">
+            <h1 style="color: white;">병해진단</h1>
+            <nav class="breadcrumbs">
+              <div>
+                <span style="color: white;">사진을 통해 작물의 병해를 진단할 수 있습니다.</span>
+              </div>
+            </nav>
+          </div>
+        </div>
+
+    <div class="container d-flex mt-3">
+        <div class="col-7">
+            <h1>진단 결과</h1>
+            <img src="/images/result.jpg" alt="Result Image">
+
+
+<!--            <h2>Labels:</h2>-->
+<!--            <ul>-->
+<!--                <th:block th:each="label : ${labels}">-->
+<!--                    <li th:text="${label}"></li>-->
+<!--                </th:block>-->
+<!--            </ul>-->
+
+<!--            <h2>Crops Information:</h2>-->
+<!--            <ul>-->
+<!--                <th:block th:each="entry : ${crops}">-->
+<!--                    <li th:text="'Folder: ' + ${entry.key} + ', File Count: ' + ${entry.value}"></li>-->
+<!--                </th:block>-->
+<!--            </ul>-->
+        </div>
+        <div class="col-5">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">AI 영상 진단 안내</h5>
+                    <ul class="list-unstyled">
+                        <li>① 병해진단에 불필요하거나 방해가 되는 부위는 촬영 시 제거하세요.</li>
+                        <li>② 병해진단을 받고자 하는 부위의 촛점이 흐리지 않도록 하세요.</li>
+                        <li>③ 조명이 밝은 곳에서 촬영해주세요.</li>
+                        <li>④ 업로드할 수 있는 사진의 유형은 jpg 와 png 파일입니다.<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;다른 유형의 파일 업로드 시 오류가 발생할 수 있습니다.</li>
+                        <li>⑤ 비슷한 모양,색상의 작물일 경우 결과가 부정확 할 수도 있습니다.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </main>
+    </div>
+</body>
+</html>
