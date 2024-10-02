@@ -235,20 +235,21 @@
                         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                             <a class="btn btn-success rounded-pill" th:if="${#authorization.expression('hasAnyRole(''admin'', ''master'')')}"
                                th:href="@{/fruit/create}" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-                                <strong>등록하기</strong>
+                                <strong>작물등록</strong>
                             </a>
 
-                            <a th:href="@{/fruit/list}" class="btn btn-outline-danger rounded-pill" onclick="resetForm()"
+                            <a th:href="@{/fruit}" class="btn btn-outline-danger rounded-pill" onclick="resetForm()"
                                style="display: flex; align-items: center; justify-content: center; padding: 0.5rem 1rem; font-size: 0.875rem;">
                                 <strong><i class="bi bi-arrow-clockwise"></i> 초기화</strong>
                             </a>
                         </div>
                     </div>
 
-                    <!-- 검색 폼 추가 -->
+                    <!-- 검색 폼 수정 -->
                     <div class="mb-3 d-flex justify-content-center flex-wrap">
                         <form class="d-flex w-100 justify-content-center" th:action="@{/fruit}" method="get" style="flex-wrap: wrap;">
-                            <input class="form-control me-2 rounded-pill" type="search" name="title" placeholder="작물이름 검색" th:value="${search}" aria-label="Search"
+                            <!-- name 속성을 "search"로 변경 -->
+                            <input class="form-control me-2 rounded-pill" type="search" name="search" placeholder="작물이름 검색" th:value="${search}"
                                    style="height: 2.5rem; font-size: 0.875rem; padding: 0.5rem 1.5rem;">
                             <button class="btn btn-secondary rounded-pill" type="submit"
                                     style="padding: 0.5rem 1.5rem; font-size: 0.875rem; white-space: nowrap;">
@@ -256,6 +257,7 @@
                             </button>
                         </form>
                     </div><!--/검색폼-->
+
 
                     <!-- Fruit List -->
                     <div class="container" data-aos="fade-up" style="margin-bottom: 30px; margin-top: 50px;">
@@ -277,17 +279,52 @@
                                                      th:if="${fruit.fruitImg == null or #lists.isEmpty(fruit.fruitImg)}" />
                                             </a>
                                             <div class="card-body">
-                                                <h5 class="card-title" th:text="${fruit.fruitName}">Name</h5>
+                                                <!-- 과일 이름 -->
+
+                                                <!-- Disease List with Accordion -->
+                                                <div id="accordion-disease-list"> <!-- Accordion 컨테이너 -->
+                                                    <div class="card">
+                                                        <!-- Card Header -->
+                                                        <div class="card-header" style="background-color: #f8f9fa; padding: 0.5rem 1rem;"> <!-- 왼쪽 패딩을 1rem으로 설정 -->
+                                                            <!-- 과일 이름 및 병해 목록 -->
+                                                            <a class="btn" data-bs-toggle="collapse" th:href="'#diseaseList' + ${fruit.id}">
+                <span th:text="${fruit.fruitName}" style="font-size: 1rem; font-weight: bold; text-decoration: underline; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: inline-block; max-width: 100%;">
+                    Name
+                </span> <!-- 과일 이름만 표시 -->
+                                                            </a>
+                                                        </div>
+
+                                                        <!-- 병해 목록의 Collapse -->
+                                                        <div th:id="'diseaseList' + ${fruit.id}" class="collapse" data-bs-parent="#accordion-disease-list">
+                                                            <div class="card-body" style="padding-left: 1rem; height: 100px;"> <!-- card-body에 고정 높이 설정 -->
+                                                                <ul class="list-group list-group-flush">
+                                                                    <!-- 병해 리스트 -->
+                                                                    <li class="list-group-item" th:each="disease : ${fruit.diseaseDTOList}">
+                                                                        <a th:href="@{/disease/read(id=${disease.id})}" th:text="${disease.diseaseName}" style="text-decoration: underline; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: inline-block; max-width: 100%;">
+                                                                            병해명
+                                                                        </a>
+                                                                    </li>
+                                                                    <!-- 병해 정보가 없을 때 -->
+                                                                    <li class="list-group-item" th:if="${#lists.isEmpty(fruit.diseaseDTOList)}" style="height: 100px; display: flex; align-items: center; justify-content: center;">병해 정보 없음.</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
                                                 <span sec:authorize="hasAnyRole('admin', 'master')">
-                                                    <!--수정, 삭제 버튼 오른쪽으로 이동 -->
+                                                    <!-- 수정, 삭제 버튼 오른쪽으로 이동 -->
                                                     <div style="margin-top: 0.25rem; text-align: right;">
-                                                      <a th:href="@{/fruit/delete(id=${fruit.id})}" sec:authorize="hasAnyRole('admin','master')"
-                                                         style="font-size: 0.75rem; padding: 0; color: #17a2b8; text-decoration: underline; margin-right: 0.1rem;">수정</a>
-                                                      <a th:href="@{/fruit/delete(id=${fruit.id})}" sec:authorize="hasAnyRole('admin','master')"
-                                                         style="font-size: 0.75rem; padding: 0 0.5rem 0 0; color: #dc3545; text-decoration: underline;">삭제</a>
+                                                        <a th:href="@{/disease/create(fruitId=${fruit.id})}"
+                                                           style="font-size: 0.75rem; padding: 0; color: #17a2b8; text-decoration: underline; margin-right: 0.1rem;">병해등록</a>
+                                                        <a th:href="@{/fruit/update(id=${fruit.id})}"
+                                                           style="font-size: 0.75rem; padding: 0; color: #17a2b8; text-decoration: underline; margin-right: 0.1rem;">수정</a>
+                                                        <a th:href="@{/fruit/delete(id=${fruit.id})}"
+                                                           style="font-size: 0.75rem; padding: 0 0.5rem 0 0; color: #dc3545; text-decoration: underline;">삭제</a>
                                                     </div>
                                                 </span>
-
                                             </div>
                                         </div>
                                     </div>
@@ -295,6 +332,7 @@
                             </div><!-- /Card End -->
                         </div>
                     </div>
+
 
                     <!-- 페이지네이션 -->
                     <div class="row">

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Services - Active Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: Active
+    * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
+    * Updated: Jun 29 2024 with Bootstrap v5.3.3
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+    <style>
+        /* 기본 폰트 크기 줄이기 */
+    body {
+      font-size: 0.875rem; /* 기본 폰트 크기: 14px */
+    }
+
+
+    /* 큰화면용 테이블 스타일 */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      border-top: 2px solid #b0b0b0; /* 테이블 상단 경계선 */
+      border-bottom: 2px solid #dee2e6; /* 테이블 하단 경계선 */
+    }
+
+    .table thead {
+      background-color: #f1f3f5; /* 테이블 헤더 배경색 */
+      border-bottom: 2px solid #dee2e6; /* 헤더 하단 경계선 추가 */
+      position: sticky; /* 스크롤 시 상단에 고정 */
+      top: 0;
+      z-index: 2; /* 다른 내용 위에 오도록 설정 */
+    }
+
+    .table th, .table td {
+      padding: 0.75rem;
+      text-align: center;
+      border: none; /* 열 칸의 경계선 제거 */
+      white-space: nowrap; /* 텍스트가 넘치지 않도록 설정 */
+      overflow: hidden; /* 넘치는 텍스트 숨기기 */
+      text-overflow: ellipsis; /* 넘치는 텍스트에 대해 ellipsis 표시 */
+      max-width: 70px; /* 최대 너비 설정, 필요에 따라 조정 가능 */
+    }
+
+    .table th {
+      background-color: #e9ecef; /* 테이블 헤더 배경색 */
+    }
+
+    .table tbody tr {
+      border-bottom: 1px solid #dee2e6; /* 행 간의 구분선 */
+    }
+
+    .table td {
+      vertical-align: middle;
+    }
+
+    /* 이미지의 크기를 고정합니다 */
+    .card-img-top {
+      width: 100%; /* 카드 너비에 맞추기 */
+      height: 236px; /* 카드의 높이와 비슷하게 설정 */
+      object-fit: cover; /* 이미지 비율을 유지하며 자르기 */
+    }
+    /* 카드 본문 영역의 크기를 설정 */
+    .card-body {
+      flex: 1; /* 카드 본문 영역이 남은 공간을 차지하도록 설정 */
+      padding: 15px; /* 본문 패딩 설정 */
+    }
+    /* 페이지 네비게이션 스타일 */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .page-item .page-link {
+      border-radius: 50%;
+      margin: 0 0.15rem;
+      width: 2rem; /* 버튼 크기를 늘림 */
+      height: 2rem; /* 버튼 크기를 늘림 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem; /* 폰트 크기를 늘림 */
+    }
+
+    .page-item.active .page-link {
+      background-color: #014421; /* 진한 녹색 배경 */
+      color: #fff; /* 흰색 텍스트 */
+      border-color: #014421; /* 진한 녹색 테두리 */
+    }
+
+    .page-item .page-link:hover {
+      background-color: #f0f0f0; /* 마우스 오버시 연한 회색 배경 */
+      color: #000;
+    }
+
+    .page-item.disabled .page-link {
+      color: #d0d0d0;
+      pointer-events: none;
+      background-color: #fff;
+    }
+
+    /* 아이콘 크기 조정 */
+    .page-link .bi {
+      font-size: 0.6rem; /* 아이콘 크기 늘림 */
+    }
+
+    /* 이전, 다음 버튼 스타일 */
+    .page-item.previous .page-link,
+    .page-item.next .page-link {
+      border-radius: 50%; /* 둥근 버튼 */
+      width: 2rem; /* 이전, 다음 버튼 크기 늘림 */
+      height: 2rem; /* 이전, 다음 버튼 크기 늘림 */
+    }
+
+    .page-item.previous .page-link {
+      background-color: #ffffff; /* 흰색 배경 */
+      border: 1px solid #d0d0d0; /* 연한 회색 테두리 */
+    }
+
+    .page-item.next .page-link {
+      background-color: #ffffff; /* 흰색 배경 */
+      border: 1px solid #d0d0d0; /* 연한 회색 테두리 */
+    }
+
+    .page-item.previous .page-link:hover,
+    .page-item.next .page-link:hover {
+      background-color: #f0f0f0; /* 마우스 오버시 연한 회색 배경 */
+    }
+
+        @media (max-width: 576px) {
+            /* 페이지네이션 버튼 크기 축소 */
+            .page-item .page-link {
+                width: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+                height: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+                font-size: 0.65rem; /* 작은 화면에서 폰트 크기 조정 */
+            }
+
+            /* 이전, 다음 버튼 아이콘 크기 조정 */
+            .page-link .bi {
+                font-size: 0.55rem; /* 작은 화면에서 아이콘 크기 축소 */
+            }
+
+            /* 이전, 다음 버튼 크기 일관성 유지 */
+            .page-item.previous .page-link,
+            .page-item.next .page-link {
+                width: 1.75rem; /* 작은 화면에서 동일하게 크기 축소 */
+                height: 1.75rem;
+            }
+        }
+
+
+  </style>
+</head>
+
+<body>
+<div layout:fragment="content">
+<main class="main">
+    <!-- Page Title -->
+    <div class="page-title" style="background-color: #003300;">
+        <div class="container text-center">
+            <h1 style="color: white;">회원님의 게시글</h1>
+            <nav class="breadcrumbs">
+                <div>
+                    <span style="color: white;">다른 회원님들의 게시글 보실 수 있어요.</span>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- 다른사람 게시글 보기 -->
+    <div class="container col-lg-7 col-md-10 col-sm-12" data-aos="fade-up">
+        <!-- 상단 글 -->
+        <div class="d-flex justify-content-between align-items-center mb-2" style="margin-top: 50px;">
+            <h5 th:text="${username} + '님의 게시글 목록입니다.'"></h5>
+            <!-- 목록 버튼 -->
+            <div class="d-flex justify-content-end">
+                <a th:href="@{/board/list}" class="btn btn-outline-success rounded-pill mb-3 btn-sm"> <!-- btn-sm 추가로 크기 조정 -->
+                    <strong>목록</strong>
+                </a>
+            </div>
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>카테고리</th>
+                <th>제목</th>
+                <th>작성일</th>
+                <th>추천수</th>
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody th:each="board : ${userInfo}">
+            <tr>
+                <td th:text="${board.category}"></td>
+                <td>
+                    <a th:href="@{/board/view(id=${board.id})}">
+                        <span th:text="${board.title}"></span>
+                    </a>
+                </td>
+                <td th:text="${#temporals.format(board.regDate, 'MM-dd')}"></td>
+                <td th:text="${board.likeCount}"></td>
+                <td th:text="${board.viewCount}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- 페이지네이션 -->
+        <nav>
+            <ul class="pagination pagination-sm justify-content-center mt-5">
+                <!-- 이전 버튼 -->
+                <li class="page-item previous" th:classappend="${pageInfo.currentPage == 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/user/info(username=${username},page=${pageInfo.prevPage - 1})}">
+                        <span class="bi bi-chevron-double-left"></span>
+                    </a>
+                </li>
+                <!-- 페이지 번호 -->
+                <li class="page-item" th:each="i : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}"
+                    th:classappend="${pageInfo.currentPage == i} ? 'active' : ''">
+                    <a class="page-link" th:href="@{/user/info(username=${username},page=${i - 1})}">
+                        <span th:text="${i}"></span>
+                    </a>
+                </li>
+
+                <!-- 다음 버튼 -->
+                <li class="page-item next" th:classappend="${pageInfo.currentPage >= pageInfo.endPage} ? 'disabled'">
+                    <a class="page-link" th:href="@{/user/info(username=${username},page=${pageInfo.nextPage - 1})}">
+                        <span class="bi bi-chevron-double-right"></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+
+</main>
+</div>
+</body>
+</html>

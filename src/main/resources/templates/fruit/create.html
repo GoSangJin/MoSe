@@ -30,13 +30,6 @@
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: Active
-  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
-  * Updated: Jun 29 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body class="services-page">
@@ -45,23 +38,48 @@
   <main class="main">
 
     <!-- Page Title -->
-    <div class="page-title light-background">
-      <div class="container">
-        <h1>살아보기</h1>
+    <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">병해정보</h1>
         <nav class="breadcrumbs">
           <div>
-            <span>청장년 귀농귀촌 희망자가 농촌지역 실제 이주 전에 희망지역에서 미리 살아볼 수 있는 기회를 제공하는 사업입니다.</span></li>
+            <span style="color: white;">병해정보에 관한 문의사항이나 건의사항은 언제든지 연락주세요</span>
           </div>
         </nav>
       </div>
-    </div><!-- End Page Title -->
+    </div>
+    <!-- End Page Title -->
 
     <!-- Services 2 Section -->
     <section id="services-2" class="services-2 section">
-
-      <div class="container">
+      <div class="container" style="margin-top: 2.5rem">
         <div class="row justify-content-center" data-aos="fade-up">
-          <div class="col-md-6 col-lg-4"> <!--주작업공간-->
+          <div class="col-md-6 col-lg-4">
+            <h2 style="margin-bottom: 2.5rem;">작물정보 등록</h2>
+
+            <form th:action="@{/fruit/create}" method="post" enctype="multipart/form-data" class="mb-4">
+              <!-- 작물명 입력 필드 -->
+              <div class="form-group" style="font-weight: bold; margin-bottom: 1.5rem;">
+                <label for="fruitName" class="form-label" style="margin-bottom: 0.5rem;">작물명 :</label>
+                <input type="text" id="fruitName" name="fruitName" class="form-control" required placeholder="작물명을 입력하세요"
+                       onfocus="this.placeholder = ''" onblur="this.placeholder = '작물명을 입력하세요'"
+                       th:value="${fruitDTO.fruitName}" style="margin-bottom: 2rem;">
+              </div>
+
+              <!-- 이미지 업로드 필드 -->
+              <div class="form-group" style="font-weight: bold; margin-bottom: 1.5rem;">
+                <label for="fruitImg" class="form-label" style="margin-bottom: 0.5rem;">이미지 :</label>
+                <input type="file" id="fruitImg" name="file" class="form-control" required>
+              </div>
+
+              <!-- 버튼 -->
+              <div class="mt-2">
+                <button type="submit" class="btn btn-outline-info rounded-pill mt-3 mb-3">등록</button>
+                <a th:href="@{/fruit}" class="btn btn-outline-secondary rounded-pill mt-3 mb-3">취소</a>
+              </div>
+            </form>
+
+
 
           </div>
         </div>

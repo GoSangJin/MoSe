@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Services - Active Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">병해정보</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;">병해정보에 관한 문의사항이나 건의사항은 언제든지 연락주세요</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Services 2 Section -->
+    <section id="services-2" class="services-2 section">
+      <div class="container" style="margin-top: 2.5rem">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-6 col-lg-4">
+            <h2 style="margin-bottom: 2.5rem;">작물정보 수정</h2>
+
+            <form th:action="@{/fruit/update}" method="post" enctype="multipart/form-data" class="mb-4">
+              <input type="hidden" name="id" th:value="${fruitDTO.id}">
+              <!-- 작물명 입력 필드 -->
+              <div class="form-group" style="font-weight: bold; margin-bottom: 1.5rem;">
+                <label for="fruitName" class="form-label" style="margin-bottom: 0.5rem;">작물명 :</label>
+                <input type="text" id="fruitName" name="fruitName" class="form-control" required placeholder="작물명을 입력하세요"
+                       onfocus="this.placeholder = ''" onblur="this.placeholder = '작물명을 입력하세요'"
+                       th:value="${fruitDTO.fruitName}" style="margin-bottom: 2rem;">
+              </div>
+
+
+              <div class="text-center mb-4"> <!-- 중앙 정렬을 위한 div -->
+                <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${fruitDTO.fruitImg}|"
+                     class="post-image"
+                     th:if="${fruitDTO.fruitImg != null and !#strings.isEmpty(fruitDTO.fruitImg)}"
+                     style="max-width: 90%; height: auto;"> <!-- 이미지 크기 조정 -->
+              </div>
+
+              <!-- 이미지 업로드 필드 -->
+              <div class="form-group" style="font-weight: bold; margin-bottom: 1.5rem;">
+                <label for="fruitImg" class="form-label" style="margin-bottom: 0.5rem;">이미지 :</label>
+                <input type="file" id="fruitImg" name="file" class="form-control">
+              </div>
+
+              <!-- 버튼 -->
+              <div class="mt-2">
+                <button type="submit" class="btn btn-outline-info rounded-pill mt-3 mb-3">수정</button>
+                <a th:href="@{/fruit}" class="btn btn-outline-secondary rounded-pill mt-3 mb-3">취소</a>
+              </div>
+            </form>
+
+
+
+          </div>
+        </div>
+      </div>
+    </section><!-- /Services 2 Section -->
+
+
+
+  </main>
+</div>
+
+</body>
+
+</html>
