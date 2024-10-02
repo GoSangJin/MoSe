@@ -2,12 +2,12 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main}">
+      layout:decorate="~{layouts/main}" xmlns:font-weight="http://www.w3.org/1999/xhtml">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>체험정보 수정하기 - Active Bootstrap Template</title>
+  <title>체험정보</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -18,7 +18,7 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -27,9 +27,22 @@
   <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
 
+  <!-- Ensure Bootstrap CSS is included in your project -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
 
+  <!-- Bootstrap CSS -->
+
+
+  <!-- =======================================================
+  * Template Name: Active
+  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body class="services-page">
@@ -38,9 +51,9 @@
   <main class="main">
 
     <!-- Page Title -->
-    <div class="page-title" style="background-color: darkgreen;">
+    <div class="page-title" style="background-color: #003300;">
       <div class="container text-center">
-        <h1 style="color: white;">살아보기</h1>
+        <h1 style="color: white;">체험정보</h1>
         <nav class="breadcrumbs">
           <div>
             <span style="color: white;">청장년 귀농귀촌 희망자가 농촌지역 실제 이주 전에 희망지역에서 미리 살아볼 수 있는 기회를 제공하는 사업입니다.</span>
@@ -50,23 +63,36 @@
     </div>
     <!-- End Page Title -->
 
-    <!-- 체험정보 수정하기 -->
+    <!-- 체험정보 등록하기 -->
     <section id="services-2" class="services-2 section">
       <div class="container mb-3 mt-5">
         <div class="row justify-content-center" data-aos="fade-up">
           <div class="col-md-6 col-lg-4">
             <!-- 상단 제목 -->
-            <h2>체험정보 수정하기</h2>
+            <h2>체험정보 등록하기</h2>
             <form th:action="@{/product/edit}" th:object="${productDTO}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="id" th:field="*{id}">
-
-              <div class="form-group mb-2">
-                <label for="local_name">지역 이름</label>
-                <input type="text" id="local_name" name="local_name" class="form-control" th:value="${productDTO.local_name}" required>
+              <input type="hidden" name="id" th:field="*{id}">
+              <div class="form-group mt-5 mb-4" style="font-weight: bold">
+                <label for="regionType">지역선택 : </label>
+                <select id="regionType" name="regionType" class="form-control custom-select" th:field="*{regionType}" required style="appearance: none;">
+                  <option value="" disabled selected>선택하세요</option> <!-- 기본 선택 옵션 추가 -->
+                  <option th:each="regionType : ${T(com.woori.studylogin.Constant.RegionType).values()}"
+                          th:value="${regionType.name()}"
+                          th:text="${regionType.name()}"
+                          th:if="${regionType.name() != 'DEFAULT'}"></option>
+                </select>
               </div>
 
-              <!-- 우편번호 찾기 및 주소 입력 -->
-              <div class="form-group mb-1">
+
+              <div class="form-group mb-4" style="font-weight: bold">
+                <label for="local_name">지역 이름 : </label>
+                <input type="text" id="local_name" name="local_name" class="form-control" th:field="*{local_name}" required
+                       style="resize: none; overflow: auto;" placeholder="지역이름을 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '지역이름을 입력하세요'">
+              </div>
+
+              <!--우편번호찾기-->
+              <div class="form-group mb-1" style="font-weight: bold">
+                <label for="postcode">주소 찾기 : </label>
                 <div class="row">
                   <div class="col">
                     <input type="text" id="postcode" name="postcode" class="form-control" th:field="*{postcode}" required>
@@ -76,13 +102,17 @@
                   </div>
                 </div>
               </div>
+              <!--주소입력-->
               <div class="form-group mb-1">
                 <input type="text" id="address" name="address" class="form-control" th:field="*{address}" required>
               </div>
-              <div class="form-group mb-2">
+              <!--상세주소입력-->
+              <div class="form-group mb-4">
                 <div class="row">
                   <div class="col">
-                    <input type="text" id="detailAddress" name="detailAddress" class="form-control" th:field="*{detailAddress}" required>
+                    <input type="text" id="detailAddress" name="detailAddress" class="form-control" placeholder="상세주소 입력"
+                           onfocus="this.placeholder = ''" onblur="this.placeholder = '상세주소 입력'"
+                           th:field="*{detailAddress}" required>
                   </div>
                   <div class="col">
                     <input type="text" id="extraAddress" name="extraAddress" class="form-control" th:field="*{extraAddress}">
@@ -90,87 +120,163 @@
                 </div>
               </div>
 
-              <!-- 나머지 정보들 수정 -->
-              <div class="form-group mb-3">
-                <label for="title">마을 이름</label>
-                <input type="text" id="title" name="title" class="form-control" th:value="${productDTO.title}" required>
+              <div class="form-group mb-3" style="font-weight: bold">
+                <label for="title">마을 이름 : </label>
+                <input type="text" id="title" name="title" class="form-control" th:field="*{title}" required
+                       placeholder="마을이름을 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '마을이름을 입력하세요'">
               </div>
 
-              <div class="form-group mb-3">
-                <label for="moveInDate">입주 가능일</label>
+              <div class="form-group mb-3" style="font-weight: bold">
+                <label for="moveInDate">입주 가능일 : </label>
                 <input type="date" id="moveInDate" name="moveInDate" class="form-control" th:value="${productDTO.moveInDate}">
               </div>
 
-              <div class="form-group mb-3">
-                <label for="applicationStartDate">신청 기간 시작일</label>
-                <input type="date" id="applicationStartDate" name="applicationStartDate" class="form-control" th:value="${productDTO.applicationStartDate}">
+              <div class="form-group mb-2 row" style="font-weight: bold;">
+                <label for="applicationStartDate" class="col-md-4 col-form-label">신청 시작일:</label>
+                <div class="col-md-8 mb-1"> <!-- mb-1로 하단 마진 줄이기 -->
+                  <input type="date" id="applicationStartDate" name="applicationStartDate" class="form-control" th:value="${productDTO.applicationStartDate}">
+                </div>
               </div>
-              <div class="form-group mb-3">
-                <label for="applicationEndDate">신청 기간 종료일</label>
-                <input type="date" id="applicationEndDate" name="applicationEndDate" class="form-control" th:value="${productDTO.applicationEndDate}">
-              </div>
-
-              <div class="form-group mb-3">
-                <label for="recruitmentCnt">모집 인원</label>
-                <input type="number" id="recruitmentCnt" name="recruitmentCnt" class="form-control" th:value="${productDTO.recruitmentCnt}" min="0">
-              </div>
-
-              <div class="form-group mb-3">
-                <label for="image_url">상품 이미지 URL</label>
-                <input type="file" id="image_url" name="file" class="form-control" required>
+              <div class="form-group mb-2 row" style="font-weight: bold;">
+                <label for="applicationEndDate" class="col-md-4 col-form-label">신청 종료일:</label>
+                <div class="col-md-8 mb-1"> <!-- mb-1로 하단 마진 줄이기 -->
+                  <input type="date" id="applicationEndDate" name="applicationEndDate" class="form-control" th:value="${productDTO.applicationEndDate}">
+                </div>
               </div>
 
-              <div class="form-group mb-3">
-                <label for="statusSelect">상태</label>
-                <select id="statusSelect" name="status" class="form-select" style="color: orange;">
+              <div class="form-group mb-2" style="font-weight: bold;"> <!-- mb-3에서 mb-2로 변경 -->
+                <label for="recruitmentCnt">모집 인원 :</label>
+                <input type="number" id="recruitmentCnt" name="recruitmentCnt" class="form-control" th:field="*{recruitmentCnt}" min="0"
+                       placeholder="숫자만 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '숫자만 입력하세요'">
+              </div>
+
+
+              <div class="form-group mb-3" style="font-weight: bold">
+                <label for="image_url">상품 이미지 URL : </label>
+                <input type="file" id="image_url" name="file" class="form-control">
+              </div>
+
+              <div class="form-group mb-3" style="font-weight: bold">
+                <label for="statusSelect">상태(모집중/모집완료) : </label>
+                <select id="statusSelect" name="status" class="form-select" style="color: orange; font-weight: bold">
                   <option th:each="status : ${statusTypes}"
                           th:value="${status}"
                           th:text="${status.description}"
-                          th:selected="${status == selectedStatus}">Select Status</option>
+                          th:selected="${status == selectedStatus}"></option>
                 </select>
               </div>
 
               <!-- 마을 정보 -->
-              <div class="form-group mb-3">
-                <h4>마을 정보</h4>
-                <div class="form-group mb-3">
-                  <label for="residents">마을 주민수</label>
-                  <input type="number" id="residents" name="residents" class="form-control" th:value="${productDTO.residents}" min="0">
+              <div class="form-group mb-3" style="font-weight: bold; color: green; margin-top: 4rem;">
+                <h4 >마을 상세정보</h4>
+                <div class="form-group mb-3" style="margin-top: 2rem;">
+                  <label for="residents">마을 주민수 : </label>
+                  <input type="number" id="residents" name="residents" class="form-control" th:field="*{residents}" min="0"
+                         placeholder="숫자만 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '숫자만 입력하세요'">
                 </div>
                 <div class="form-group mb-3">
-                  <label for="representative">마을 대표자</label>
-                  <input type="text" id="representative" name="representative" class="form-control" th:value="${productDTO.representative}">
+                  <label for="representative">마을 대표자 : </label>
+                  <input type="text" id="representative" name="representative" class="form-control" th:field="*{representative}"
+                         placeholder="대표자이름을 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '대표자이름을 입력하세요'">
                 </div>
                 <div class="form-group mb-3">
-                  <label for="manager">마을 운영자</label>
-                  <input type="text" id="manager" name="manager" class="form-control" th:value="${productDTO.manager}">
+                  <label for="manager">마을 운영자 : </label>
+                  <input type="text" id="manager" name="manager" class="form-control" th:field="*{manager}"
+                         placeholder="운영자이름을 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '운영자이름을 입력하세요'">
                 </div>
                 <div class="form-group mb-3">
-                  <label for="supportCenter">시군지원센터</label>
-                  <input type="text" id="supportCenter" name="supportCenter" class="form-control" th:value="${productDTO.supportCenter}">
+                  <label for="supportCenter">시군지원센터 :</label>
+                  <input type="tel" id="supportCenter" name="supportCenter" class="form-control" th:field="*{supportCenter}"
+                         placeholder="전화번호를 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '전화번호를 입력하세요'"
+                         pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}" title="전화번호 형식: 010-1234-5678">
                 </div>
+
               </div>
 
-              <button type="submit" class="btn btn-outline-success rounded-pill mb-3">수정하기</button>
+              <button type="submit" class="btn btn-outline-info rounded-pill mb-3">등록</button>
               <a th:href="@{/product/list}" class="btn btn-outline-danger rounded-pill mb-3">취소</a>
             </form>
           </div>
         </div>
       </div>
-    </section><!-- /체험정보 수정하기 -->
+    </section><!-- /체험정보 등록하기 -->
+
   </main>
+
+
 
   <!-- Bootstrap JS and dependencies -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="/assets/vendor/aos/aos.js"></script>
-  <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="/assets/js/main.js"></script>
+  <!--daum API-->
+  <script th:inline="javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script th:inline="javascript">
+    function execDaumPostcode() {
+      new daum.Postcode({
+        oncomplete: function(data) {
+          // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
+          // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+          // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+          var addr = ''; // 주소 변수
+          var extraAddr = ''; // 참고항목 변수
+
+          //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+          if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+            addr = data.roadAddress;
+          } else { // 사용자가 지번 주소를 선택했을 경우(J)
+            addr = data.jibunAddress;
+          }
+
+          // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+          if(data.userSelectedType === 'R'){
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+              extraAddr += data.bname;
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if(data.buildingName !== '' && data.apartment === 'Y'){
+              extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if(extraAddr !== ''){
+              extraAddr = ' (' + extraAddr + ')';
+            }
+            // 조합된 참고항목을 해당 필드에 넣는다.
+            document.getElementById("extraAddress").value = extraAddr;
+
+          } else {
+            document.getElementById("extraAddress").value = '';
+          }
+
+          // 우편번호와 주소 정보를 해당 필드에 넣는다.
+          document.getElementById('postcode').value = data.zonecode;
+          document.getElementById("address").value = addr;
+          // 커서를 상세주소 필드로 이동한다.
+          document.getElementById("detailAddress").focus();
+        }
+      }).open();
+    }
+  </script>
+
+  <!-- 전화번호 입력 확인을 위한 자바스크립트 추가 -->
+  <script>
+    document.getElementById("supportCenter").addEventListener("input", function (e) {
+      var input = e.target.value;
+      // 전화번호 형식: 010-1234-5678 (또는 02-123-5678)
+      var regex = /^\d{2,3}-\d{3,4}-\d{4}$/;
+      if (!regex.test(input)) {
+        e.target.setCustomValidity("전화번호 형식에 맞게 입력해주세요: 010-1234-5678");
+      } else {
+        e.target.setCustomValidity(""); // 유효성 통과
+      }
+    });
+  </script>
 </div>
+
 </body>
+
 </html>
