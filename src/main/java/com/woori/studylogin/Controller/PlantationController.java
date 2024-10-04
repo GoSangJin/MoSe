@@ -108,7 +108,7 @@ public class PlantationController {
     // 상품 전체 조회 (페이지 처리)
     @GetMapping("/plantation/list")
     public String getAllPlantations(
-            @PageableDefault(page = 0,size = 12) Pageable pageable,
+            @PageableDefault(page = 0, size = 12) Pageable pageable,
             @RequestParam(required = false) String search,
             @RequestParam(required = false) PlantType status, // 분류 추가
             Model model) {
@@ -123,6 +123,8 @@ public class PlantationController {
 
         model.addAttribute("list", plantationPage);
         model.addAttribute("plantTypes", PlantType.values());
+        model.addAttribute("selectedStatus", status); // 현재 선택된 분류 추가
+        model.addAttribute("search", search); // 검색어 추가
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);

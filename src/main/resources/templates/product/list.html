@@ -230,7 +230,7 @@
 
             <!-- 초기화 버튼 -->
             <a th:href="@{/product/list}" class="btn btn-outline-danger rounded-pill" style="margin-left: 5px;" onclick="resetForm()">
-              <strong><i class="bi bi-arrow-clockwise"></i> 초기화</strong>
+              <strong>전체보기</strong>
             </a>
           </div>
         </div>
@@ -312,7 +312,7 @@
                 <ul class="pagination pagination-sm justify-content-center mt-5">
                   <!-- 이전 버튼 -->
                   <li class="page-item previous" th:classappend="${list.hasPrevious()} ? '' : 'disabled'">
-                    <a class="page-link" th:href="@{//product/list(page=${list.number - 1}, status=${selectedStatus}, regionType=${selectedRegion})}" aria-label="First">
+                    <a class="page-link" th:href="@{/product/list(page=${list.number - 1}, status=${selectedStatus}, regionType=${selectedRegion})}" aria-label="First">
                       <span class="bi bi-chevron-double-left"></span> <!-- 아이콘 추가 -->
                     </a>
                   </li>
