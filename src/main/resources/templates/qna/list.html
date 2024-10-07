@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Q&amp;A Page</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <style>
+        .card {
+            border: 1px solid #ccc;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .card-header {
+            padding: 15px; /* 원하는 패딩 값 */
+            font-size: 1.3em; /* 원하는 폰트 크기 */
+        }
+        .btn-register {
+          background-color: #006400; /* 버튼 배경색 */
+          color: white; /* 버튼 텍스트 색상 */
+          height: 2.25rem; /* 버튼 높이 */
+          padding: 0.25rem 0.75rem; /* 버튼 패딩 */
+          display: flex; /* 플렉스 박스 레이아웃 사용 */
+          align-items: center; /* 세로 가운데 정렬 */
+          justify-content: center; /* 가로 가운데 정렬 */
+          width: auto; /* 버튼 너비 자동 조정 */
+          max-width: 200px; /* 버튼의 최대 너비 설정 */
+          font-size: 0.875rem; /* 버튼 폰트 크기 */
+          text-align: center; /* 버튼 텍스트 중앙 정렬 */
+          border: none; /* 버튼 테두리 제거 */
+          transition: background-color 0.3s, font-size 0.3s; /* 부드러운 배경색과 폰트 크기 전환 */
+        }
+        .card-header2 {
+            background-color: #f7f7f7;
+            padding: 15px;
+            cursor: pointer;
+        }
+        .q-tit {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .q-tit li {
+            font-weight: bold;
+        }
+        .accordion-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: #007bff;
+        }
+        .collapse {
+            display: none;
+        }
+        .collapse.show {
+            display: block;
+        }
+        .card-body {
+            padding: 15px;
+
+            background-color: #fff;
+        }
+        .popup-setting-box {
+            display: none;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search_keyword {
+            width: calc(100% - 50px);
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .search_btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px 20px;
+        }
+        .search_btn .icon-btn {
+            vertical-align: middle;
+        }
+        .pagination-container {
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function funcClick(cardId) {
+            var card = document.getElementById(cardId);
+            var collapseDiv = card.querySelector('.collapse');
+            collapseDiv.classList.toggle('show');
+        }
+
+        function funcView(title, content) {
+            alert('Question: ' + title + '\nAnswer: ' + content);
+        }
+    </script>
+    <script>
+        function funcClick(cardId) {
+            var card = document.getElementById(cardId);
+            var collapseDiv = card.querySelector('.collapse');
+            collapseDiv.classList.toggle('show');
+        }
+
+        function funcView(title, content) {
+            alert('Question: ' + title + '\nAnswer: ' + content);
+        }
+    </script>
+</head>
+<body>
+<script>
+    (function() {
+        var ws = new WebSocket('ws://' + window.location.host +
+            '/jb-server-page?reloadMode=RELOAD_ON_SAVE&'+
+            'referrer=' + encodeURIComponent(window.location.pathname));
+        ws.onmessage = function (msg) {
+            if (msg.data === 'reload') {
+                window.location.reload();
+            }
+            if (msg.data.startsWith('update-css ')) {
+                var messageId = msg.data.substring(11);
+                var links = document.getElementsByTagName('link');
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    if (link.rel !== 'stylesheet') continue;
+                    var clonedLink = link.cloneNode(true);
+                    var newHref = link.href.replace(/(&|\?)jbUpdateLinksId=\d+/, "$1jbUpdateLinksId=" + messageId);
+                    if (newHref !== link.href) {
+                        clonedLink.href = newHref;
+                    }
+                    else {
+                        var indexOfQuest = newHref.indexOf('?');
+                        if (indexOfQuest >= 0) {
+                            // to support ?foo#hash
+                            clonedLink.href = newHref.substring(0, indexOfQuest + 1) + 'jbUpdateLinksId=' + messageId + '&' +
+                                newHref.substring(indexOfQuest + 1);
+                        }
+                        else {
+                            clonedLink.href += '?' + 'jbUpdateLinksId=' + messageId;
+                        }
+                    }
+                    link.replaceWith(clonedLink);
+                }
+            }
+        };
+    })();
+</script>
+
+<div layout:fragment="content">
+    <main class="main">
+        <!-- Page Title -->
+    <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">QnA</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;">귀농귀촌에 관한 정보나 건의사항이나 질문이 있으시면 언제든지 문의해주세요.</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- End Page Title -->
+
+        <!-- Services 2 Section -->
+        <section id="services-2" class="services-2 section">
+
+            <div class="container">
+                <div class="row justify-content-center" data-aos="fade-up">
+                    <div class="col-md-10 col-lg-8">
+                        <form th:action="@{/qna/new}" method="post" enctype="multipart/form-data">
+                            <h1 class="text-center w-80">자주묻는 질문</h1>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <a sec:authorize="hasAnyRole('admin','master')" class="btn btn-register rounded-pill" th:href="@{/qna/insert}">등록</a>
+                            </div>
+                            <div id="accordion">
+                                <div th:each="data : ${list}">
+                                    <div class="card mb-3" style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                                        <div class="card-header" data-bs-toggle="collapse" th:href="|#collapse_${data.id}|">
+                                            <strong th:text="${data.title}"></strong>
+                                        </div>
+                                        <div th:id="|collapse_${data.id}|" class="collapse" data-bs-parent="#accordion">
+                                            <div class="card-body">
+                                                <p th:text="${data.content}"></p> <!-- Content of the Q&A -->
+                                                <input type="hidden" name="id" th:value="${data.id}">
+                                                <span sec:authorize="hasAnyRole('admin','master')">
+                                                    <button type="button" class="btn btn-outline-info rounded-pill" th:onclick="|location.href='/qna/update/' + ${data.id}|">수정</button>
+                                                    <button type="button" class="btn btn-outline-danger rounded-pill" th:onclick="|location.href='/qna/delete/' + ${data.id}|">삭제</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+
+        <!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+
