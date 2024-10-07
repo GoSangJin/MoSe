@@ -100,7 +100,7 @@
                     <div class="custom-select-container" style="position: relative; margin-top: 10px;">
                       <select id="category" name="category" class="form-control custom-select" th:field="${boardDTO.category}" style="appearance: none;">
                         <!-- 맨 위에 항상 표시되는 옵션 -->
-                        <option value="자유게시판" selected>카테고리를 선택하세요</option>
+                        <option value="" disabled selected>카테고리를 선택하세요</option>
                         <span sec:authorize="hasAnyRole('ROLE_admin','ROLE_master')">
                         <option value="공지사항">공지사항</option>
                         </span>

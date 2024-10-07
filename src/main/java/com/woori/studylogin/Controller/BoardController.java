@@ -234,15 +234,16 @@ public class BoardController {
                        @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
                        @RequestParam(value = "category", defaultValue = "") String category,
                        @PageableDefault(page = 0) Pageable pageable, Model model) {
-        log.info("검색구분과 검색어를 받아서 자료를 찾아 전달");
-        log.info("페이지 번호를 받아서 전달");
+        log.info(searchType);
+        log.info(searchKeyword);
+        log.info(category);
 
         int currentPage = pageable.getPageNumber();
         List<BoardDTO> noticeBoards = currentPage == 0 ? boardService.getNoticeBoards("공지사항") : new ArrayList<>();
 
         if (currentPage == 0) {
         model.addAttribute("noticeBoards", noticeBoards);
-    }
+        }
 
         Page<BoardDTO> boardDTOS = boardService.list(searchType, searchKeyword, category, pageable);
         model.addAttribute("boardDTOS", boardDTOS);

@@ -128,7 +128,7 @@ public class BoardService {
 
     // 공지사항 제외 조회
     public Page<BoardDTO> list(String searchType, String searchKeyword, String category, Pageable pageable) {
-        CategoryType categoryType = category.isEmpty() ? null : CategoryType.valueOf(category.toUpperCase());
+        CategoryType categoryType = (category == null || category.isEmpty()) ? null : CategoryType.valueOf(category.toUpperCase());
 
         // Pageable 객체를 regDate 기준으로 내림차순 정렬하도록 설정
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "regDate"));
@@ -136,39 +136,40 @@ public class BoardService {
         Page<BoardEntity> read;
 
         if (categoryType == CategoryType.공지사항) {
-            // 공지사항 카테고리일 경우 공지사항만 가져오기
-            read = boardRepository.findByCategory(CategoryType.공지사항, sortedPageable);
+        // 공지사항 카테고리일 경우 공지사항만 가져오기
+        read = boardRepository.findByCategory(CategoryType.공지사항, sortedPageable);
         } else {
-            // 일반 게시글 처리
-            if (searchType.equals("title")) {
-                read = (categoryType == null)
-                        ? boardRepository.findByTitleContainingAndCategoryNot(searchKeyword, CategoryType.공지사항, sortedPageable)
-                        : boardRepository.findByTitleContainingAndCategory(searchKeyword, categoryType, sortedPageable);
-            } else if (searchType.equals("content")) {
-                read = (categoryType == null)
-                        ? boardRepository.findByContentContainingAndCategoryNot(searchKeyword, CategoryType.공지사항, sortedPageable)
-                        : boardRepository.findByContentContainingAndCategory(searchKeyword, categoryType, sortedPageable);
-            } else if (searchType.equals("titleContent")) {
-                read = (categoryType == null)
-                        ? boardRepository.findByTitleContainingOrContentContainingAndCategoryNot(searchKeyword, searchKeyword, CategoryType.공지사항, sortedPageable)
-                        : boardRepository.findByTitleContainingOrContentContainingAndCategory(searchKeyword, searchKeyword, categoryType, sortedPageable);
-            } else {
-                read = (categoryType == null)
-                        ? boardRepository.findByCategoryNot(CategoryType.공지사항, sortedPageable)
-                        : boardRepository.findByCategory(categoryType, sortedPageable);
+        // 일반 게시글 처리 (공지사항 제외)
+        if (searchType.equals("title")) {
+            read = (categoryType == null)
+                    ? boardRepository.findByTitleContaining(searchKeyword, sortedPageable)
+                    : boardRepository.findByTitleContainingAndCategory(searchKeyword, categoryType, sortedPageable);
+        } else if (searchType.equals("content")) {
+            read = (categoryType == null)
+                    ? boardRepository.findByContentContaining(searchKeyword, sortedPageable)
+                    : boardRepository.findByContentContainingAndCategory(searchKeyword, categoryType, sortedPageable);
+        } else if (searchType.equals("titleContent")) {
+            read = (categoryType == null)
+                    ? boardRepository.findByTitleContainingOrContentContaining(searchKeyword, searchKeyword, sortedPageable)
+                    : boardRepository.findByTitleContainingOrContentContainingAndCategory(searchKeyword, searchKeyword, categoryType, sortedPageable);
+        } else {
+
+            // 카테고리 없이 전체 조회 (공지사항 제외)
+            read = (categoryType == null)
+                    ? boardRepository.findByCategoryNot(CategoryType.공지사항, sortedPageable)
+                    : boardRepository.findByCategory(categoryType, sortedPageable);
             }
-            return read.map(data -> modelMapper.map(data, BoardDTO.class));
         }
 
-        if (pageable.getPageNumber() >= 1) {
-            List<BoardEntity> filteredContent = read.getContent().stream()
-                    .filter(board -> !board.getCategory().equals(CategoryType.공지사항))
-                    .collect(Collectors.toList());
-            Page<BoardEntity> filteredPage = new PageImpl<>(filteredContent, pageable, read.getTotalElements());
-            return filteredPage.map(data -> modelMapper.map(data, BoardDTO.class));
-        } else {
-            return read.map(data -> modelMapper.map(data, BoardDTO.class));
-        }
+            // 공지사항 제외한 DTO 변환
+        List<BoardEntity> filteredContent = read.getContent().stream()
+                .filter(board -> !board.getCategory().equals(CategoryType.공지사항))
+                .collect(Collectors.toList());
+
+        // 필터링된 내용을 포함한 페이지 생성
+        Page<BoardEntity> filteredPage = new PageImpl<>(filteredContent, pageable, read.getTotalElements());
+
+        return filteredPage.map(data -> modelMapper.map(data, BoardDTO.class));
     }
 
     public Page<BoardEntity> findByCategory(CategoryType category, Pageable pageable) {
