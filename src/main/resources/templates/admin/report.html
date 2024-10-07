@@ -203,10 +203,10 @@
                         <div class="mb-5">
                             <div class="d-flex flex-wrap align-items-center link-container">
                                 <span class="fs-5 fw-bold me-1">ㆍ</span>
-                                <a class="text-decoration-none fw-bold me-2" th:classappend="${category == ''} ? 'text-darkgreen' : 'text-secondary'"
+                                <a class="text-decoration-none fw-bold me-2" th:classappend="${currentPage == 'userInfo'} ? 'text-darkgreen' : 'text-secondary'"
                                    th:href="@{/admin/user_info}">회원 정보</a>
                                 <span class="fs-5 fw-bold me-1">ㆍ</span>
-                                <a class="text-decoration-none fw-bold me-2" th:classappend="${category == '정보게시판'} ? 'text-darkgreen' : 'text-secondary'"
+                                <a class="text-decoration-none fw-bold me-2" th:classappend="${currentPage == 'report'} ? 'text-darkgreen' : 'text-secondary'"
                                    th:href="@{/admin/report}">신고글</a>
                             </div>
                         </div>

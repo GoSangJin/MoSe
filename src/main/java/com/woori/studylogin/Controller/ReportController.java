@@ -46,8 +46,9 @@ public class ReportController {
     @GetMapping("/admin/report")
     public String viewReport(@RequestParam(defaultValue = "0") int page, Model model) {
         Page<ReportDTO> reports = reportService.getAllReports(PageRequest.of(page, 10));
+        model.addAttribute("currentPage", "report");
         model.addAttribute("reports", reports);
-        model.addAttribute("currentPage", page);
+        model.addAttribute("currentPageNum", page);
         return "/admin/report";
     }
 
