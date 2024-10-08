@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Product View - Active Bootstrap Template</title>
+  <title>체험정보</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -38,6 +38,47 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+
+  <style>
+    .custom-width {
+      width: calc(100% - 30px); /* 여백을 포함한 너비 설정 */
+
+    .detail-info {
+      width: calc(100% - 30px) !important; /* 강제로 적용할 수 있지만 권장하지 않음 */
+    }
+
+    /* 기본 스타일 */
+    .live-txt {
+      display: flex; /* 플렉스 박스 사용 */
+      flex-direction: row; /* 기본 방향은 가로 */
+      align-items: flex-start; /* 상단 정렬 */
+      padding: 16px; /* 기본 패딩 */
+    }
+  }
+    /* 화면 크기가 992px 이하일 때 */
+    @media (max-width: 992px) {
+      .live-txt {
+        flex-direction: column; /* 세로 방향으로 변경 */
+        padding: 8px; /* 패딩 조정 */
+      }
+
+      .detail-info {
+        width: 100%; /* 세부 정보 너비 100% */
+        padding: 12px; /* 패딩 조정 */
+      }
+
+      .vlg_nm, .ctpv_nm_and_sgg_nm {
+        font-size: 1.5rem; /* 폰트 크기 줄이기 */
+        line-height: 1.2; /* 줄 간격 조정 */
+      }
+
+      .ttxt.addr {
+        font-size: 0.85rem; /* 주소 텍스트 크기 줄이기 */
+        line-height: 1.2; /* 줄 간격 조정 */
+      }
+    }
+  </style>
+
 </head>
 
 <body class="services-page">
@@ -48,7 +89,7 @@
     <!-- Page Title -->
     <div class="page-title" style="background-color: #003300;">
       <div class="container text-center">
-        <h1 style="color: white;">살아보기</h1>
+        <h1 style="color: white;">체험정보</h1>
         <nav class="breadcrumbs">
           <div>
             <span style="color: white;">청장년 귀농귀촌 희망자가 농촌지역 실제 이주 전에 희망지역에서 미리 살아볼 수 있는 기회를 제공하는 사업입니다.</span>
@@ -62,37 +103,46 @@
     <section id="village-details" class="village-details section">
       <div class="container">
         <div class="row justify-content-center" data-aos="fade-up">
-          <div class="col-md-10">
-            <!-- 상단 제목 -->
-            <h2 style="margin-bottom: 20px;">마을정보 상세보기</h2>
+          <div class="col-md-10 col-lg-8"> <!-- 너비를 10으로 조정 -->
+            <div class="mt-4 d-flex gap-2 justify-content-between mb-5">
+              <div>
+                <a th:href="@{/product/edit/{id}(id=${productDTO.id})}" class="btn btn-outline-info rounded-pill btn-sm"
+                   sec:authorize="hasAnyRole('admin', 'master')">수정</a>
+                <a th:href="@{/product/delete(id=${productDTO.id})}" class="btn btn-outline-danger rounded-pill btn-sm"
+                   sec:authorize="hasAnyRole('admin', 'master')" th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+              </div>
+              <div>
+                <a th:href="@{/product/list}" class="btn btn-secondary btn-sm">목록</a>
+              </div>
+            </div>
 
-            <div class="row g-4">
+            <div class="row g-5 align-items-start">
               <!-- 왼쪽 이미지 -->
               <div class="col-md-6">
-                <div class="mb-3">
+                <div class="mb-3" style="width: 100%; height: auto;">
                   <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${productDTO.image_url}|"
                        class="img-fluid"
                        alt="마을 이미지"
-                       style="width: 100%; height: auto; max-height: 1000px; object-fit: contain;" />
+                       style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
               </div>
+
 
               <!-- 오른쪽 상세 정보 -->
               <div class="col-md-6">
                 <div class="live-txt">
-                  <!-- 지역 이름과 마을 이름 -->
                   <h4 class="ctpv_nm_and_sgg_nm" th:text="${productDTO.local_name}"
-                      style="color: #008000; line-height: 1.0; font-size: 1.0rem; font-weight: bold;">지역 이름</h4>
+                      style="color: #008000; line-height: 0.6; font-size: 1rem; font-weight: bold;">지역 이름</h4>
                   <div class="tit-select">
-                    <h3 class="vlg_nm" th:text="${productDTO.title}" style="font-size: 1.5rem; font-weight: bold;">마을 이름</h3>
+                    <h3 class="vlg_nm" th:text="${productDTO.title}" style="font-size: 1.7rem; font-weight: bold; color: black; line-height: 1;">마을 이름</h3>
                   </div>
 
+                  <p class="txt addr" th:text="${productDTO.address}" style="font-size: 0.7rem; line-height: 0.9;">주소</p>
 
-                  <!-- 주소 -->
-                  <p class="ttxt addr" th:text="${productDTO.address}" style="font-size: 0.875rem;">주소</p>
+                  <!-- 구분선 -->
+                  <hr style="border: 1px solid #b0b0b0; margin: 25px 0; width: 100%;">
 
-                  <!-- 마을 정보 -->
-                  <ul class="village-info" style="line-height: 1.8;">
+                  <ul class="village-info" style="line-height: 1.8; font-size: 0.85rem; list-style-type: none; padding-left: 0;">
                     <li>
                       <strong>마을 주민수 : </strong><span th:text="${productDTO.residents}">주민 수</span>명
                     </li>
@@ -108,48 +158,37 @@
                   </ul>
 
                   <!-- 세부 정보 -->
-                  <div class="detail-info" style="line-height: 1.8; background-color: #f5f5f5; padding: 8px; border-radius: 10px;">
-                    <ul>
-                      <li>
+                  <div class="detail-info" style="line-height: 2.5; background-color: #f5f5f5; padding: 16px; padding-bottom: 0; border-radius: 10px; width: 100%; border: 1px solid #ccc;">
+                    <ul style="text-align: left; width: 100%; list-style-type: none; padding-left: 0;">
+                      <li style="font-size: 0.875rem;">
                         <strong>입주가능일 : </strong>
-                        <span th:text="${productDTO.moveInDate != null ? #temporals.format(productDTO.moveInDate, 'yyyy.MM.dd')
-                                          : '날짜 정보 없음'}">입주 가능일</span>
+                        <span th:text="${productDTO.moveInDate != null ? #temporals.format(productDTO.moveInDate, 'yyyy.MM.dd') : '날짜 정보 없음'}">입주 가능일</span>
                       </li>
-                      <li>
+                      <li style="font-size: 0.875rem;">
                         <strong>신청기간 : </strong>
-                        <span th:text="${productDTO.applicationStartDate != null && productDTO.applicationEndDate != null ?
-                                         #temporals.format(productDTO.applicationStartDate, 'yyyy.MM.dd') + ' ~ ' +
-                                         #temporals.format(productDTO.applicationEndDate, 'yyyy.MM.dd') : '기간 정보 없음'}">
-                                          신청 기간</span>
+                        <span th:text="${productDTO.applicationStartDate != null && productDTO.applicationEndDate != null ? #temporals.format(productDTO.applicationStartDate, 'yyyy.MM.dd') + ' ~ ' + #temporals.format(productDTO.applicationEndDate, 'yyyy.MM.dd') : '기간 정보 없음'}">신청 기간</span>
                       </li>
-                      <li>
+                      <li style="font-size: 0.875rem;">
                         <strong>모집인원 : </strong>
-                        <span th:text="${productDTO.recruitmentCnt != null ? productDTO.recruitmentCnt : '인원 정보 없음'}">
-                                        모집 인원</span>명
+                        <span th:text="${productDTO.recruitmentCnt != null ? productDTO.recruitmentCnt : '인원 정보 없음'}">모집 인원</span>명
                       </li>
                     </ul>
                   </div>
-
-
-                </div>
-
-                <!-- 버튼들 -->
-                <div class="mt-4">
-                  <!-- 수정하기 버튼 (권한에 따라 표시) -->
-                  <a th:href="@{/product/edit(id=${productDTO.id})}" class="btn btn-outline-info rounded-pill mb-2"
-                     sec:authorize="hasAnyRole('admin', 'master')">수정하기</a>
-                  <!-- 삭제하기 버튼 -->
-                  <a th:href="@{/product/delete(id=${productDTO.id})}" class="btn btn-outline-danger rounded-pill mb-2"
-                     sec:authorize="hasAnyRole('admin', 'master')" th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제하기</a>
-                  <!-- 목록 보기 버튼 -->
-                  <a th:href="@{/product/list}" class="btn btn-outline-success rounded-pill mb-2">목록보기</a>
                 </div>
               </div>
             </div>
+
+
+
+
           </div>
         </div>
       </div>
     </section>
+
+
+
+
     <!-- /Pvillage-Details Section -->
 
   </main>

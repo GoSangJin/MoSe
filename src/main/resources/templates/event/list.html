@@ -127,6 +127,23 @@
     .gprev, .gnext {
       display: none !important;
     }
+
+    /* 추가된 미디어 쿼리 */
+    @media (max-width: 1200px) {
+      .col-md-3 {
+        flex: 0 0 50%; /* 카드의 너비를 50%로 설정하여 2개씩 배치 */
+        max-width: 50%; /* 최대 너비도 50%로 설정 */
+      }
+    }
+
+    /* 더 작은 화면에서 하나씩 나오게 설정 (예: 768px 이하) */
+    @media (max-width: 768px) {
+      .col-md-3 {
+        flex: 0 0 100%; /* 카드의 너비를 100%로 설정하여 한 줄에 하나씩 배치 */
+        max-width: 100%; /* 최대 너비도 100%로 설정 */
+      }
+    }
+
   </style>
 </head>
 
@@ -164,7 +181,8 @@
                   <option th:each="region : ${regionTypes}"
                           th:value="${region}"
                           th:text="${region}"
-                          th:selected="${selectedRegion != null && selectedRegion.equalsIgnoreCase(region)}" style="text-align: center;"></option>
+                          th:selected="${selectedRegion != null && selectedRegion.equalsIgnoreCase(region)}"
+                          th:unless="${region == 'DEFAULT'}" style="text-align: center;"></option>
                 </select>
               </form>
             </div>
@@ -178,7 +196,7 @@
 
               <!-- 초기화 버튼 -->
               <a th:href="@{/event}" class="btn btn-outline-danger rounded-pill" style="margin-left: 5px;" onclick="resetForm()">
-                <strong><i class="bi bi-arrow-clockwise"></i> 초기화</strong>
+                <strong>전체보기</strong>
               </a>
             </div>
 
@@ -243,19 +261,19 @@
               <ul class="pagination pagination-sm justify-content-center mt-5">
                 <!-- 이전 버튼 -->
                 <li class="page-item previous" th:classappend="${currentPage == 1} ? 'disabled'">
-                  <a class="page-link" th:href="@{/event(page=${currentPage - 1}, searchType=${searchType}, search=${search})}">
+                  <a class="page-link" th:href="@{/event/list(page=${currentPage - 1}, regionType=${selectedRegion}, searchType=${searchType}, search=${search})}">
                     <span class="bi bi-chevron-double-left"></span>
                   </a>
                 </li>
 
                 <!-- 페이지 번호 -->
                 <li th:each="i : ${#numbers.sequence(startPage, endPage)}" class="page-item" th:classappend="${currentPage == i} ? 'active'">
-                  <a class="page-link" th:href="@{/event(page=${i}, searchType=${searchType}, search=${search})}" th:text="${i}">1</a>
+                  <a class="page-link" th:href="@{/event/list(page=${i}, regionType=${selectedRegion}, searchType=${searchType}, search=${search})}" th:text="${i}">1</a>
                 </li>
 
                 <!-- 다음 버튼 -->
                 <li class="page-item next" th:classappend="${currentPage == lastPage} ? 'disabled'">
-                  <a class="page-link" th:href="@{/event(page=${currentPage + 1}, searchType=${searchType}, search=${search})}">
+                  <a class="page-link" th:href="@{/event/list(page=${currentPage + 1}, regionType=${selectedRegion}, searchType=${searchType}, search=${search})}">
                     <span class="bi bi-chevron-double-right"></span>
                   </a>
                 </li>

@@ -129,6 +129,7 @@
       overflow: hidden;
       margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 중앙 정렬 */
       text-align: center; /* 내용 중앙 정렬 */
+      min-height: 500px;
       padding: 0 30px; /* 좌우 여백 조정 */
     }
 
@@ -214,7 +215,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 5px;
+      margin-bottom: 12px;
     }
 
     .comment-header .nick-name {
@@ -277,12 +278,12 @@
 
     /* 댓글 내용 스타일 */
     .comment p {
-      margin-top: 2px; /* 댓글 내용과 작성자 간의 여백 좁히기 */
+      margin-top: 8px; /* 댓글 내용과 작성자 간의 여백 좁히기 */
       margin-right: 10px; /* 댓글 내용 오른쪽 여백 추가 */
       line-height: 1.1; /* 댓글 내용 행간 조정 (좁게 설정) */
       margin-left: 10px; /* 댓글 내용 왼쪽 여백 추가 */
       padding-right: 30px; /* 오른쪽에 패딩을 추가하여 글자 넘침 방지 */
-      font-size: 15px !important; /* 댓글 글씨 크기 조정 (우선순위 높이기) */
+      font-size: 12px !important; /* 댓글 글씨 크기 조정 (우선순위 높이기) */
     }
 
     /* 작성일 텍스트 스타일 */
@@ -391,7 +392,7 @@
         white-space: nowrap;
       }
       .post-content p {
-        font-size: 12px;
+        font-size: 14px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -437,7 +438,7 @@
         font-size: 10px;
       }
       .post-content p {
-        font-size: 10px;
+        font-size: 14px;
       }
       .post-actions .btn {
         padding: 2px 4px; /* 버튼의 여백을 줄임 */
@@ -505,26 +506,26 @@
 
     <!--상단 수정/삭제/목록/신고하기 버튼들-->
     <div class="container col-md-8 col-lg-6">
-      <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+      <div class="mt-4 d-flex gap-2 justify-content-between align-items-center">
         <!-- 수정과 삭제 버튼 -->
-        <div class="d-flex gap-2 mt-3">
+        <div class="d-flex gap-2 mt-4 mb-4">
           <div th:if="${#authentication.name == boardDTO.author}">
-            <a th:href="@{/board/edit(id=${boardDTO.id})}" class="btn btn-outline-info rounded-pill">수정</a>
-            <a th:href="@{/board/delete(id=${boardDTO.id})}" class="btn btn-outline-danger rounded-pill"
+            <a th:href="@{/board/edit(id=${boardDTO.id})}" class="btn btn-outline-info rounded-pill btn-sm">수정</a>
+            <a th:href="@{/board/delete(id=${boardDTO.id})}" class="btn btn-outline-danger rounded-pill btn-sm"
                th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
           </div>
           <div th:unless="${#authentication.name == boardDTO.author}">
           <span sec:authorize="hasAnyRole('ROLE_admin','ROLE_master')">
-            <a th:href="@{/board/edit(id=${boardDTO.id})}" class="btn btn-outline-info rounded-pill">수정</a>
-            <a th:href="@{/board/delete(id=${boardDTO.id})}" class="btn btn-outline-danger rounded-pill"
+            <a th:href="@{/board/edit(id=${boardDTO.id})}" class="btn btn-outline-info rounded-pill btn-sm">수정</a>
+            <a th:href="@{/board/delete(id=${boardDTO.id})}" class="btn btn-outline-danger rounded-pill btn-sm"
                th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
           </span>
           </div>
         </div>
         <!-- 목록과 신고하기 버튼 -->
-        <div class="d-flex gap-2 mt-3">
-          <a th:href="@{/board/list}" class="btn btn-secondary">목록</a>
-          <a href="#" class="btn btn-danger details-link"
+        <div class="d-flex gap-2 mt-4 mb-4">
+          <a th:href="@{/board/list}" class="btn btn-secondary btn-sm">목록</a>
+          <a href="#" class="btn btn-danger btn-sm details-link"
              th:onclick="'openReportWindow(' + ${boardDTO.id} + ')'">신고하기</a>
         </div>
       </div>
@@ -544,7 +545,7 @@
               </div>
               <div class="meta-details d-flex flex-column flex-sm-row justify-content-between align-items-start w-100">
                 <p class="meta-info mb-0 text-wrap">
-                  <span th:text="${#temporals.format(boardDTO.modDate, 'yyyy-MM-dd HH:mm')}">2024-01-01 12:00</span> |
+                  <span th:text="${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd HH:mm')}">2024-01-01 12:00</span> |
                   <span th:text="'조회수: ' + ${boardDTO.viewCount}">조회수</span> |
                   <span th:text="'추천수: ' + ${boardDTO.likeCount}">추천수</span>
                 </p>
@@ -565,31 +566,29 @@
           <div class="post-content mt-lg-1 text-center">
             <p th:text="${boardDTO.content}">내용</p>
             <div>
-              <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${boardDTO.boardImg}|"
-                   class="post-image"
-                   th:if="${boardDTO.boardImg != null}" />
+                <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${boardDTO.boardImg}|"
+                     class="post-image"
+                     th:if="${boardDTO.boardImg != null and !#strings.isEmpty(boardDTO.boardImg)}">
             </div>
           </div>
 
           <!-- 댓글 목록 -->
           <div class="comment-list">
             <div th:each="comment : ${commentDTOS}" class="comment">
-              <div class="comment-header d-flex justify-content-between align-items-center mb-1">
+              <div class="comment-header d-flex justify-content-between align-items-center">
                 <a th:href="@{/user/info(username=${comment.nickName})}" th:text="${comment.nickName}"></a>
                 <span th:if="${#authentication != null and #authentication.name == comment.nickName}"></span>
               </div>
               <p class="comment-body" th:text="${comment.body}">댓글 내용</p>
               <div class="comment-footer d-flex justify-content-between align-items-center">
                 <span class="comment-date" th:text="${#temporals.format(comment.modDate, 'yyyy-MM-dd HH:mm')}">2024-01-01 12:00</span>
-                <a th:href="@{/comment/remove(no=${boardDTO.id},id=${comment.id})}" class="text-button">삭제</a>
-                <span th:unless="${#authentication != null and #authentication.name == comment.nickName}">
-                  <span sec:authorize="hasAnyRole('ROLE_admin','ROLE_master')">
+
+                <span th:if="${#authentication != null and (#authentication.name == comment.nickName or #authorization.expression('hasAnyRole(''ROLE_admin'', ''ROLE_master'')'))}">
                     <a th:href="@{/comment/remove(no=${boardDTO.id},id=${comment.id})}" class="text-button">삭제</a>
-                  </span>
                 </span>
               </div>
               <!-- 댓글 아래에 구분선 추가 -->
-              <hr class="comment-divider">
+              <hr class="comment-divider mt-2 mb-3">
             </div>
           </div>
 

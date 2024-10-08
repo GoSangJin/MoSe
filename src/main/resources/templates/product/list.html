@@ -153,6 +153,22 @@
       }
     }
 
+    /* 추가된 미디어 쿼리 */
+    @media (max-width: 1200px) {
+      .col-md-3 {
+        flex: 0 0 50%; /* 카드의 너비를 50%로 설정하여 2개씩 배치 */
+        max-width: 50%; /* 최대 너비도 50%로 설정 */
+      }
+    }
+
+    /* 더 작은 화면에서 하나씩 나오게 설정 (예: 768px 이하) */
+    @media (max-width: 768px) {
+      .col-md-3 {
+        flex: 0 0 100%; /* 카드의 너비를 100%로 설정하여 한 줄에 하나씩 배치 */
+        max-width: 100%; /* 최대 너비도 100%로 설정 */
+      }
+    }
+
   </style>
 
 </head>
@@ -179,19 +195,19 @@
 
     <section id="services-2" class="services-2 section" >
       <div class="container">
-<!--        <h3 style="padding-left: 15px; margin-bottom: 15px">체험정보</h3>-->
+        <!--        <h3 style="padding-left: 15px; margin-bottom: 15px">체험정보</h3>-->
 
         <!-- 버튼 영역 전체를 flex 컨테이너로 설정 -->
         <div class="d-flex justify-content-between align-items-center mb-1" style="padding-left: 15px; padding-right: 15px;">
 
           <!-- 모집중/모집완료 버튼 -->
-          <div class="btn-group" role="group" style="gap: 5px; margin-bottom: 0;"> <!-- 아래쪽 여백 제거 -->
+          <div class="btn-group" role="group" style="gap: 5px; margin-bottom: 0;">
             <a th:href="@{/product/list(status='OPEN')}" class="btn btn-open rounded-pill"
-               style="padding: 0.35rem 1rem; font-size: 0.85rem; transition: transform 0.3s;"> <!-- 기본 크기 및 전환 효과 -->
+               style="padding: 0.35rem 1rem; font-size: 0.85rem; transition: transform 0.3s;">
               <strong>모집중</strong>
             </a>
             <a th:href="@{/product/list(status='CLOSED')}" class="btn btn-closed rounded-pill"
-               style="padding: 0.35rem 1rem; font-size: 0.85rem; transition: transform 0.3s;"> <!-- 기본 크기 및 전환 효과 -->
+               style="padding: 0.35rem 1rem; font-size: 0.85rem; transition: transform 0.3s;">
               <strong>모집완료</strong>
             </a>
           </div>
@@ -203,7 +219,7 @@
         <div class="d-flex justify-content-between align-items-center" style="padding-right: 15px; margin-top: 10px; margin-bottom: 10px;">
           <!-- 지역별 분류 드롭다운 -->
           <div class="d-flex justify-content-start flex-wrap" style="padding-left: 15px; padding-right: 15px; margin-top: 0; margin-bottom: 0;">
-<!--            <label for="region-select" class="form-label me-2" style="font-size: 0.875rem;">지역 선택</label>-->
+            <!--            <label for="region-select" class="form-label me-2" style="font-size: 0.875rem;">지역 선택</label>-->
             <select id="region-select" class="form-select rounded-pill"
                     onchange="location.href=this.value + (this.value.includes('?') ? '&' : '?') + 'page=0'"
                     style="height: 2.5rem; font-size: 0.875rem;">
@@ -230,7 +246,7 @@
 
             <!-- 초기화 버튼 -->
             <a th:href="@{/product/list}" class="btn btn-outline-danger rounded-pill" style="margin-left: 5px;" onclick="resetForm()">
-              <strong><i class="bi bi-arrow-clockwise"></i> 초기화</strong>
+              <strong>전체보기</strong>
             </a>
           </div>
         </div>
@@ -270,34 +286,36 @@
                   <!-- /이미지 섹션 -->
 
                   <!-- 마을 내용 - 카드 바디 -->
-                  <div class="card-body">
-                    <!-- 지역 이름 -->
-                    <p style="color: #888; margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;"
-                       th:text="${product.local_name != null ? product.local_name : '정보 없음'}">지역 이름</p>
+                  <a th:href="@{/product/view(id=${product.id})}" style="text-decoration: none; color: inherit;">
+                    <div class="card-body">
+                      <!-- 지역 이름 -->
+                      <p style="color: #888; margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;"
+                         th:text="${product.local_name != null ? product.local_name : '정보 없음'}">지역 이름</p>
 
-                    <!-- 마을 이름 -->
-                    <h5 class="card-title" style="font-weight: bold; color: green; margin-top: 0;
-                        line-height: 1.2; font-size: 1.125rem;" th:text="${product.title}">마을 이름</h5>
+                      <!-- 마을 이름 -->
+                      <h5 class="card-title" style="font-weight: bold; color: green; margin-top: 0;
+                          line-height: 1.2; font-size: 1.125rem;" th:text="${product.title}">마을 이름</h5>
 
-                    <!-- 카드 내용 -->
-                    <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
-                      <strong>입주가능일 : </strong>
-                      <span th:text="${product.moveInDate != null ? #temporals.format(product.moveInDate, 'yyyy.MM.dd')
+                      <!-- 카드 내용 -->
+                      <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
+                        <strong>입주가능일 : </strong>
+                        <span th:text="${product.moveInDate != null ? #temporals.format(product.moveInDate, 'yyyy.MM.dd')
                               : '날짜 정보 없음'}" style="color: #888;">입주 가능일</span>
-                    </p>
-                    <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
-                      <strong>신청기간 : </strong>
-                      <span th:text="${product.applicationStartDate != null && product.applicationEndDate != null ?
+                      </p>
+                      <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
+                        <strong>신청기간 : </strong>
+                        <span th:text="${product.applicationStartDate != null && product.applicationEndDate != null ?
                               #temporals.format(product.applicationStartDate, 'yyyy.MM.dd') + ' ~ ' +
                               #temporals.format(product.applicationEndDate, 'yyyy.MM.dd') : '기간 정보 없음'}"
-                            style="color: #888;">신청 기간</span>
-                    </p>
-                    <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
-                      <strong>모집인원 : </strong>
-                      <span th:text="${product.recruitmentCnt != null ? product.recruitmentCnt : '인원 정보 없음'}"
-                            style="color: #888;">모집 인원 </span>명
-                    </p>
-                  </div>
+                              style="color: #888;">신청 기간</span>
+                      </p>
+                      <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
+                        <strong>모집인원 : </strong>
+                        <span th:text="${product.recruitmentCnt != null ? product.recruitmentCnt : '인원 정보 없음'}"
+                              style="color: #888;">모집 인원 </span>명
+                      </p>
+                    </div>
+                  </a>
                   <!-- /마을 내용 - 카드 바디 -->
 
                 </div>
@@ -312,7 +330,7 @@
                 <ul class="pagination pagination-sm justify-content-center mt-5">
                   <!-- 이전 버튼 -->
                   <li class="page-item previous" th:classappend="${list.hasPrevious()} ? '' : 'disabled'">
-                    <a class="page-link" th:href="@{//product/list(page=${list.number - 1}, status=${selectedStatus}, regionType=${selectedRegion})}" aria-label="First">
+                    <a class="page-link" th:href="@{/product/list(page=${list.number - 1}, status=${selectedStatus}, regionType=${selectedRegion})}" aria-label="First">
                       <span class="bi bi-chevron-double-left"></span> <!-- 아이콘 추가 -->
                     </a>
                   </li>
