@@ -79,22 +79,10 @@ public class PlantationController {
     // 상품 수정 처리
     @PostMapping("/plantation/update")
     public String updatePlantation(@ModelAttribute PlantationDTO plantationDTO,
-                                @RequestParam(value = "file", required = false) MultipartFile file,
-                                @RequestParam(value = "removeImage", required = false) String removeImage,
+                                MultipartFile file,
                                 RedirectAttributes redirectAttributes) throws IOException {
 
         plantationService.update(plantationDTO, file);
-
-        if ("true".equals(removeImage)) {
-                plantationDTO.setThumbnail_img(null); // 이미지 필드를 null로 설정하여 이미지 삭제
-            }
-        // 파일이 null이 아니고 비어있지 않은 경우에만 파일 처리
-            if (file != null && !file.isEmpty()) {
-                plantationService.update(plantationDTO, file);
-            } else {
-                plantationService.update(plantationDTO, null); // 파일이 없을 경우 파일 파라미터를 null로 전달
-            }
-
 
         redirectAttributes.addFlashAttribute("message", "상품이 성공적으로 수정되었습니다.");
         return "redirect:/plantation/list";
@@ -120,7 +108,7 @@ public class PlantationController {
     // 상품 전체 조회 (페이지 처리)
     @GetMapping("/plantation/list")
     public String getAllPlantations(
-            @PageableDefault(page = 0,size = 12) Pageable pageable,
+            @PageableDefault(page = 0, size = 12) Pageable pageable,
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String selectedStatus, // 분류 추가
             Model model) {
@@ -152,6 +140,8 @@ public class PlantationController {
 
         model.addAttribute("list", plantationPage);
         model.addAttribute("plantTypes", PlantType.values());
+        model.addAttribute("selectedStatus", selectedStatus); // 현재 선택된 분류 추가
+        model.addAttribute("search", search); // 검색어 추가
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
