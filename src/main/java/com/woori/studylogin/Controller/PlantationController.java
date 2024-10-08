@@ -122,10 +122,27 @@ public class PlantationController {
     public String getAllPlantations(
             @PageableDefault(page = 0,size = 12) Pageable pageable,
             @RequestParam(required = false) String search,
-            @RequestParam(required = false) PlantType status, // 분류 추가
+            @RequestParam(required = false) String selectedStatus, // 분류 추가
             Model model) {
 
         Page<PlantationDTO> plantationPage;
+        PlantType status = null;
+
+        // Enum 변환 처리
+        if (selectedStatus != null) {
+            try {
+                status = PlantType.valueOf(selectedStatus);
+            } catch (IllegalArgumentException e) {
+                System.err.println("Invalid PlantType value: " + selectedStatus);
+                // 필요시 기본값 설정
+            }
+        }
+
+        if (status != null) {
+            plantationPage = plantationService.findByStatus(status, pageable);
+        } else {
+            plantationPage = plantationService.findAll(pageable, search);
+        }
 
         if (status != null) {
             plantationPage = plantationService.findByStatus(status, pageable);
@@ -138,6 +155,9 @@ public class PlantationController {
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
+
+        System.out.println(PlantType.values());
+        System.out.println(selectedStatus);
 
         Map<String, Integer> pageInfo = PaginationUtil.Pagination(plantationPage);
         model.addAllAttributes(pageInfo);
