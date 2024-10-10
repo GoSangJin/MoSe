@@ -5,10 +5,12 @@
     import com.woori.studylogin.Repository.QnaRepository;
     import lombok.RequiredArgsConstructor;
     import org.modelmapper.ModelMapper;
+    import org.springframework.data.domain.Page;
+    import org.springframework.data.domain.PageRequest;
+    import org.springframework.data.domain.Pageable;
+    import org.springframework.data.domain.Sort;
     import org.springframework.stereotype.Service;
 
-    import java.util.Arrays;
-    import java.util.List;
     import java.util.Optional;
 
     @Service
@@ -52,13 +54,20 @@
             return qnaDTO; //컨트롤러에서 사용할 DTO로 전달
         }
         //전체목록
-        public List<QnaDTO> list(){ //가져오는 값은 없고, 저장된 모든 내용을 DTO로 전달, DTO가 여러개이면 LIST
-            List<QnaEntity> qnaEntities = qnaRepository.findAll(); //모든 데이터(레코드)를 읽어온다.
-            //System.out.println(boardEntities.stream().toList());
-            //여러개의 Entity값을 여러개의 DTO로 변환 -> 여러개(Arrays.asList)
-            List<QnaDTO> qnaDTOS = Arrays.asList(modelMapper.map(qnaEntities, QnaDTO[].class));
+        public Page<QnaDTO> list(String keyword,Pageable page) { //가져오는 값은 없고, 저장된 모든 내용을 DTO로 전달, DTO가 여러개이면 LIST
+            int currentPage = page.getPageNumber() - 1;
+            int PageLimit = 5;
 
-            return qnaDTOS; //컨트롤러에 값을 전달
+            Pageable pageable = PageRequest.of(currentPage,PageLimit, Sort.by(Sort.Direction.DESC,"id"));
+            // 검색어가 있을 경우 제목으로 검색, 없을 경우 전체 목록
+            Page<QnaEntity> qnaEntityPage;
+            if (keyword != null && !keyword.isEmpty()) {
+                qnaEntityPage = qnaRepository.findByTitleContaining(keyword, pageable);
+            } else {
+                qnaEntityPage = qnaRepository.findAll(pageable);
+            }
 
+            Page<QnaDTO> qnaDTOS = qnaEntityPage.map(data -> modelMapper.map(data,QnaDTO.class));
+            return qnaDTOS;
         }
     }

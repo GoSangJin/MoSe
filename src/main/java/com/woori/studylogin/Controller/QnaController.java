@@ -2,12 +2,16 @@ package com.woori.studylogin.Controller;
 
 import com.woori.studylogin.DTO.QnaDTO;
 import com.woori.studylogin.Service.QnaService;
+import com.woori.studylogin.Util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -16,9 +20,16 @@ public class QnaController {
 
     // Q&A 목록 페이지
     @GetMapping("/qna/list")
-    public String list(Model model) {
-        List<QnaDTO> qnaDTOList = qnaService.list();
-        model.addAttribute("list", qnaDTOList);
+    public String list(@PageableDefault(page=1)Pageable pageable,
+                       @RequestParam(value = "keyword",required = false) String keyword,
+                       Model model) {
+        Page<QnaDTO> qnaDTOPage = qnaService.list(keyword,pageable);
+
+        Map<String, Integer> pageInfo = PaginationUtil.Pagination(qnaDTOPage);
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("keyword",keyword);
+        model.addAttribute("list", qnaDTOPage);
+
         return "qna/list"; // qna/list.html 반환
     }
 
