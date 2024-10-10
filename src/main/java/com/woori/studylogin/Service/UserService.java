@@ -97,9 +97,6 @@ public class UserService implements UserDetailsService {
         userRepository.save(userEntity);
     }
 
-
-
-
     @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
     public void liftSuspensions() {
         List<UserEntity> suspendedUsers = userRepository.findByIsSuspendedTrue();
@@ -125,5 +122,8 @@ public class UserService implements UserDetailsService {
         return "";
     }
 
-
+    public String findUsernameByEmailAndBirthAndName(String email, String birth, String name) {
+        UserEntity userEntity = userRepository.findByEmailAndBirthAndName(email, birth, name);
+        return userEntity != null ? userEntity.getUsername() : null;
+    }
 }

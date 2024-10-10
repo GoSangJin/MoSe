@@ -39,6 +39,7 @@ public class UserController {
         session.invalidate(); //접속컴퓨터의 정보가 서버에 존재하면 정보를 제거
         return "redirect:/login";
     }
+
     //회원가입
     @GetMapping("/user/register") //가입폼으로 이동
     public String registerForm(Model model) {
@@ -46,13 +47,22 @@ public class UserController {
 
         return "user/register";
     }
-    @PostMapping("/user/register")
-    public String registerProc(UserDTO userDTO) {
-        //받아온 값은 service에 처리
-        userService.register(userDTO);
 
-        return "redirect:/";
+    @PostMapping("/user/register")
+    public String registerProc(UserDTO userDTO, Model model) {
+        try {
+            // 서비스에서 회원가입 처리
+            userService.register(userDTO);
+        } catch (IllegalStateException e) {
+            // 회원가입 실패 시 오류 메시지 추가
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("data", userDTO); // 사용자가 입력한 데이터를 다시 전달
+            return "user/register"; // 다시 회원가입 페이지로 이동
+        }
+
+        return "redirect:/"; // 회원가입 성공 시 메인 페이지로 리다이렉트
     }
+
     //회원수정
     @GetMapping("/user/update")
     //httpSession 섹션에 저장된 정보를 읽어온다.(로그인 정보)
@@ -60,11 +70,11 @@ public class UserController {
         //로그인 성공시 섹션에 사용자아이디가 저장
         //getAttribute(변수값 읽기)
         //session.setAttribute("username", ~); 핸들러
-        String username = (String)session.getAttribute("username");
+        String username = (String) session.getAttribute("username");
         log.info("{}현재 사용자", username);
 
         //auth.requestMatchers("/user/update").authenticated(); 대체가능
-        if(username != null) { //로그인이 된 상태이면
+        if (username != null) { //로그인이 된 상태이면
             UserDTO userDTO = userService.detail(username); //회원정보를 읽어서
             model.addAttribute("data", userDTO); //수정페이지에 전달
         } else {
@@ -73,15 +83,17 @@ public class UserController {
 
         return "/user/update";
     }
+
     @PostMapping("/user/update")
     public String updateProc(UserDTO userDTO, HttpSession session) { //화면에서 수정한 내용을 처리
-        String username = (String)session.getAttribute("username");
+        String username = (String) session.getAttribute("username");
 
-        if(username != null) { //로그인 된 상태에서만 수정정보를 저장
+        if (username != null) { //로그인 된 상태에서만 수정정보를 저장
             userService.update(userDTO);
         }
         return "redirect:/";
     }
+
     //다른 유저 게시글 목록 보기
     @GetMapping("/user/info")
     public String getUserPosts(@RequestParam String username,
@@ -174,4 +186,27 @@ public class UserController {
 
         return "redirect:/"; // 비밀번호 변경 후 메인 페이지로 리다이렉트
     }
+
+    @GetMapping("/user/find-userid")
+    public String findUsernameForm() {
+        return "user/find-userid"; // 아이디 찾기 페이지
+    }
+
+    // 아이디 찾기 요청 처리
+    @PostMapping("/user/find-userid")
+    public String findUsername(@RequestParam String email,
+                               @RequestParam String birth,
+                               @RequestParam String name,
+                               Model model) {
+        String username = userService.findUsernameByEmailAndBirthAndName(email, birth, name);
+        if (username != null) {
+            model.addAttribute("message", "당신의 아이디는: " + username);
+        } else {
+            model.addAttribute("message", "정보가 일치하는 계정이 없습니다.");
+        }
+        return "user/userid-result"; // 결과 페이지
+    }
 }
+
+
+

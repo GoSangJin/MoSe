@@ -28,4 +28,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     // 페이지네이션을 지원하는 역할 필터링 메소드
     Page<UserEntity> findByRoleType(RoleType roleType, Pageable pageable);
+
+    Optional<UserEntity> findByEmail(String email);
+
+    Optional<UserEntity> findByUsernameAndNameAndBirth(String username, String name, String birth);
+
+    UserEntity findByEmailAndBirthAndName(String email, String birth, String name);
+
 }
