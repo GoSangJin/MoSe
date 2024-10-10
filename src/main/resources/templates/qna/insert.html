@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Update Q&A - Active Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q&A Insert</title>
+</head>
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+      <!-- Page Title -->
+      <div class="page-title" style="background-color: #003300;">
+          <div class="container text-center">
+              <h1 style="color: white;">자주묻는 질문</h1>
+              <nav class="breadcrumbs">
+                  <div>
+                      <span style="color: white;">귀농귀촌에 관한 궁금한 사항이 있으시면 문의주세요.</span>
+                  </div>
+              </nav>
+          </div>
+      </div>
+      <!-- End Page Title -->
+
+    <!-- Services 2 Section -->
+    <section id="services-2" class="services-2 section">
+
+      <div class="container mb-3 mt-5">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-8 col-lg-6">
+            <h2 class="mb-3">자주묻는 질문 등록</h2>
+            <form th:action="@{/qna/insert}" th:object="${qna}" method="post">
+                <div class="form-group mt-5 mb-4" style="font-weight: bold">
+                    <label for="title" class="mt-3 mb-3">질문(Q) : </label>
+                    <textarea type="text" id="title" name="title" class="form-control" rows="2" th:field="*{title}" required
+                           placeholder="질문내용을 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '질문내용을 입력하세요'">
+                    </textarea>
+                </div>
+                <div class="form-group mb-4" style="font-weight: bold">
+                    <label for="content" class="mt-3 mb-3">답변(A) : </label>
+                    <textarea id="content" name="content" class="form-control" rows="5" th:field="*{content}"
+                              placeholder="답변내용을 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '답변내용을 입력하세요'">
+                              style="resize: none;" required></textarea>
+                </div>
+                <div CLASS="mt-3">
+                    <button type="submit" class="btn btn-outline-success rounded-pill">저장</button>
+                    <a th:href="@{/qna/list}" class="btn btn-outline-danger rounded-pill">취소</a>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section><!-- /Services 2 Section -->
+  </main>
+</div>
+
+</body>
+</html>
