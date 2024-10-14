@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>재배정보</title>
+  <title>Services - Active Bootstrap Template</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -100,6 +100,18 @@
       background-color: #f0f0f0; /* 마우스 오버시 연한 회색 배경 */
     }
 
+    @media (max-width: 576px) {
+      .page-item .page-link {
+        width: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+        height: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+        font-size: 0.65rem; /* 작은 화면에서 폰트 크기 조정 */
+      }
+
+      .page-link .bi {
+        font-size: 0.55rem; /* 작은 화면에서 아이콘 크기 조정 */
+      }
+    }      /* 페이지 네비게이션 스타일-end*/
+
     .card {
       border-radius: 15px;
       overflow: hidden;
@@ -113,24 +125,17 @@
       flex: 1;
     }
 
-
     /* 상단 과일 채소 버튼 */
-    .link-container a {
-      transition: transform 0.3s ease, color 0.3s ease; /* 부드러운 전환 효과 */
-      display: inline-block; /* inline-block으로 설정하여 transform이 제대로 적용되도록 함 */
-      color: #6c757d; /* 기본 색상 (비활성화 상태일 때) */
-    }
+    /*.link-container a {*/
+    /*  transition: transform 0.3s ease, color 0.3s ease; !* 부드러운 전환 효과 *!*/
+    /*  display: inline-block; !* inline-block으로 설정하여 transform이 제대로 적용되도록 함 *!*/
+    /*  color: #6c757d; !* 기본 색상 (비활성화 상태일 때) *!*/
+    /*}*/
 
     .link-container a:hover {
       transform: scale(1.5); /* 호버 시 1.2배 확대 */
       color: #006400; /* 호버 시 활성화되는 색상 (어두운 녹색) */
     }
-
-    /* 기본 .d-flex 설정 유지 */
-    .d-flex {
-      display: flex;
-    }
-
     /* 큰 화면에서 기본 설정 */
     .form-control {
       width: auto; /* 기본적으로 입력창 너비는 자동 */
@@ -140,69 +145,102 @@
       white-space: nowrap; /* 검색 버튼 텍스트 줄바꿈 방지 */
     }
 
-    /* 화면이 768px 이하로 줄어들었을 때 */
-    @media (max-width: 768px) {
-      .search-container .d-flex {
-        flex-direction: column; /* 입력창과 버튼을 세로로 나열 */
-      }
 
-      .search-container input {
-        margin-bottom: 0.5rem; /* 인풋 태그와 버튼 간의 간격 조정 */
-      }
-
+    @media (max-width: 576px) {
       .btn {
-        font-size: 0.75rem;
-        padding: 0.4rem 0.8rem; /* 버튼 크기 축소 */
+        font-size: 0.6rem;
+        padding: 0.3rem 0.6rem; /* 버튼 크기 축소 */
+      }
+
+      .search-container {
+        width: 100%; /* 전체 너비 사용 */
+        margin-bottom: 0; /* 추가적인 간격 제거 */
+      }
+
+      .input-group {
+        display: flex;
+        width: 100%; /* 입력 그룹 너비 100% 설정 */
+        justify-content: space-between; /* 입력창과 버튼 간격 조정 */
+        margin-bottom: 0; /* 카드와의 간격을 줄이기 위해 margin-bottom 0으로 설정 */
       }
 
       .form-control {
-        width: 100%; /* 검색창 너비를 100%로 설정 */
-        margin-bottom: 0.5rem; /* 검색창 아래에 간격 추가 */
-        padding: 0.5rem 1.5rem; /* 검색 버튼과 동일한 패딩 적용 */
+        flex-grow: 1; /* 입력창이 가능한 최대 너비 차지 */
+        height: 2.5rem; /* 입력창 높이 조정 */
+        margin-bottom: 0; /* 입력창 아래 간격 제거 */
+        padding: 0.25rem 0.5rem; /* 패딩 줄이기 */
       }
 
-      .btn-secondary{
-        width: 100%; /* 버튼도 너비 100%로 설정 */
+      .btn-secondary {
+        width: 40px; /* 버튼의 너비 설정 */
+        height: 40px; /* 버튼의 높이 설정 */
+        border-radius: 50%; /* 동그랗게 만들기 */
+        display: flex; /* 플렉스 박스 사용 */
+        justify-content: center; /* 아이콘 중앙 정렬 */
+        align-items: center; /* 아이콘 수직 중앙 정렬 */
+        padding: 0; /* 패딩 제거 */
+        font-size: 0; /* 글씨 크기를 0으로 설정하여 숨김 */
+        overflow: hidden; /* 버튼 내 요소 숨기기 */
+        margin-left: -5px; /* 버튼과 입력창 간격 줄이기 */
       }
 
+      .btn-secondary strong {
+        visibility: hidden; /* 텍스트 숨기기 */
+        position: absolute; /* 텍스트를 화면에서 숨기기 위해 절대 위치 설정 */
+      }
 
+      .btn-secondary i {
+        font-size: 0.8rem; /* 아이콘 크기 조정 */
+        visibility: visible; /* 아이콘은 보이도록 설정 */
+      }
 
-      /* 등록하기와 초기화 버튼 크기 축소 */
-      .btn-success, .btn-outline-danger {
-        font-size: 0.75rem; /* 텍스트 크기 축소 */
-        padding: 0.4rem 0.9rem; /* 패딩 축소 */
+      /* 등록하기 */
+      .btn-success {
+        font-size: 0.7rem; /* 더 작은 폰트 */
+        padding: 0.3rem 0.7rem; /* 패딩 축소 */
+      }
+
+      .link-container {
+        flex-direction: row; /* 수평 방향으로 설정 */
+        justify-content: center; /* 중앙 정렬 */
+      }
+
+      .link-container a {
+        margin: 0 0.5rem; /* 링크 간의 간격 조정 */
+        font-size: 0.9rem; /* 폰트 크기 조정 (필요시) */
       }
     }
 
-    @media (max-width: 576px) {
-      .page-item .page-link {
-        width: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
-        height: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
-        font-size: 0.65rem; /* 작은 화면에서 폰트 크기 조정 */
-      }
 
-      .page-link .bi {
-        font-size: 0.55rem; /* 작은 화면에서 아이콘 크기 조정 */
+    /* 추가된 미디어 쿼리 */
+    @media (max-width: 1200px) {
+      .col-md-3 {
+        flex: 0 0 50%; /* 카드의 너비를 50%로 설정하여 2개씩 배치 */
+        max-width: 50%; /* 최대 너비도 50%로 설정 */
       }
-
-      /* 이전, 다음 버튼 크기 일관성 유지 */
-      .page-item.previous .page-link,
-      .page-item.next .page-link {
-        width: 1.75rem; /* 작은 화면에서 동일하게 크기 축소 */
-        height: 1.75rem;
-      }
-
     }
+
+    /* 더 작은 화면에서 하나씩 나오게 설정 (예: 768px 이하) */
+    @media (max-width: 768px) {
+      .col-md-3 {
+        flex: 0 0 100%; /* 카드의 너비를 100%로 설정하여 한 줄에 하나씩 배치 */
+        max-width: 100%; /* 최대 너비도 100%로 설정 */
+      }
+    }
+
+
   </style>
 </head>
+
 <body class="services-page">
+
 <div layout:fragment="content">
   <main class="main">
 
     <!-- Page Title -->
     <div class="page-title" style="background-color: #003300;">
       <div class="container text-center">
-        <h1 style="color: white;">종합정보</h1>
+        <h1 style="color: white;">재배정보</h1>
         <nav class="breadcrumbs">
           <div>
             <span style="color: white;"> 과일이나 채소에 관한 재배방법이나 특징, 유의사항 등 다양한 정보들이 있어요. </span>
@@ -214,123 +252,128 @@
 
     <!-- 재배정보 title -->
     <section id="services-2" class="services-2 section">
-      <div class="container">
 
-        <!-- 상단 버튼 영역 -->
-        <div class="d-flex justify-content-between align-items-center mb-3" style="padding-left: 15px; gap: 5px;">
-          <div class="mb-3">
-            <div class="d-flex flex-wrap align-items-center link-container justify-content-center"> <!-- 중앙 정렬 추가 -->
-              <!-- 과일 타입 링크들 -->
-              <div th:each="status : ${plantTypes}">
-                <a th:href="@{/plantation/list(status=${status.name()}, search=${search}, page=0)}"
-                   class="text-decoration-none fw-bold me-3 fs-5 zoom-effect"
-                   th:classappend="${status.name() == selectedStatus} ? 'active-link' : ''"
-                   th:text="${status.name() == 'FRUIT' ? '과일' : '채소'}">
+      <div class="container" style="margin-top: 3rem">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-12 col-lg-12">
+
+            <!-- 상단 버튼 영역 -->
+            <div class="d-flex align-items-center mb-3" style="padding-left: 15px; gap: 5px;">
+              <!--전체보기, 과일, 채소 왼쪽 정렬-->
+              <div class="d-flex flex-wrap align-items-center link-container">
+                <a class="text-decoration-none fw-bold me-2" th:classappend="${selectedStatus == ''} ? 'text-darkgreen' : 'text-secondary'"
+                   th:href="@{/plantation/list(selectedStatus=)}">전체보기</a>
+                <span class="fs-5 fw-bold me-1">ㆍ</span>
+                <a class="text-decoration-none fw-bold me-2"
+                   th:classappend="${selectedStatus == 'FRUIT'} ? 'text-darkgreen' : 'text-secondary'"
+                   th:href="@{/plantation/list(selectedStatus = 'FRUIT')}">과일</a>
+                <span class="fs-5 fw-bold me-1">ㆍ</span>
+                <a class="text-decoration-none fw-bold me-2"
+                   th:classappend="${selectedStatus == 'VEGETABLE'} ? 'text-darkgreen' : 'text-secondary'"
+                   th:href="@{/plantation/list(selectedStatus='VEGETABLE')}">채소</a>
+              </div>
+
+              <!-- 등록하기 버튼 오른쪽 정렬 -->
+              <div class="ms-auto">
+                <a class="btn btn-success rounded-pill" th:if="${#authorization.expression('hasAnyRole(''admin'', ''master'')')}"
+                   th:href="@{/plantation/insert}" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                  <strong>등록하기</strong>
                 </a>
               </div>
             </div>
+
           </div>
 
-          <!-- 버튼들 -->
-          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <a class="btn btn-success rounded-pill" th:if="${#authorization.expression('hasAnyRole(''admin'', ''master'')')}"
-               th:href="@{/plantation/insert}" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-              등록하기
-            </a>
-            <a th:href="@{/plantation/list}" class="btn btn-outline-danger rounded-pill" onclick="resetForm()"
-               style="display: flex; align-items: center; justify-content: center; padding: 0.5rem 1rem; font-size: 0.875rem;">
-              <strong> 전체보기</strong>
-            </a>
-          </div>
-        </div>
+            <!-- 검색창-->
+            <div class="d-flex justify-content-center search-container mb-3">
+              <form th:action="@{/plantation/list}" method="get">
+                <div class="input-group mb-0">
+                  <!-- 검색어 입력 -->
+                  <input type="text" name="search" class="form-control rounded-pill"
+                         th:value="${search}" placeholder="검색어를 입력하세요" aria-label="Search"
+                         style="margin-right: 10px; text-align: center; width: 300px;" /> <!-- 오른쪽에 간격 추가 -->
 
-        <div class="mb-3 d-flex justify-content-center search-container">
-          <!-- 검색 폼 추가 -->
-          <form class="d-flex w-100 justify-content-center" th:action="@{/plantation/list}" method="get">
-            <input class="form-control me-2 rounded-pill" type="search" name="search" placeholder="검색어를 입력하세요" aria-label="Search"
-                   style="height: 2.5rem; font-size: 0.875rem; padding: 0.5rem 1.5rem;">
-            <button class="btn btn-secondary rounded-pill" type="submit"
-                    style="padding: 0.5rem 1.5rem; font-size: 0.875rem; white-space: nowrap;">
-              <i class="bi bi-search"></i> 검색
-            </button>
-          </form>
-        </div><!--/검색폼-->
+                  <!-- 검색 버튼 -->
+                  <button class="btn btn-secondary rounded-pill" type="submit">
+                    <i class="bi bi-search"></i> 검색
+                  </button>
+                </div>
+              </form><!-- /검색창-->
+            </div>
 
+            <!--카드이미지-->
+            <div class="container">
+              <div class="row">
+                <div class="col-md-3 col-lg-3 mb-4" th:each="plantation : ${list.content}">
+                  <div class="card">
+                    <div style="position: relative;">
+                      <div class="img" style="background-color: white; margin-bottom: -10px;">
+                        <a th:href="@{/plantation/detail(id=${plantation.id})}">
+                          <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${plantation.thumbnail_img}|"
+                               class="card-img-top"
+                               alt="상품 이미지"
+                               style="height: 200px; object-fit: cover;"
+                               th:if="${plantation.thumbnail_img != null}" />
+                          <img th:src="@{/assets/img/no_image.jpg}"
+                               class="card-img-top"
+                               alt="대체 이미지"
+                               th:if="${plantation.thumbnail_img == null}"
+                               style="height: 200px; object-fit: cover;" />
+                        </a>
+                      </div>
 
-        <div class="container" data-aos="fade-up" style="margin-bottom: 30px;">
-          <div class="row"> <!-- Bootstrap의 row 클래스 추가 -->
-            <!-- 카드 목록 -->
-            <div class="col-md-6 col-lg-3 mb-4" th:each="plantation : ${list.content}">
-              <div class="card">
-                <div style="position: relative;">
-                  <div class="img" style="background-color: white; margin-bottom: -10px;">
-                    <a th:href="@{/plantation/detail(id=${plantation.id})}">
-                      <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${plantation.thumbnail_img}|"
-                           class="card-img-top"
-                           alt="상품 이미지"
-                           style="height: 200px; object-fit: cover;"
-                           th:if="${plantation.thumbnail_img != null}" />
-                      <img th:src="@{/assets/img/no_image.jpg}"
-                           class="card-img-top"
-                           alt="대체 이미지"
-                           th:if="${plantation.thumbnail_img == null}"
-                           style="height: 200px; object-fit: cover;" />
-                    </a>
-                  </div>
-
-                  <!-- 카드 바디 (과일/채소 이름) -->
-                  <div class="card-body text-center">
-                    <h5 class="card-title" style="margin-top: 0.6rem; line-height: 1.2; font-size: 1rem; text-align: center;
+                      <!--카드바디(과일/채소이름)-->
+                      <div class="card-body text-center"> <!-- 텍스트 중앙 정렬 추가 -->
+                        <h5 class="card-title" style="margin-top: 0.6rem; line-height: 1.2; font-size: 1rem; text-align: center;
                             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
-                      <span th:text="${plantation.title}">과일/채소 이름</span>
-                    </h5>
+                          <span th:text="${plantation.title}">과일/채소 이름</span>
+                        </h5>
+                      </div>
+
+
+                    </div>
                   </div>
                 </div>
               </div>
+
+              <!-- 페이지 네비게이션 -->
+              <div class="row">
+                <div class="col text-center">
+                  <nav>
+                    <ul class="pagination pagination-sm justify-content-center mt-5">
+                      <!-- 이전 버튼 -->
+                      <li class="page-item previous" th:classappend="${list.hasPrevious()} ? '' : 'disabled'">
+                        <a class="page-link" th:href="@{/plantation/list(page=${list.number - 1})}" aria-label="Previous">
+                          <span class="bi bi-chevron-double-left"></span>
+                        </a>
+                      </li>
+
+                      <!-- 페이지 번호 -->
+                      <li class="page-item" th:each="i : ${#numbers.sequence(0, list.totalPages - 1)}"
+                          th:classappend="${list.number == i} ? 'active' : ''"
+                          th:if="${i > -1}"> <!-- 0 페이지 버튼을 숨김 -->
+                        <a class="page-link" th:href="@{/plantation/list(page=${i})}" th:text="${i + 1}"></a>
+                      </li>
+
+                      <!-- 다음 버튼 -->
+                      <li class="page-item next" th:classappend="${list.hasNext()} ? '' : 'disabled'">
+                        <a class="page-link" th:href="@{/plantation/list(page=${list.number + 1})}" aria-label="Next">
+                          <span class="bi bi-chevron-double-right"></span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+
+
             </div>
-          </div>
-
-          <!-- 페이지 네비게이션 -->
-          <div class="row">
-            <div class="col text-center">
-              <nav>
-                <ul class="pagination pagination-sm justify-content-center mt-5">
-                  <!-- 이전 버튼 -->
-                  <li class="page-item previous" th:classappend="${list.hasPrevious()} ? '' : 'disabled'">
-                    <a class="page-link"
-                       th:href="@{/plantation/list(page=${list.number - 1}, status=${selectedStatus}, search=${search})}"
-                       aria-label="Previous">
-                      <span class="bi bi-chevron-double-left"></span>
-                    </a>
-                  </li>
-
-                  <!-- 페이지 번호 -->
-                  <li class="page-item" th:each="i : ${#numbers.sequence(0, list.totalPages - 1)}"
-                      th:classappend="${list.number == i} ? 'active' : ''"
-                      th:if="${i > -1}">
-                    <a class="page-link"
-                       th:href="@{/plantation/list(page=${i}, status=${selectedStatus}, search=${search})}"
-                       th:text="${i + 1}">
-                    </a>
-                  </li>
-
-                  <!-- 다음 버튼 -->
-                  <li class="page-item next" th:classappend="${list.hasNext()} ? '' : 'disabled'">
-                    <a class="page-link"
-                       th:href="@{/plantation/list(page=${list.number + 1}, status=${selectedStatus}, search=${search})}"
-                       aria-label="Next">
-                      <span class="bi bi-chevron-double-right"></span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-
       </div>
+    </div>
     </section>
+
   </main>
 </div>
 </body>
+
 </html>
