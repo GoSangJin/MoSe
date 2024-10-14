@@ -89,7 +89,7 @@ public class BoardController {
         //여기까지 신고추가 
         
         boardDTO.setAuthor(username); //아이디를 작성자에 저장해서 서비스로 전달
-        boardService.save(boardDTO,file);
+        boardService.save(boardDTO,username,file);
 
         redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 생성되었습니다.");
         return "redirect:/board/list";
@@ -146,7 +146,7 @@ public class BoardController {
         boardDTO.setAuthor(username); // 아이디를 작성자에 저장해서 서비스로 전달
         boolean removeImgFlag = "true".equals(removeImage);  // 이미지 삭제 여부 확인
 
-        boardService.update(boardDTO, removeImgFlag, file);
+        boardService.update(boardDTO,username, removeImgFlag ,file);
 
 
         redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 수정되었습니다.");

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/main}" xmlns="http://www.w3.org/1999/html">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Services - Active Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!--icons-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .btn-open {
+      background-color: #FFA07A; /* 주황색 */
+      color: white;
+      border: none;
+    }
+
+    .btn-closed {
+      background-color: #808080; /* 회색 */
+      color: white;
+      border: none;
+    }
+
+    .card {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      max-height: 600px; /* 카드의 최대 높이 설정 */
+    }
+
+    .card-body {
+      flex: 1;
+    }
+
+    /* 드롭다운 크기 조절 */
+    #region-select {
+      width: 150px; /* 드롭다운 너비 설정 */
+      height: 30px; /* 드롭다운 높이 설정 */
+      font-size: 0.875rem; /* 글씨 크기 설정 */
+      padding: 2px 8px; /* 안쪽 여백 설정 */
+    }
+
+    /* 페이지 네비게이션 스타일 */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .page-item .page-link {
+      border-radius: 50%;
+      margin: 0 0.15rem;
+      width: 2rem; /* 버튼 크기 */
+      height: 2rem; /* 버튼 크기 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem; /* 기본 폰트 크기 */
+    }
+
+    .page-item.active .page-link {
+      background-color: #014421; /* 진한 녹색 배경 */
+      color: #fff; /* 흰색 텍스트 */
+      border-color: #014421; /* 진한 녹색 테두리 */
+    }
+
+    .page-item .page-link:hover {
+      background-color: #f0f0f0; /* 마우스 오버시 연한 회색 배경 */
+      color: #000;
+    }
+
+    .page-item.disabled .page-link {
+      color: #d0d0d0;
+      pointer-events: none;
+      background-color: #fff;
+    }
+
+    /* 아이콘 크기 조정 */
+    .page-link .bi {
+      font-size: 0.6rem; /* 기본 아이콘 크기 */
+    }
+
+    /* 이전, 다음 버튼 스타일 */
+    .page-item.previous .page-link,
+    .page-item.next .page-link {
+      border-radius: 50%; /* 둥근 버튼 */
+      width: 2rem; /* 버튼 크기 */
+      height: 2rem; /* 버튼 크기 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page-item.previous .page-link,
+    .page-item.next .page-link {
+      background-color: #ffffff; /* 흰색 배경 */
+      border: 1px solid #d0d0d0; /* 연한 회색 테두리 */
+    }
+
+    .page-item.previous .page-link:hover,
+    .page-item.next .page-link:hover {
+      background-color: #f0f0f0; /* 마우스 오버시 연한 회색 배경 */
+    }
+
+    @media (max-width: 576px) {
+      /* 페이지네이션 버튼 크기 축소 */
+      .page-item .page-link {
+        width: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+        height: 1.75rem; /* 작은 화면에서 버튼 크기 조정 */
+        font-size: 0.65rem; /* 작은 화면에서 폰트 크기 조정 */
+      }
+
+      /* 이전, 다음 버튼 아이콘 크기 조정 */
+      .page-link .bi {
+        font-size: 0.55rem; /* 작은 화면에서 아이콘 크기 축소 */
+      }
+
+      /* 이전, 다음 버튼 크기 일관성 유지 */
+      .page-item.previous .page-link,
+      .page-item.next .page-link {
+        width: 1.75rem; /* 작은 화면에서 동일하게 크기 축소 */
+        height: 1.75rem;
+      }
+    }
+
+    /* 추가된 미디어 쿼리 */
+    @media (max-width: 1200px) {
+      .col-md-3 {
+        flex: 0 0 50%; /* 카드의 너비를 50%로 설정하여 2개씩 배치 */
+        max-width: 50%; /* 최대 너비도 50%로 설정 */
+      }
+    }
+
+    /* 더 작은 화면에서 하나씩 나오게 설정 (예: 768px 이하) */
+    @media (max-width: 768px) {
+      .col-md-3 {
+        flex: 0 0 100%; /* 카드의 너비를 100%로 설정하여 한 줄에 하나씩 배치 */
+        max-width: 100%; /* 최대 너비도 100%로 설정 */
+      }
+    }
+
+  </style>
+
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" style="background-color: #003300;">
+      <div class="container text-center">
+        <h1 style="color: white;">살아보기</h1>
+        <nav class="breadcrumbs">
+          <div>
+            <span style="color: white;">청장년 귀농귀촌 희망자가 농촌지역 실제 이주 전에 희망지역에서 미리 살아볼 수 있는 기회를 제공하는 사업입니다.</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- 체험정보 title -->
+
+    <section id="services-2" class="services-2 section" >
+      <div class="container" data-aos="fade-up">
+        <!--        <h3 style="padding-left: 15px; margin-bottom: 15px">체험정보</h3>-->
+
+        <!-- 버튼 영역 전체를 flex 컨테이너로 설정 -->
+        <div class="d-flex justify-content-between align-items-center mb-1" style="padding-left: 15px; padding-right: 15px;">
+
+          <!-- 모집중/모집완료 버튼 -->
+          <div class="btn-group" role="group" style="gap: 5px; margin-bottom: 0;">
+            <a th:href="@{/product/list(status='OPEN')}" class="btn btn-open rounded-pill"
+               style="padding: 0.35rem 1rem; font-size: 0.85rem; transition: transform 0.3s;">
+              <strong>모집중</strong>
+            </a>
+            <a th:href="@{/product/list(status='CLOSED')}" class="btn btn-closed rounded-pill"
+               style="padding: 0.35rem 1rem; font-size: 0.85rem; transition: transform 0.3s;">
+              <strong>모집완료</strong>
+            </a>
+          </div>
+
+
+        </div>
+
+        <!-- 지역별 분류 드롭다운 및 상단 버튼 영역 -->
+        <div class="d-flex justify-content-between align-items-center" style="padding-right: 15px; margin-top: 10px; margin-bottom: 10px;">
+          <!-- 지역별 분류 드롭다운 -->
+          <div class="d-flex justify-content-start flex-wrap" style="padding-left: 15px; padding-right: 15px; margin-top: 0; margin-bottom: 0;">
+            <!--            <label for="region-select" class="form-label me-2" style="font-size: 0.875rem;">지역 선택</label>-->
+            <select id="region-select" class="form-select rounded-pill"
+                    onchange="location.href=this.value + (this.value.includes('?') ? '&' : '?') + 'page=0'"
+                    style="height: 2.5rem; font-size: 0.875rem;">
+              <!-- 전체 옵션 -->
+              <option value="/product/list?status=OPEN" th:if="${selectedRegion == null}" selected>모든 지역</option>
+              <option value="/product/list?status=OPEN" th:if="${selectedRegion != null}">모든 지역</option>
+
+              <!-- 각 지역 옵션 -->
+              <option th:each="region : ${regionType}"
+                      th:value="@{/product/list(regionType=${region.name()}, status='OPEN')}"
+                      th:text="${region.name()}"
+                      th:selected="${selectedRegion != null and selectedRegion == region.name()}"></option>
+            </select>
+          </div>
+
+
+          <!-- 상단 버튼 영역 -->
+          <div class="d-flex align-items-center" style="margin-left: auto;"> <!-- 왼쪽으로 이동 -->
+            <!-- 등록하기 버튼 -->
+            <a th:href="@{/product/new}" class="btn btn-success rounded-pill"
+               sec:authorize="hasAnyRole('admin','master')">
+              <strong>등록하기</strong>
+            </a>
+
+            <!-- 초기화 버튼 -->
+            <a th:href="@{/product/list}" class="btn btn-outline-danger rounded-pill" style="margin-left: 5px;" onclick="resetForm()">
+              <strong>전체보기</strong>
+            </a>
+          </div>
+        </div>
+
+
+        <!-- 체험정보 카드 목록 -->
+        <div class="container" data-aos="fade-up" style="margin-bottom: 30px; margin-top: 50px;">
+          <div class="row">
+            <!-- Card Start -->
+            <div class="col-md-3 col-lg-3 mb-4" th:each="product : ${list.content}">
+              <div class="card">
+                <div style="position: relative;">
+                  <!-- 이미지 섹션 -->
+                  <div class="img" style="background-color: white; margin-bottom: -10px;">
+                    <a th:href="@{/product/view(id=${product.id})}">
+                      <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${product.image_url}|"
+                           class="card-img-top"
+                           alt="상품 이미지"
+                           style="height: 200px; object-fit: cover;"
+                           th:if="${product.image_url != null}" />
+                      <img th:src="@{/assets/img/no_image.jpg}"
+                           class="card-img-top"
+                           alt="대체 이미지"
+                           th:if="${product.image_url == null}"
+                           style="height: 200px; object-fit: cover;" />
+                    </a>
+                    <!-- Status Button -->
+                    <div style="position: absolute; top: 10px; right: 10px;">
+                      <button class="btn btn-sm"
+                              th:classappend="${product.status.name() == 'OPEN' ? 'btn-open' : 'btn-closed'}"
+                              style="border-radius: 50px;">
+                        <span th:text="${product.status.description}" style="font-weight: bold;">상태</span>
+                      </button>
+                    </div>
+                    <!-- /Status Button -->
+                  </div>
+                  <!-- /이미지 섹션 -->
+
+                  <!-- 마을 내용 - 카드 바디 -->
+                  <a th:href="@{/product/view(id=${product.id})}" style="text-decoration: none; color: inherit;">
+                    <div class="card-body">
+                      <!-- 지역 이름 -->
+                      <p style="color: #888; margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;"
+                         th:text="${product.local_name != null ? product.local_name : '정보 없음'}">지역 이름</p>
+
+                      <!-- 마을 이름 -->
+                      <h5 class="card-title" style="font-weight: bold; color: green; margin-top: 0;
+                          line-height: 1.2; font-size: 1.125rem;" th:text="${product.title}">마을 이름</h5>
+
+                      <!-- 카드 내용 -->
+                      <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
+                        <strong>입주가능일 : </strong>
+                        <span th:text="${product.moveInDate != null ? #temporals.format(product.moveInDate, 'yyyy.MM.dd')
+                              : '날짜 정보 없음'}" style="color: #888;">입주 가능일</span>
+                      </p>
+                      <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
+                        <strong>신청기간 : </strong>
+                        <span th:text="${product.applicationStartDate != null && product.applicationEndDate != null ?
+                              #temporals.format(product.applicationStartDate, 'yyyy.MM.dd') + ' ~ ' +
+                              #temporals.format(product.applicationEndDate, 'yyyy.MM.dd') : '기간 정보 없음'}"
+                              style="color: #888;">신청 기간</span>
+                      </p>
+                      <p class="card-text" style="margin-bottom: 0; line-height: 1.5; font-size: 0.875rem;">
+                        <strong>모집인원 : </strong>
+                        <span th:text="${product.recruitmentCnt != null ? product.recruitmentCnt : '인원 정보 없음'}"
+                              style="color: #888;">모집 인원 </span>명
+                      </p>
+                    </div>
+                  </a>
+                  <!-- /마을 내용 - 카드 바디 -->
+
+                </div>
+              </div>
+            </div><!-- /Card End -->
+          </div>
+
+          <!-- 페이지 네비게이션 -->
+          <div class="row">
+            <div class="col text-center">
+              <nav>
+                <ul class="pagination pagination-sm justify-content-center mt-5">
+                  <!-- 이전 버튼 -->
+                  <li class="page-item previous" th:classappend="${list.hasPrevious()} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/product/list(page=${list.number - 1}, status=${selectedStatus}, regionType=${selectedRegion})}" aria-label="First">
+                      <span class="bi bi-chevron-double-left"></span> <!-- 아이콘 추가 -->
+                    </a>
+                  </li>
+
+                  <!-- 페이지 번호 -->
+                  <li class="page-item" th:each="i : ${#numbers.sequence(0, list.totalPages - 1)}"
+                      th:classappend="${i == list.number} ? 'active' : ''"
+                      th:if="${i > -1}"> <!-- 0 페이지 버튼을 숨김 -->
+                    <a class="page-link" th:href="@{/product/list(page=${i}, status=${selectedStatus}, regionType=${selectedRegion})}" th:text="${i + 1}"></a>
+                  </li>
+
+                  <!-- 다음 버튼 -->
+                  <li class="page-item next" th:classappend="${list.hasNext()} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/product/list(page=${list.number + 1}, status=${selectedStatus}, regionType=${selectedRegion})}" aria-label="Last">
+                      <span class="bi bi-chevron-double-right"></span> <!-- 아이콘 추가 -->
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+</body>
+</html>

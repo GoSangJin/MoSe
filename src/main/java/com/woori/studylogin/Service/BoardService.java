@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,7 +41,9 @@ public class BoardService {
     private String imgUploadLocation;
 
     // 삽입
-    public void save(BoardDTO boardDTO, MultipartFile file) throws IOException {
+    public void save(BoardDTO boardDTO,String username, MultipartFile file) throws IOException {
+        Optional<UserEntity> userData = userRepository.findByUsername(username);
+        UserEntity userEntity = userData.orElseThrow(() -> new RuntimeException("User not found"));
         boardDTO.setLikeCount(0);
         boardDTO.setViewCount(0);
         boardDTO.setCommentCount(0);
@@ -52,17 +55,20 @@ public class BoardService {
         boardDTO.setBoardImg(newFileName);
 
         BoardEntity boardEntity = modelMapper.map(boardDTO, BoardEntity.class);
+        boardEntity.setUser(userEntity);
         boardRepository.save(boardEntity);
     }
 
     // 수정
     public void update(BoardDTO boardDTO,
+                       String username,
                        boolean removeImage,
                        MultipartFile file) throws IOException {
 
         BoardEntity boardEntity = boardRepository.findById(boardDTO.getId())
                 .orElseThrow(() -> new IllegalArgumentException("No board found with id: " + boardDTO.getId()));
-
+        UserEntity userEntity = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         boardDTO.setLikeCount(boardEntity.getLikeCount());
         boardDTO.setViewCount(boardEntity.getViewCount());
         boardDTO.setCommentCount(boardEntity.getCommentCount());
