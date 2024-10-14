@@ -34,6 +34,14 @@ public class UserEntity extends BaseEntity {
     private boolean isSuspended;
     private LocalDate suspensionEndDate;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    // 유저가 삭제되면 유저의 게시글이 삭제
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardEntity> boards;
+
+    // 유저가 삭제되면 유저의 댓글이 삭제
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentEntity> comments;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LikeEntity> likes;
 }

@@ -43,6 +43,11 @@ public class BoardEntity extends BaseEntity {
     @Column(name="commentCount")
     private Integer commentCount = 0;
 
+    // 유저와의 관계 (유저가 삭제되면 해당 게시글도 삭제)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
     @OneToMany(mappedBy = "board",cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
 
