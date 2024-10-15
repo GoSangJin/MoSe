@@ -29,12 +29,14 @@ public class SecurityConfig{
         http.authorizeHttpRequests((auth)->{
             auth.requestMatchers("/test1", "/test2").permitAll(); //전체사용
             auth.requestMatchers("/user/update", "/board/new", "/board/update", "/board/delete",
-                    "/board/like","/comment/insert","/user/info","/user/mypage").authenticated(); //로그인 후
-            auth.requestMatchers("/user/register").anonymous(); //로그인 전
+                    "/board/like","/comment/insert","/user/info","/user/mypage","/user/other_user_page",
+                    "/user/change_password","/user/re_enter_credentials").authenticated(); //로그인 후
+            auth.requestMatchers("/user/register","/user/find-userid","/user/find-password").anonymous(); //로그인 전
             auth.requestMatchers("/images/**").permitAll();
             //상품 등록/수정/삭제는 운영자와 관리자만 접근이 가능하게
             auth.requestMatchers("/product/new", "/product/edit", "/product/delete").hasAnyRole("admin", "master");
 
+            auth.requestMatchers("/qna/insert","/qna/delete/{id}","/qna/update/{id}").hasAnyRole("admin","master");
             auth.requestMatchers("/document/insert","/document/update/","/plantation/delete").hasAnyRole("admin", "master");
             auth.requestMatchers("/plantation/insert","/plantation/update/").hasAnyRole("admin", "master");
             auth.requestMatchers("/event/delete","/event/create","/event/update").hasAnyRole("admin", "master");
