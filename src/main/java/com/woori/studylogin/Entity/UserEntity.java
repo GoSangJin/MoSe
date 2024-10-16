@@ -18,8 +18,10 @@ public class UserEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;  //일련번호
+    @Column(unique=true)
     private String username; //아이디
     private String password; //비밀번호
+    @Column(unique=true)
     private String email;
     private String birth;
     private String name; //사용자 이름

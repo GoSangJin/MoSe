@@ -53,7 +53,9 @@ public class UserService implements UserDetailsService {
         if (read.isPresent()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
-
+        if (existingEmail.isPresent()) {
+            throw new IllegalStateException("이미 존재하는 이메일입니다.");
+        }
         UserEntity userEntity = modelMapper.map(userDTO, UserEntity.class);
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
