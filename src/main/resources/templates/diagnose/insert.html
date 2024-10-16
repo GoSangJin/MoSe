@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Services - Active Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* 전체 div의 가운데 정렬 */
+        .container {
+            margin: 0 auto; /* 수평 중앙 정렬 */
+            width: 100%; /* 너비를 100%로 설정 */
+        }
+
+        .card-title {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 2rem;
+            width: 100%; /* 너비를 100%로 설정 */
+        }
+
+        /* 카드 바디의 너비에 맞추기 */
+        .card-body {
+            width: 100%; /* 카드 바디의 너비에 맞춤 */
+            max-width: 600px; /* 필요 시 최대 너비 설정 */
+            margin: 0 auto; /* 카드 바디 중앙 정렬 */
+        }
+
+        .drop-area {
+            border: 2px dashed #007bff; /* 드롭 영역 스타일 */
+            border-radius: 10px; /* 모서리 둥글게 */
+            padding: 20px; /* 패딩 추가 */
+            display: flex; /* 플렉스 박스 사용 */
+            flex-direction: column; /* 수직 정렬 */
+            align-items: center; /* 수평 가운데 정렬 */
+            justify-content: center; /* 수직 가운데 정렬 */
+            width: 100%; /* 너비를 100%로 설정 */
+            margin: 1rem 0; /* 위 아래 여백 추가 */
+            cursor: pointer; /* 마우스 포인터 변경 */
+            text-align: center; /* 텍스트 가운데 정렬 */
+        }
+
+        #drop-text {
+            margin-bottom: 1rem; /* 이미지와의 간격 추가 */
+        }
+
+        #remove-image {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 2px 5px;
+            font-size: 14px;
+        }
+
+        .drop-area p {
+            margin: 0;
+            line-height: 1.5; /* 원하는 라인 높이 설정 */
+        }
+
+        .drop-area.dragover {
+            border-color: #007bff; /* 드래그 오버 시 색상 변경 */
+            background-color: rgba(0, 123, 255, 0.1); /* 드래그 오버 시 배경 색상 변경 */
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .button-container {
+            text-align: center; /* 버튼을 가운데 정렬 */
+            margin-top: 1rem; /* 버튼 위 여백 */
+        }
+        #preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #preview img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+
+        .list-number {
+            background-color: #d9e5ff; /* 옅은 파란색 배경 */
+            color: #333; /* 숫자 색상 */
+            border-radius: 50%; /* 원형 모양 */
+            padding: 5px 10px; /* 패딩 */
+            font-weight: bold; /* 굵은 글씨 */
+            margin-right: 10px; /* 오른쪽 여백 */
+            display: inline-flex; /* 인라인 플렉스 */
+            align-items: center; /* 수직 중앙 정렬 */
+            justify-content: center; /* 수평 중앙 정렬 */
+            width: 30px; /* 고정 너비 */
+            height: 30px; /* 고정 높이 */
+            text-align: center; /* 텍스트 가운데 정렬 */
+        }
+
+        /* 제목 및 스팬 태그 스타일 */
+        .responsive-title {
+            font-size: 1.8rem; /* 기본 제목 크기 */
+        }
+
+        .responsive-span {
+            font-size: 0.9rem; /* 기본 스팬 태그 크기 */
+            white-space: nowrap; /* 줄 바꿈 방지 */
+            overflow: hidden; /* 넘치는 내용 숨김 */
+            text-overflow: ellipsis; /* 넘칠 경우 생략 부호 */
+        }
+
+        /* 유의사항 리스트 항목 스타일 */
+        .responsive-li {
+            font-size: 1rem; /* li 태그 크기 줄이기 */
+            line-height: 2.5rem; /* 줄 간격 조정 (원하는 간격으로 조정) */
+        }
+
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .card-body {
+                max-width: 100%; /* 모바일에서 카드 바디 최대 너비 100% */
+            }
+
+            .list-number {
+                width: 25px; /* 모바일에서 숫자 크기 줄이기 */
+                height: 25px; /* 모바일에서 숫자 크기 줄이기 */
+            }
+
+            #drop-area {
+                padding: 15px; /* 드롭 영역 패딩 조정 */
+            }
+
+            #remove-image {
+                font-size: 12px; /* 삭제 버튼 폰트 크기 조정 */
+            }
+
+            #drop-text {
+                font-size: 14px; /* 드롭 텍스트 폰트 크기 조정 */
+            }
+
+            .button-container button {
+                width: 100%; /* 버튼을 100% 너비로 조정 */
+                font-size: 0.875rem; /* 버튼 폰트 크기 조정 */
+            }
+
+            .responsive-title {
+                font-size: 1.5rem; /* 모바일에서 제목 크기 줄이기 */
+            }
+
+            .responsive-span {
+                font-size: 0.7rem; /* 모바일에서 span 크기 줄이기 */
+            }
+
+            .responsive-li {
+                font-size: 0.83rem; /* 모바일에서 li 크기 줄이기 */
+                line-height: 2.5rem; /* 모바일에서도 줄 간격 조정 (원하는 간격으로 조정) */
+            }
+
+            h1 {
+                font-size: 0.5rem; /* h1 크기 조정 (조금 작게) */
+            }
+        }
+
+    </style>
+
+</head>
+<body>
+<h1>YOLOv5 이미지 처리</h1>
+<div layout:fragment="content">
+<main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" style="background-color: #003300;">
+        <div class="container text-center">
+            <h1 style="color: white;">병해충 진단</h1>
+            <nav class="breadcrumbs">
+                <div>
+                    <span class="responsive-span" style="color: white;">사진 이미지를 통해 작물의 병해를 진단할 수 있습니다.</span>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <!-- 사용방법 -->
+    <section id="services-2" class="services-2 section">
+
+        <div class="container mb-3">
+            <div class="row justify-content-center" data-aos="fade-up">
+                <div class="col-md-8 col-lg-8">
+                    <!-- 제목 타이틀 -->
+                    <h3 style="font-weight: bold; color: #222; line-height: 3rem;" class="responsive-title">AI병해충 영상진단이란?</h3>
+                    <span class="responsive-span" style="color: #222;">
+                        <span style="color: red;">*</span> 병의 피해 및 해충의 사진을 AI가 판독하여 병해충 진단을 빠르게 제공하는 서비스입니다.
+                    </span>
+                    <!-- 하단 구분선 -->
+                    <hr style="border: 1px solid #111;">
+
+                    <!-- 사용방법-유의사항 -->
+                    <div class="info-item" style="margin-top: 3rem;">
+                        <div class="card" style="border-style: none;">
+                            <div class="card-body">
+                                <h5 class="card-title" style="font-weight: bold; padding-left: 20px;">AI병해충 영상진단 사용방법 및 유의사항</h5>
+                                <ul class="list-unstyled" style="margin-left: 0.5rem;">
+                                    <li class="responsive-li">
+                                        <span class="list-number">1</span> 병해충진단에 불필요하거나 방해가 되는 부위는 촬영 시 제거하세요.
+                                    </li>
+                                    <li class="responsive-li">
+                                        <span class="list-number">2</span> 병해충진단을 받고자 하는 부위의 촛점이 흐리지 않도록 하세요.
+                                    </li>
+                                    <li class="responsive-li">
+                                        <span class="list-number">3</span> 조명이 밝은 곳에서 촬영해주세요.
+                                    </li>
+                                    <li class="responsive-li">
+                                        <span class="list-number">4</span> 업로드할 수 있는 사진의 유형은 <strong style="color: #842029">jpg</strong> 와 <strong style="color: #842029">png</strong> 파일입니다.<br>
+                                        <span style="display: block; margin-left: 2.5rem; line-height: 2rem;">
+                                            (다른 유형의 파일 업로드 시 오류가 발생할 수 있습니다.)
+                                        </span>
+                                    </li>
+                                    <li class="responsive-li">
+                                        <span class="list-number">5</span> 비슷한 모양, 색상의 작물일 경우 결과가 부정확 할 수도 있습니다.
+                                    </li>
+                                    <li class="responsive-li">
+                                        <span class="list-number" style="line-height: 4rem;">6</span> 병해진단 요청을 클릭하여 이미지를 전송하세요.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 파일전송 -->
+                    <div class="info-item" style="margin-top: 2rem">
+                        <div class="card" style="border-style: none">
+                            <div class="card-body" >
+                                <h5 class="card-title" style="font-weight: bold; padding-left: 20px;">AI병해충 영상진단을 위한 이미지 업로드</h5>
+                                <form action="/diagnose/result" method="post" enctype="multipart/form-data">
+                                    <div id="drop-area" class="drop-area">
+                                        <div id="drop-text">여기로 파일을 드래그하거나 클릭하여 파일을 선택하세요.</div>
+                                        <input type="file" id="fileInput" name="file" accept=".jpg, .png" required style="display: none;">
+                                        <div id="preview"></div> <!-- 이미지 미리보기 영역 -->
+                                        <button id="remove-image" style="display: none;">이미지 제거</button>
+                                    </div>
+                                    <div class="button-container">
+                                        <button class="btn btn-secondary rounded-pill" type="submit"
+                                                style="padding: 0.5rem 1.5rem; font-size: 0.875rem; white-space: nowrap;">병해충진단 요청
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</div>
+<th:block layout:fragment="script">
+
+    <script>
+        /*이미지 파일 가져올때 미리보기 기능*/
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('fileInput');
+        const previewDiv = document.getElementById('preview');
+        const dropText = document.getElementById('drop-text'); // 드롭 텍스트를 선택합니다.
+
+        dropArea.addEventListener('click', () => fileInput.click());
+
+        dropArea.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropArea.classList.add('dragover');
+        });
+
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.classList.remove('dragover');
+        });
+
+        dropArea.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropArea.classList.remove('dragover');
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                previewImage(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (event) => {
+            if (event.target.files.length > 0) {
+                previewImage(event.target.files[0]);
+            }
+        });
+
+        function previewImage(file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                dropText.style.display = 'none'; // 드롭 텍스트 숨기기
+                previewDiv.innerHTML = `
+                <div style="position: relative; display: inline-block;">
+                    <img src="${event.target.result}" alt="Image preview"
+                    style="max-width: 300px; height: auto; border: 1px solid #ddd; border-radius: 5px;" />
+                    <button id="remove-image" style="
+                        position: absolute;
+                        top: 5px;
+                        right: 5px;
+                        background-color: white;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        padding: 2px 5px;
+                        font-size: 14px;">
+                        X
+                    </button>
+                </div>
+            `;
+
+                // 삭제 버튼 클릭 이벤트 핸들러
+                const removeButton = document.getElementById('remove-image');
+                removeButton.addEventListener('click', () => {
+                    previewDiv.innerHTML = ''; // 미리보기 삭제
+                    dropText.style.display = 'block'; // 드롭 텍스트 다시 보이기
+                    fileInput.value = ''; // 파일 입력 초기화
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
+
+</th:block>
+</body>
+</html>

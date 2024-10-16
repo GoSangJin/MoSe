@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+
+        .btn {
+            height: 2.5rem; /* 버튼의 높이 */
+            margin: 0 10px; /* 좌우 간격 추가 */
+            width: auto; /* 버튼의 너비는 콘텐츠에 맞게 */
+        }
+
+
+        @media (max-width: 768px) {
+            .responsive-span {
+                font-size: 0.8rem; /* 원하는 크기로 조정 */
+                white-space: nowrap; /* 텍스트가 한 줄로 나오게 설정 */
+                overflow: hidden; /* 넘치는 내용 숨기기 */
+                text-overflow: ellipsis; /* 넘칠 경우 생략 기호(...) 표시 */
+            }
+
+            h1 {
+                font-size: 0.5rem; /* h1 크기 조정 (조금 작게) */
+            }
+        }
+
+    </style>
+
+
+
+</head>
+<body class="services-page">
+<div layout:fragment="content">
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title" style="background-color: #003300;">
+            <div class="container text-center">
+                <h1 style="color: white;">병해충진단</h1>
+                <nav class="breadcrumbs">
+                    <div>
+                        <span class="responsive-span" style="color: white;">사진 이미지를 통해 작물의 병해를 진단할 수 있습니다.</span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- 오류 메시지 -->
+        <section id="services-2" class="services-2 section">
+            <div class="container">
+                <div class="row justify-content-center" data-aos="fade-up">
+                    <div class="col-md-6 col-lg-6 text-center" style="margin-top: 8rem">
+                        <div style="font-weight: bold; margin-bottom: 2rem">분석결과 검출된 병해충이 없습니다.</div>
+                        <div class="button-group" style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                            <a th:href="@{/}" class="btn btn-success rounded-pill"
+                               style="font-weight: bold; min-width: 200px;">홈으로 돌아가기</a>
+                            <a th:href="@{/diagnose}" class="btn btn-secondary rounded-pill"
+                               style="font-weight: bold; min-width: 200px;">이전으로</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</div>
+</body>
+</html>
