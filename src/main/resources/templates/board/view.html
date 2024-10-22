@@ -155,12 +155,7 @@
       margin-bottom: 20px;
       background-color: transparent; /* 배경색을 투명하게 설정 */
       padding: 0; /* 기본 padding 제거 */
-    }
-
-    .comment-form textarea {
-      font-size: 14px; /* 기본 입력 폰트 크기 */
-      height: 100px; /* 높이 조정 (세로 크기 증가) */
-      resize: vertical; /* 세로로만 크기 조정 가능 */
+      position: relative; /* 상대 위치 설정 */
     }
 
     /* 댓글 입력 필드와 버튼 스타일 */
@@ -169,15 +164,14 @@
       width: 100%; /* 너비를 100%로 설정 */
       box-sizing: border-box; /* 테두리와 padding이 요소의 전체 크기에 포함되도록 설정 */
       font-size: 14px; /* 기본 폰트 크기 설정 */
-      padding: 10px; /* 내부 여백 설정 */
       border: 1px solid rgba(0, 0, 0, 0.1); /* 테두리 색상 설정 */
       border-radius: 5px; /* 모서리 둥글게 설정 */
       margin-bottom: 10px; /* 하단 여백 설정 */
-    }
-
-    .comment-form textarea {
-      resize: none; /* 리사이즈 기능 비활성화 */
-      overflow: hidden; /* 오버플로우 숨김 */
+      height: 100px; /* 높이 조정 */
+      padding-top: 40px; /* 닉네임과 겹치지 않도록 설정 */
+      resize: vertical; /* 세로로만 크기 조정 가능 */
+      overflow-y: auto; /* 세로 스크롤 허용 */
+      overflow-x: hidden; /* 가로 스크롤 숨김 */
     }
 
     /* 댓글 등록 버튼 스타일 */
@@ -234,6 +228,7 @@
     /* 댓글 본문 */
     .comment-body {
       line-height: 0.5; /* 행간을 좁게 조정 */
+      white-space: pre-wrap; /* 줄 바꿈과 공백을 그대로 유지 */
     }
 
 
@@ -313,6 +308,13 @@
       width: calc(100%); /* 전체 너비에서 오른쪽 15px 줄이기 */
       margin: 5px 0; /* 상단 및 하단 여백 5px, 좌우 여백 0 */
 
+    }
+
+    .comment-form strong {
+      position: absolute; /* 닉네임을 절대 위치로 설정 */
+      top: 10px; /* 위쪽 여백 설정 */
+      left: 20px; /* 왼쪽 여백 설정 */
+      z-index: 1; /* 다른 요소 위에 위치하도록 설정 */
     }
 
 
@@ -511,20 +513,23 @@
 
                     <!-- 댓글 입력란과 닉네임 (좌상단에 위치) -->
                     <div class="position-relative">
-                      <strong class="d-block" th:text="${userDTO.username}"
-                              style="position: absolute; top: 10px; left: 20px; z-index: 1;">닉네임</strong>
-                      <textarea class="form-control" id="body" name="body" maxlength="150"
+                      <strong class="d-block"
+                              style="position: absolute; top: -20px; left: 10px; z-index: 1; font-size: 14px; color: gray;"
+                              th:text="${userDTO.username}">닉네임</strong>
+                      <textarea class="form-control" id="body" name="body" maxlength="200"
                                 placeholder="댓글을 입력하세요" required oninput="checkLength(this)"
-                                style="padding: 50px 90px 0 20px; resize: none; overflow: hidden"
-                                rows="1"></textarea>
+                                style="padding-top: 10px; padding-left: 10px; resize: none; overflow-y: auto; overflow-x: hidden;"
+                                rows="3"></textarea>
                       <button type="submit" class="submit text-button position-absolute"
                               style="bottom: 0; right: 10px; height: auto; margin-right: 8px;
-                          background-color: transparent; color: gray; border: none; font-weight: bold;
-                          transition: color 0.3s, background-color 0.3s;"> 등록
+                      background-color: transparent; color: gray; border: none; font-weight: bold;
+                      transition: color 0.3s, background-color 0.3s;"> 등록
                       </button>
                     </div>
                   </form>
                 </div>
+
+
 
               </div>
             </div>

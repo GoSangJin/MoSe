@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Plantation View - Active Bootstrap Template</title>
+  <title>재배정보</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -31,13 +31,6 @@
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: Active
-  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
-  * Updated: Jun 29 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
   <style>
     .detail-info ul {
       list-style-type: none; /* 점 표시 없애기 */
@@ -73,7 +66,105 @@
     .fruit-vegetable-info {
       flex: 1; /* 내용이 가능한 공간을 차지하도록 설정 */
     }
+
+    /* li 태그 간의 간격 조정 */
+    .detail-info ul li {
+      margin-bottom: 15px; /* 항목 간의 간격을 넓힘 */
+    }
+
+    /* 상단 이미지와 내용 (화면이 좁아질 때 내용이 이미지 아래로 수직 정렬) */
+    @media (max-width: 768px) {
+      .image-info-container {
+        flex-direction: column; /* 수직 정렬 */
+        align-items: center; /* 가운데 정렬 */
+        gap: 20px; /* 이미지와 내용 사이의 간격 */
+      }
+
+      .image-info-container img {
+        max-width: 95%; /* 이미지 크기 조정 (크기를 더 크게 조정) */
+        height: auto;
+      }
+
+      .fruit-vegetable-info {
+        word-wrap: break-word; /* 긴 단어나 텍스트가 넘치지 않도록 줄바꿈 */
+        overflow-wrap: break-word;
+        text-align: left; /* 작은 화면에서 텍스트 왼쪽 정렬 */
+      }
+
+      .fruit-vegetable-info li {
+        display: flex; /* 수평 정렬 */
+        align-items: center; /* 세로 가운데 정렬 */
+        margin-bottom: 20px; /* 항목 사이의 간격을 더 넓힘 */
+        font-size: 0.9rem; /* 내용 글자 크기 조정 */
+      }
+    }
+
+    /* 큰 화면일 때 기본 스타일 */
+    .image-info-container {
+      display: flex; /* 기본적으로 수평 정렬 */
+      flex-direction: row; /* 수평 정렬 */
+      align-items: center; /* 세로 가운데 정렬 */
+      justify-content: flex-start; /* 왼쪽 정렬 */
+      gap: 2px; /* 요소 사이 간격 */
+      flex-wrap: wrap; /* 요소가 넘치면 다음 줄로 이동 */
+      width: 100%; /* 전체 너비 */
+    }
+
+    .image-info-container img {
+      max-width: 40%; /* 이미지 최대 너비 */
+      height: auto; /* 높이는 비율에 맞춤 */
+      margin: 0 5px 0 40px; /* 마진 설정 */
+    }
+
+    .fruit-vegetable-info {
+      line-height: 1.7; /* 줄 간격 */
+      list-style-type: none; /* 리스트 스타일 없음 */
+      display: flex; /* 기본적으로 수평 정렬 */
+      flex-direction: column; /* 수직 정렬 */
+      align-items: flex-start; /* 왼쪽 정렬 */
+    }
+
+    .fruit-vegetable-info li {
+      margin-bottom: 20px; /* 항목 사이의 간격 */
+    }
+
+    @media (max-width: 768px) {
+      .responsive-span {
+        font-size: 0.8rem; /* 원하는 크기로 조정 */
+        white-space: nowrap; /* 텍스트가 한 줄로 나오게 설정 */
+        overflow: hidden; /* 넘치는 내용 숨기기 */
+        text-overflow: ellipsis; /* 넘칠 경우 생략 기호(...) 표시 */
+      }
+
+      h1 {
+        font-size: 0.5rem; /* h1 크기 조정 (조금 작게) */
+      }
+    }
+
+    /* 작은 화면에서의 추가 처리 */
+    @media (max-width: 576px) {
+      .image-info-container {
+        align-items: center; /* 수직 가운데 정렬 */
+        text-align: center; /* 텍스트 가운데 정렬 */
+      }
+
+      .image-info-container img {
+        max-width: 100%; /* 더 작은 화면에서 이미지 폭을 100%로 설정 */
+        margin: 0 auto; /* 가운데 정렬을 위해 마진 설정 */
+      }
+
+      .fruit-vegetable-info {
+        padding: 0 5px; /* 작은 화면에서 텍스트에 여백을 추가하여 글자 넘침 방지 */
+      }
+
+      .fruit-vegetable-info li {
+        font-size: 0.8rem; /* 더 작은 화면에서 글자 크기 조정 (조금 더 줄임) */
+      }
+    }
+
+
   </style>
+
 </head>
 
 <body class="services-page">
@@ -84,93 +175,144 @@
     <!-- Page Title -->
     <div class="page-title" style="background-color: #003300;">
       <div class="container text-center">
-        <h1 style="color: white;">살아보기</h1>
+        <h1 style="color: white;">재배정보</h1>
         <nav class="breadcrumbs">
           <div>
-            <span style="color: white;">청장년 귀농귀촌 희망자가 농촌지역 실제 이주 전에 희망지역에서 미리 살아볼 수 있는 기회를 제공하는 사업입니다.</span>
+            <span class="responsive-span" style="color: white;"> 과일이나 채소에 관한 재배방법이나 특징, 유의사항 등 다양한 정보들을 제공해 드립니다. </span>
           </div>
         </nav>
       </div>
     </div>
     <!-- End Page Title -->
 
-    <!-- village-Details Section -->
-    <section id="village-details" class="village-details section">
+    <!-- 재배정보-Details Section -->
+    <section id="plantation-details" class="plantation-details section">
       <div class="container">
         <div class="row justify-content-center" data-aos="fade-up">
           <div class="col-md-10">
-            <!-- 상단 제목 -->
-            <h2 style="margin-bottom: 20px;">과일/채소정보 상세보기</h2>
+            <div class="mt-4 d-flex flex-column mb-5">
+              <!-- 상단 제목과 버튼 -->
+              <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 10px;">
+                <h2 style="font-weight: bold; color: #222; line-height: 3rem; margin: 0;">재배정보</h2>
+                <div>
+                  <!-- 수정하기 버튼 (권한에 따라 표시) -->
+                  <a th:href="@{/plantation/update(id=${plantationDTO.id})}" class="btn btn-info rounded-pill btn-sm"
+                     sec:authorize="hasAnyRole('admin', 'master')">수정</a>
+                  <!-- 삭제하기 버튼 -->
+                  <a th:href="@{/plantation/delete(id=${plantationDTO.id})}" class="btn btn-danger rounded-pill btn-sm"
+                     sec:authorize="hasAnyRole('admin', 'master')" th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+                  <!-- 목록 보기 버튼 -->
+                  <a th:href="@{/plantation/list}" class="btn btn-secondary btn-sm">목록</a>
+                </div>
+              </div>
+            </div>
 
             <div class="row g-4">
-              <!-- 오른쪽 상세 정보 -->
               <div class="col-md-12">
                 <div class="live-txt">
-                  <!-- 지역 이름과 마을 이름 -->
-                  <h4 class="ctpv_nm_and_sgg_nm" th:text="${plantationDTO.title}"
-                      style="color: #008000; line-height: 1.0; font-size: 1.0rem; font-weight: bold;">과일/채소 이름</h4>
-                  <div class="tit-select">
-                    <h3 class="vlg_nm" th:text="${plantationDTO.status}" style="font-size: 1.5rem; font-weight: bold;">과일/채소 분류</h3>
-                  </div>
+                  <!-- 상단 thead 과일/채소 이름 -->
+                  <table class="table">
+                    <thead>
+                    <tr style="border-bottom: 2px solid #000;">
+                      <th class="text-left" style="width: 50%; background-color: #f8f9fa; padding: 10px 0 10px 20px; position: relative;">
+                        <div style="display: flex; align-items: center; justify-content: flex-start; height: 100%;">
+                          <span style="margin-right: 10px;">분류유형 -</span>
+                          <span class="vlg_nm" th:text="${plantationDTO.status}" style="font-size: 1.5rem; font-weight: bold;"></span>
+                        </div>
+                      </th>
+                      <th class="text-left" style="width: 50%; background-color: #f8f9fa; padding: 10px 0; text-align: left;">
+                        <span class="ctpv_nm_and_sgg_nm" th:text="${plantationDTO.title}" style="color: #008000; font-size: 1.5rem; font-weight: bold; display: block;"></span>
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 내용이 들어갈 부분 -->
+                    </tbody>
+                  </table>
 
                   <!-- 이미지와 내용 -->
-                  <div class="image-info-container mb-3">
+                  <div class="image-info-container mt-5 mb-2">
                     <!-- 이미지 -->
                     <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${plantationDTO.thumbnail_img}|"
-                         class="img-fluid"
+                         class="img-fluid mb-3"
                          alt="과일/채소 이미지" />
 
-                    <!-- 내용 -->
-                    <ul class="fruit-vegetable-info" style="line-height: 1.8;">
+                    <ul class="fruit-vegetable-info">
                       <li>
-                        <strong>효능 : </strong><span th:text="${plantationDTO.efficacy}">효능</span>
+                        <strong style="font-size: 1.2rem; display: inline-block; width: 100px; text-align: left;">수확시기 :</strong>
+                        <span style="font-size: 1rem; display: inline-block; width: calc(100% - 100px); margin-left: 3px;"
+                              th:utext="${plantationDTO.harvest}">수확시기</span>
                       </li>
                       <li>
-                        <strong>수확시기 : </strong><span th:text="${plantationDTO.harvest}">수확시기</span>
+                        <strong style="font-size: 1.2rem; display: inline-block; width: 100px; text-align: left;">재배지역 :</strong>
+                        <span style="font-size: 1rem; display: inline-block; width: calc(100% - 100px); margin-left: 3px;"
+                              th:utext="${plantationDTO.region}">재배지역</span>
                       </li>
                       <li>
-                        <strong>적응지역 : </strong><span th:text="${plantationDTO.region}">적응지역</span>
+                        <strong style="font-size: 1.2rem; display: inline-block; width: 100px; text-align: left;">효능효과 :</strong>
+                        <span style="font-size: 1rem; display: inline-block; width: calc(100% - 100px); margin-left: 3px;"
+                              th:utext="${plantationDTO.efficacy}">효능효과</span>
                       </li>
                     </ul>
-                  </div>
+                  </div><!-- /이미지와 내용 -->
+
 
                   <!-- 세부 정보 -->
-                  <div class="detail-info" style="line-height: 1.8; background-color: #f5f5f5; padding: 16px; border-radius: 20px;">
-                    <ul>
-                      <li style="margin-bottom: 20px;">
-                        <strong>재배방법</strong>
-                        <span th:text="${plantationDTO.cultivation}">재배 방법</span>
-                      </li>
-                      <li style="margin-bottom: 20px;">
-                        <strong>특징</strong>
-                        <span th:text="${plantationDTO.characteristics}">특징</span>
-                      </li>
-                      <li>
-                        <strong>유의사항</strong>
-                        <span th:text="${plantationDTO.precautions}">유의 사항</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                  <div class="detail-info mt-5" style="line-height: 1.8; padding: 16px; border-radius: 20px;">
+                    <!-- 재배방법 article -->
+                    <article style="margin-bottom: 5rem;">
+                      <h3 class="text-dark font-weight-bold" style="display: flex; align-items: center;">
+                        <i class="bi bi-record-circle-fill" style="font-size: 1.2rem; margin-right: 0.5rem; margin-top: -0.3rem;"></i>
+                        재배방법
+                      </h3>
+                      <hr style="border-bottom: 2px solid #000;" />
 
-                <!-- 버튼들 -->
-                <div class="mt-4">
-                  <!-- 수정하기 버튼 (권한에 따라 표시) -->
-                  <a th:href="@{/plantation/update(id=${plantationDTO.id})}" class="btn btn-outline-info rounded-pill mb-4"
-                     sec:authorize="hasAnyRole('admin', 'master')">수정하기</a>
-                  <!-- 삭제하기 버튼 -->
-                  <a th:href="@{/plantation/delete(id=${plantationDTO.id})}" class="btn btn-outline-danger rounded-pill mb-4"
-                     sec:authorize="hasAnyRole('admin', 'master')" th:onclick="return confirm('정말 삭제하시겠습니까?')">삭제하기</a>
-                  <!-- 목록 보기 버튼 -->
-                  <a th:href="@{/plantation/list}" class="btn btn-outline-success rounded-pill mb-4">목록보기</a>
+                      <div class="cuList mb-4" style="padding: 0 20px">
+                        <ul>
+                          <li th:utext="${plantationDTO.cultivation}"></li>
+                        </ul>
+                      </div>
+                    </article> <!-- /재배방법 article -->
+
+                    <!-- 특징 article -->
+                    <article style="margin-bottom: 5rem;">
+                      <h3 class="text-dark font-weight-bold" style="display: flex; align-items: center;">
+                        <i class="bi bi-record-circle-fill" style="font-size: 1.2rem; margin-right: 0.5rem; margin-top: -0.3rem;"></i>
+                        특징
+                      </h3>
+                      <hr style="border-bottom: 2px solid #000;" />
+
+                      <div class="cuList mb-4" style="padding: 0 20px">
+                        <ul>
+                          <li th:utext="${plantationDTO.characteristics}"></li>
+                        </ul>
+                      </div>
+                    </article> <!-- /특징 article -->
+
+                    <!-- 유의사항 article -->
+                    <article style="margin-bottom: 5rem;">
+                      <h3 class="text-dark font-weight-bold" style="display: flex; align-items: center;">
+                        <i class="bi bi-record-circle-fill" style="font-size: 1.2rem; margin-right: 0.5rem; margin-top: -0.3rem;"></i>
+                        유의사항
+                      </h3>
+                      <hr style="border-bottom: 2px solid #000;" />
+
+                      <div class="cuList mb-4" style="padding: 0 20px">
+                        <ul>
+                          <li th:utext="${plantationDTO.precautions}"></li>
+                        </ul>
+                      </div>
+                    </article> <!-- /유의사항 article -->
+
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-    <!-- /village-Details Section -->
+    </section> <!-- /재배정보Details Section -->
+
 
   </main>
 </div>
