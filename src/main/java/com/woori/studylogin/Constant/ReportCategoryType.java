@@ -5,9 +5,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum PlantType {
-    FRUIT("과일"),  // 모집중
-    VEGETABLE("채소"); // 모집완료
+public enum ReportCategoryType {
+
+    POLITICS("정치적 발언"),
+    SEXUAL("음란물 및 성적 발언"),
+    ABUSE("욕설 및 폭언"),
+    SPAM("도배글");
 
     private final String description;
 }
